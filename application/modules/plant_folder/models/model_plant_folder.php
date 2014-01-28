@@ -1,5 +1,5 @@
 <?php
-class model_plant extends CI_Model {
+class model_plant_folder extends CI_Model {
 	
 	function __construct()
 	{
@@ -20,7 +20,7 @@ class model_plant extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_ref_plant_cat',$search3_parm);
+			$this->db->where($table.'.id_plant',$search3_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -45,7 +45,7 @@ class model_plant extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_ref_plant_cat',$search3_parm);
+			$this->db->where($table.'.id_plant',$search3_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -57,7 +57,7 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function getPlantcatTitle($table,$parent_id)
+	function getPlantTitle($table,$parent_id)
 	{
 		$parent_title = "#";
 		$this->db->select("title");
@@ -71,7 +71,7 @@ class model_plant extends CI_Model {
 		return $parent_title;
 	}
 	
-	function getPlantcatList($table)
+	function getPlantList($table)
 	{
 		$this->db->order_by($table.'.title','asc');
 		$query = $this->db->get($table);
@@ -95,11 +95,11 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function setUpdate($table,$id,$id_ref_plant_cat,$title,$desc_,$publish,$user_id)
+	function setUpdate($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
 	{	
 		$data = array(
 			      'title'=>$title,
-				  'id_ref_plant_cat'=>$id_ref_plant_cat,
+				  'id_plant'=>$id_plant,
 				  'desc_'=>$desc_,
 			      'publish'=>$publish,
 			      'modify_user_id'=>$user_id
@@ -109,12 +109,12 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function setInsert($table,$id,$id_ref_plant_cat,$title,$desc_,$publish,$user_id)
+	function setInsert($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
 	{
 
 		$data = array(
 			      'title'=>$title,
-				  'id_ref_plant_cat'=>$id_ref_plant_cat,
+				  'id_plant'=>$id_plant,
 				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,

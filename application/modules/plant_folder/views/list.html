@@ -219,13 +219,13 @@ function openclose_search()
                 <div id="search_box">
                     <table border=0>
                     <tr>
-                    	<td>Menu</td><td> <input type="text"  name="sch1" value="{sch1_val}"></td>
+                    	<td>Title</td><td> <input type="text"  name="sch1" value="{sch1_val}"></td>
                     </tr>
                     <tr>
 					    <td>Publish</td><td>{ref2}</td>
 					</tr>
 					<tr>
-					    	<td>Plant Category</td><td>{ref3}</td>
+					    	<td>Plant</td><td>{ref3}</td>
 					</tr>
                     </table>
                     <input type="hidden" value="{per_page}" name="per_page"/>
@@ -256,8 +256,8 @@ function openclose_search()
 					</th>
                     <th width="5%" class="center">No.</th>
 					<th width="5%" class="center">Edit</th>
-                    <th width="15%">Menu</th>
-                    <th width="15%">Plant Category</th>
+                    <th width="15%">Title</th>
+                    <th width="15%">Plant</th>
                     <th width="10%" class="center">Publish</th>
                     <th width="10%">Create date</th>
                  </tr>
@@ -277,7 +277,7 @@ function openclose_search()
 						<td width="5%" class="td-content center" id="numb">{no}</td>
 						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
 						<td width="15%" class="td-content"><b>{title}</b></td>
-						<td width="15%" class="td-content">{parent}</td>
+						<td width="15%" class="td-content">{id_plant}</td>
 						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>
 					</tr>

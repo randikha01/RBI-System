@@ -1,16 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class ref_equipment extends MX_Controller  {
+class Plant_folder extends MX_Controller  {
 	
-	var $table = "ref_equipment";
-	var $table_alias = "Equipment";	
+	var $table = "plant_folder";
+	var $table_alias = "Plant Folder";
 	var $uri_page = 7;
 	var $per_page = 25;
 	 
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model($this->table."/model_".$this->table, $this->table);
+		$this->load->model("".$this->table."/model_".$this->table, $this->table);
 		$this->lang->load('elemen_layout', 'indonesia');
 	}
 	
@@ -28,7 +28,7 @@ class ref_equipment extends MX_Controller  {
 	{
 		return Modules::run('auth/privateAuth');
 	}
-	
+
 	public function forbiddenAuth()
 	{
 		return Modules::run('auth/forbiddenAuth');
@@ -48,8 +48,8 @@ class ref_equipment extends MX_Controller  {
 		$contents = $this->grid_content();
 	
 		$data = array(
-				  'admin_url'=>base_url(),
-				  'contents'=>$contents,
+				  'admin_url' => base_url(),
+				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
 		
@@ -60,12 +60,11 @@ class ref_equipment extends MX_Controller  {
 	
 	function grid_content()
 	{	
-		
 		#search
 		$sch1_parm = rawurldecode($this->uri->segment(3));
 		$sch1_parm = $sch1_parm != 'null' && !empty($sch1_parm) ? $sch1_parm : 'null';
 		$sch1_val = $sch1_parm != 'null' ? $sch1_parm : '';
-	
+		
 		$sch2_parm = rawurldecode($this->uri->segment(4));
 		$sch2_parm = $sch2_parm != 'null' && !empty($sch2_parm) ? $sch2_parm : 'null';
 		$sch2_select_arr[0] = $sch2_parm;
@@ -74,11 +73,10 @@ class ref_equipment extends MX_Controller  {
 							"Publish"=>"Publish"
 						  );
 		$ref2 = Modules::run('widget/getStaticDropdown',$sch2_arr,$sch2_select_arr,2);
-		
+
 		$sch3_parm = rawurldecode($this->uri->segment(5));
 		$sch3_parm = $sch3_parm != 'null' && !empty($sch3_parm) ? $sch3_parm : 'null';
-		$sch3_val = $sch3_parm != 'null' ? $sch3_parm : '';
-		
+		$ref3 = Modules::run('plant_folder/getPlantDropdown',$sch3_parm,3);
 		$sch_path = rawurlencode($sch1_parm)."/".rawurlencode($sch2_parm)."/".rawurlencode($sch3_parm);
 		#end search
 
@@ -88,7 +86,6 @@ class ref_equipment extends MX_Controller  {
 		$pg = $this->uri->segment($uri_segment);
 		$per_page = !empty($get_page) ? $get_page : $this->per_page;
 		$no = $go_pg = !$pg ? 0 : $pg;
-
 		if(!$pg)
 		{
 			$lmt = 0;
@@ -96,42 +93,40 @@ class ref_equipment extends MX_Controller  {
 		}else{
 			$lmt = $pg;
 		}
-		
 		$path = base_url().$this->table."/pages/".$sch1_parm."/".$sch2_parm."/".$sch3_parm."/".$per_page;
-		$jum_record = $this->ref_equipment->getTotal($this->table,$sch1_parm,$sch2_parm,$sch3_parm);
+		$jum_record = $this->plant_folder->getTotal($this->table,$sch1_parm,$sch2_parm,$sch3_parm);
 		$paging = Modules::run("widget/page",$jum_record,$per_page,$path,$uri_segment);
 		if(!$paging) $paging = "";
 		$display_record = $jum_record > 0 ? "" : "display:none;";
 		#end paging
 		
 		#record
-		$query = $this->ref_equipment->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
+		$query = $this->plant_folder->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
 		$list = array();
-
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
 			{
 				$no++;
-				$code = $r->ref_code;
-				$code = highlight_phrase($code, $sch3_parm, '<span style="color:#990000">', '</span>');
-				$title = $r->title;
+				$zebra = $no % 2 == 0 ? "zebra" : "";
+				
+				$title = ucwords($r->title);
+				$plant_title = ucwords($this->plant_folder->getPlantTitle('tbl_plant',$r->id_plant));
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
-				$create_date  = date("d/m/Y H:i",strtotime($r->create_date));
-
+				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
+			
 				$list[] = array(
-								"no"=>$no,
-								"id"=>$r->id,
-								"ref_code"=>$code,
-								"title"=>$title,
-								"publish"=>$publish,
-								"create_date"=>$create_date
+								 "no"=>$no,
+								 "id"=>$r->id,
+								 "title" =>$title,
+								 "id_plant" =>$plant_title,
+								 "publish"=>$publish,
+								 "create_date"=>$create_date
 								);
 			}
-			
 		}	
 		#end record
-
+	
 		$data = array(
 				  'admin_url' => base_url(),
 				  'paging'=>$paging,
@@ -140,10 +135,10 @@ class ref_equipment extends MX_Controller  {
 				  'display_record'=>$display_record,
 				  'sch1_parm'=>$sch1_parm,
 				  'sch1_val'=>$sch1_val,
-				  'sch3_parm'=>$sch3_parm,
-				  'sch3_val'=>$sch3_val,
 				  'sch2_parm'=>$sch2_parm,
-				  'ref2' => $ref2,
+				  'sch3_parm'=>$sch3_parm,
+				  'ref2'=>$ref2,
+				  'ref3'=>$ref3,
 				  'sch_path'=>$sch_path,
 				  'per_page'=>$per_page,
 				  'pg'=>$go_pg,
@@ -157,7 +152,8 @@ class ref_equipment extends MX_Controller  {
 	{
 		$sch1 = rawurlencode($this->input->post('sch1'));
 		$sch2 = rawurlencode($this->input->post('ref2'));
-		$sch3 = rawurlencode($this->input->post('sch3'));
+		$sch3 = rawurlencode($this->input->post('ref3'));
+
 		$per_page = rawurlencode($this->input->post('per_page'));
 		
 		$sch1 = empty($sch1) ? 'null' : $sch1;
@@ -194,47 +190,51 @@ class ref_equipment extends MX_Controller  {
 		if(is_numeric($id)){
 		
 			#set asset
-			$ref2_arr = array("Not Publish"=>"Not Publish","Publish"=>"Publish");
+			$ref3_arr = array("Not Publish"=>"Not Publish","Publish"=>"Publish");
 			
 			#record
-			$q = $this->ref_equipment->getDetail($this->table,$id);
+			$q = $this->plant_folder->getDetail($this->table,$id);
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-					
-					$code = $this->session->flashdata("ref_code") ? $this->session->flashdata("ref_code") : $r->ref_code;
-					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->title;
-					
-					#ref dropdown no multi value
-					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : $r->publish;
-					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);
-					#end ref dropdown no multi value
+								
+					#ref dropdown multi value					
+					$ref3_select_arr[0] = $r->publish;
+					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
+					#end ref dropdown multi value
 				
+					$id_plant = $r->id_plant;
+					$id = $r->id;
+
 					$list[] = array(
 									"id"=>$r->id,
-									"ref_code"=>$code,
-									"title" =>$title,
-									"ref2"=>$ref2,
-									"create_date"=>$r->create_date
+									"id_plant"=>$r->id_plant,
+									"title"=>$r->title,
+									"desc_"=>$r->desc_,
+									"create_date"=>$r->create_date,
+									"ref3"=>$ref3
 									);
 				}
 			}else{
-					$code = $this->session->flashdata("ref_code") ? $this->session->flashdata("ref_code") : "";
-					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : "";
-					
-					#ref dropdown no multi value
-					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : null;
-					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);	
-					#end ref dropdown no multi value
 				
-					$list[] = array(
-										"id"=>0,
-										"member_id" => "",
-										"ref_code"=>"",
-										"title" => $title,
-										"ref2"=>$ref2,
-										"create_date"=>""
-										);
+				$id_plant = $id = "";
+				
+				#ref dropdown multi value
+				/*$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,null,2);*/
+				#end ref dropdown multi value
+				
+				#ref dropdown multi value
+				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,null,3);
+				#end ref dropdown multi value
+				
+				$list[] = array(
+									"id"=>0,
+									"id_plant"=>"",
+									"title"=>"",
+									"desc_"=>"",
+									"create_date"=>"",
+									"ref3"=>$ref3
+									);
 			}
 			#end record
 
@@ -257,15 +257,19 @@ class ref_equipment extends MX_Controller  {
 									);
 			}
 			#end notification
-		
+			
+			#ref dropdown multi value
+			$ref1 = $this->getDropdownPlant($id_plant,1);
+			#end ref dropdown multi value
+			
 			$data = array(
-					  'admin_url'=>base_url(),
+					  'admin_url' => base_url(),
 					  'notif'=>$notif,
 					  'btn_plus'=>$btn_plus,
 					  'list'=>$list,
-					  'ref2'=>$ref2,
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
-				 	  'title_link'=>$this->table
+				 	  'title_link'=>$this->table,
+					  'ref1'=>$ref1
 					  );
 			return $this->parser->parse("edit.html", $data, TRUE);
 		}else{
@@ -276,30 +280,29 @@ class ref_equipment extends MX_Controller  {
 	
 	function submit()
 	{
-		$ref_code = strip_tags($this->input->post("ref_code"));
+		$err = "";
+		$id_plant = $this->input->post("ref1");
 		$title = strip_tags($this->input->post("title"));
-		$ref2 = $this->input->post("ref2");
-		$id = $this->input->post("id");
+		$desc_ = $this->input->post("desc_");
+		$is_publish = $this->input->post("ref3");
 		$user_id = $this->session->userdata('adminID');
-
+		$id = strip_tags($this->input->post("id"));
+		
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('title', 'title', 'required');
-	
-		if ($this->form_validation->run($this) == FALSE)
+		$this->form_validation->set_rules('desc_', 'Description', 'required');
+		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata("err",validation_errors());
-			$this->session->set_flashdata("ref_code",$ref_code);
-			$this->session->set_flashdata("title",$title);
-			$this->session->set_flashdata("ref2",$ref2);
 			redirect($this->table."/edit/".$id);
 		}else{
 			if($id > 0)
 			{
-				$this->ref_equipment->setUpdate($this->table,$id,$ref_code,$title,$ref2,$user_id);
+				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				redirect($this->table."/edit/".$id);
-			}else{
-				$id_term = $this->ref_equipment->setInsert($this->table,$id,$ref_code,$title,$ref2,$user_id);
+			}else{				
+				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
@@ -308,27 +311,45 @@ class ref_equipment extends MX_Controller  {
 		}
 	}
 	
-
+	
+	function ajaxsort()
+	{
+		$post = $this->input->post('data');
+		$order =  $this->input->post('index_order');
+		foreach($post as $val)
+		{
+			$order++;
+			$this->plant_folder->ajaxsort($this->table,$val,$order);
+		}
+	}
+	
+	
 	function delete($id=0)
 	{
-		$del_status = $this->ref_equipment->setDelete($this->table,$id);
+		$del_status = $this->plant_folder->setDelete($this->table,$id);
 		$response['id'] = $id;
 		$response['status'] = $del_status;
 		echo $result = json_encode($response);
 		exit();
 	}
 	
-	
-	function getRefDropdown($id,$name,$type=NULL)
+	function unlink($id,$file_image)
 	{
+		$this->db->where("id",$id);
+		$this->db->update($this->table,array("file_image"=>""));
+		unlink("uploads/".$file_image);
+		redirect($this->table."/edit/".$id);
+	}
 	
-		$q = $this->ref_equipment->getDropdown($this->table);
+	function getDropdownPlant($parent_id,$name,$type=NULL)
+	{
+		$q = $this->plant_folder->getPlantList('tbl_plant');
 		$list = array();
 		foreach ($q->result() as $val) {
-			$selected = $val->id == $id ? $selected = "selected='selected'" : "";	
+			$selected = $val->id == $parent_id ? $selected = "selected='selected'" : "tidak";	
 			$list[]= array(
 						'id' => $val->id,
-						'title'=>ucfirst($val->title),
+						'title'=>ucwords($val->title),
 						"selected"=>$selected
 					 );
 		}
@@ -339,8 +360,28 @@ class ref_equipment extends MX_Controller  {
 		return $this->parser->parse("layout/ref_dropdown".$type.".html", $data, TRUE);
 	}
 	
+	function getPlantDropdown($id,$name,$type=NULL)
+	{
+		$q = $this->plant_folder->getPlantlist('tbl_plant',null,null,null);
+		$list = array();
+		foreach ($q->result() as $val) {
+
+			$selected = $val->id == $id ? $selected = "selected='selected'" : "";	
+			
+			$list[]= array(
+						'id' => $val->id,
+						'title'=>ucwords($val->title),
+						"selected"=>$selected
+					 );
+		}
+		$data = array(
+				"list"=>$list,
+				"name"=>"ref".$name
+				);
+		return $this->parser->parse("layout/ref_dropdown".$type.".html", $data, TRUE);
+	}
 	
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file plant_folder.php */
+/* Location: ./application/modules/controller/plant_folder.php */

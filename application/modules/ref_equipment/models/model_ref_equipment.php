@@ -10,7 +10,7 @@ class Model_ref_equipment extends CI_Model {
 	{
 		if($sch1_parm != 'null' && !empty($sch1_parm) )
 		{
-			$this->db->like($table.'.ref_title',$sch1_parm);
+			$this->db->like($table.'.title',$sch1_parm);
 		}
 	
 		if($sch2_parm != 'null' && !empty($sch2_parm) )
@@ -33,7 +33,7 @@ class Model_ref_equipment extends CI_Model {
 	{
 		if($sch1_parm != 'null' && !empty($sch1_parm) )
 		{
-			$this->db->like($table.'.ref_title',$sch1_parm);
+			$this->db->like($table.'.title',$sch1_parm);
 		}
 	
 		if($sch2_parm != 'null' && !empty($sch2_parm) )
@@ -55,7 +55,7 @@ class Model_ref_equipment extends CI_Model {
 	function getDropdown($table)
 	{
 		$this->db->where($table.".publish","Publish");
-		$this->db->order_by($table.".ref_title","asc");
+		$this->db->order_by($table.".title","asc");
 		$query = $this->db->get($table);
 		return $query;
 	}
@@ -75,12 +75,12 @@ class Model_ref_equipment extends CI_Model {
 		return $query;
 	}
 	
-	function setUpdate($table,$id,$ref_code,$ref_title,$ref1,$user_id)
+	function setUpdate($table,$id,$ref_code,$title,$ref1,$user_id)
 	{
 
 		$data = array(
 				  "ref_code"=>$ref_code,
-			      "ref_title"=>$ref_title,
+			      "title"=>$title,
 				  "publish"=>$ref1,
 				  "modify_user_id"=>$user_id
 			      );
@@ -89,12 +89,12 @@ class Model_ref_equipment extends CI_Model {
 
 	}
 	
-	function setInsert($table,$id,$ref_code,$ref_title,$ref1,$user_id)
+	function setInsert($table,$id,$ref_code,$title,$ref1,$user_id)
 	{
 
 		$data = array(
 				  "ref_code"=>$ref_code,
-			      "ref_title"=>$ref_title,
+			      "title"=>$title,
 				  "publish"=>$ref1,
 				  "user_id"=>$user_id,
 			      "create_date"=>date("Y-m-d :H:i:s",now())
