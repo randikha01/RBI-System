@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2014 at 04:23 AM
+-- Generation Time: Jan 29, 2014 at 09:40 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -106,6 +106,44 @@ INSERT INTO `tbl_configs` (`id`, `meta_title`, `meta_keyword`, `meta_description
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_item_object`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_item_object` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_plant_fol_item` int(11) NOT NULL,
+  `obj_tag_no` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `management_id` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` text COLLATE latin1_general_ci NOT NULL,
+  `drawing_ref` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `sheet` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `rev` varchar(100) COLLATE latin1_general_ci NOT NULL,
+  `id_eq_subclass` int(11) NOT NULL,
+  `miss_physical_tag` set('no','yes') COLLATE latin1_general_ci NOT NULL,
+  `miss_virtual_tag` set('no','yes') COLLATE latin1_general_ci NOT NULL,
+  `id_eq_cat` int(11) NOT NULL,
+  `ex_service` set('no','yes') COLLATE latin1_general_ci NOT NULL,
+  `id_ex_type` int(11) NOT NULL,
+  `cmms_status` int(11) NOT NULL,
+  `work_order` set('no','yes') COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `tbl_item_object`
+--
+
+INSERT INTO `tbl_item_object` (`id`, `id_plant_fol_item`, `obj_tag_no`, `management_id`, `desc_`, `drawing_ref`, `sheet`, `rev`, `id_eq_subclass`, `miss_physical_tag`, `miss_virtual_tag`, `id_eq_cat`, `ex_service`, `id_ex_type`, `cmms_status`, `work_order`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 1, 'test obj tag no e', 'test management id e', 'test desc e', 'test drawing e', 'test sheet e', 'test rev e', 0, 'yes', 'no', 2, 'yes', 12, 1, 'no', 'Not Publish', 1, 1, '2014-01-29 08:37:28', '2014-01-29 09:35:10');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_menu`
 --
 
@@ -123,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=115 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=116 ;
 
 --
 -- Dumping data for table `tbl_menu`
@@ -147,7 +185,8 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (111, 'Plant Category', 'ref_plant_cat', '', 'Publish', 30, '', 106, 1, 0, '2014-01-24 08:14:57', '2014-01-24 09:14:57'),
 (112, 'Plant', 'plant', '', 'Publish', 31, '', 110, 1, 0, '2014-01-27 04:54:54', '2014-01-27 05:54:54'),
 (113, 'Plant Folder', 'plant_folder', '', 'Publish', 32, '', 110, 1, 0, '2014-01-27 04:55:24', '2014-01-27 05:55:24'),
-(114, 'Folder Item', 'plant_fol_item', '', 'Publish', 33, '', 113, 1, 0, '2014-01-27 07:55:42', '2014-01-27 08:55:42');
+(114, 'Folder Item', 'plant_fol_item', '', 'Publish', 33, '', 113, 1, 0, '2014-01-27 07:55:42', '2014-01-27 08:55:42'),
+(115, 'Object', 'item_object', '', 'Publish', 34, '', 113, 1, 1, '2014-01-29 06:38:00', '2014-01-29 07:36:52');
 
 -- --------------------------------------------------------
 
@@ -164,7 +203,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu_auth` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=246 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=247 ;
 
 --
 -- Dumping data for table `tbl_menu_auth`
@@ -233,7 +272,8 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 (242, 1, 111, 1, 0, '2014-01-24 08:15:10', '2014-01-24 09:15:10'),
 (243, 1, 112, 1, 0, '2014-01-27 04:55:49', '2014-01-27 05:55:49'),
 (244, 1, 113, 1, 0, '2014-01-27 04:55:49', '2014-01-27 05:55:49'),
-(245, 1, 114, 1, 0, '2014-01-27 07:55:58', '2014-01-27 08:55:58');
+(245, 1, 114, 1, 0, '2014-01-27 07:55:58', '2014-01-27 08:55:58'),
+(246, 1, 115, 1, 0, '2014-01-29 06:37:06', '2014-01-29 07:37:06');
 
 -- --------------------------------------------------------
 
@@ -243,7 +283,7 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 
 CREATE TABLE IF NOT EXISTS `tbl_plant` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_ref_plant_cat` tinyint(2) NOT NULL,
+  `id_ref_plant_cat` int(11) NOT NULL,
   `title` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
   `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
@@ -271,7 +311,7 @@ INSERT INTO `tbl_plant` (`id`, `id_ref_plant_cat`, `title`, `desc_`, `publish`, 
 
 CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_plant` tinyint(2) NOT NULL,
+  `id_plant` int(11) NOT NULL,
   `title` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
   `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
@@ -297,7 +337,7 @@ INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `title`, `desc_`, `publish`, `
 
 CREATE TABLE IF NOT EXISTS `tbl_plant_fol_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_plant_folder` tinyint(2) NOT NULL,
+  `id_plant_folder` int(11) NOT NULL,
   `id_ref_equipment` int(4) NOT NULL,
   `title` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
@@ -661,6 +701,76 @@ INSERT INTO `tbl_ref_equipment` (`id`, `ref_code`, `title`, `publish`, `user_id`
 (319, 'SUBSEA PLEM', 'Subsea PLEM', 'Not Publish', 0, 0, '2014-01-24 07:16:18', '0000-00-00 00:00:00'),
 (320, 'PACKAGE', 'Equipment Package', 'Not Publish', 0, 0, '2014-01-24 07:16:18', '0000-00-00 00:00:00'),
 (321, 'SUB-PACKAGE', 'Equipment Sub-Package', 'Not Publish', 0, 0, '2014-01-24 07:16:18', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_equipment_cat`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_equipment_cat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `tbl_ref_equipment_cat`
+--
+
+INSERT INTO `tbl_ref_equipment_cat` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, '100', 'Mechanical', 'Publish', 1, 0, '2014-01-29 06:46:27', '2014-01-29 00:00:00'),
+(2, '300', 'Electrical', 'Publish', 1, 0, '2014-01-29 06:46:27', '2014-01-29 00:00:00'),
+(3, '500', 'Instrument', 'Publish', 1, 0, '2014-01-29 06:47:13', '2014-01-29 00:00:00'),
+(4, '700', 'Piping', 'Publish', 1, 0, '2014-01-29 06:47:13', '2014-01-29 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_ex_type`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_ex_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=19 ;
+
+--
+-- Dumping data for table `tbl_ref_ex_type`
+--
+
+INSERT INTO `tbl_ref_ex_type` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'D', '', 'Publish', 1, 0, '2014-01-29 07:07:38', '2014-01-29 14:07:38'),
+(2, 'E', '', 'Publish', 0, 0, '2014-01-29 07:07:38', '2014-01-29 14:07:38'),
+(3, 'I', '', 'Publish', 1, 0, '2014-01-29 07:08:05', '2014-01-29 14:08:05'),
+(4, 'M', '', 'Publish', 1, 0, '2014-01-29 07:08:05', '2014-01-29 14:08:05'),
+(5, 'O', '', 'Publish', 1, 0, '2014-01-29 07:08:34', '2014-01-29 14:08:34'),
+(6, 'P', '', 'Publish', 1, 0, '2014-01-29 07:08:34', '2014-01-29 14:08:34'),
+(7, 'P', '', 'Publish', 1, 0, '2014-01-29 07:09:10', '2014-01-29 14:09:10'),
+(8, 'P1', '', 'Publish', 1, 0, '2014-01-29 07:09:10', '2014-01-29 14:09:10'),
+(9, 'Q', '', 'Publish', 1, 0, '2014-01-29 07:09:35', '2014-01-29 14:09:35'),
+(10, 'S', '', 'Publish', 1, 0, '2014-01-29 07:09:35', '2014-01-29 14:09:35'),
+(11, 'V', '', 'Publish', 1, 0, '2014-01-29 07:10:10', '2014-01-29 14:10:10'),
+(12, 'DE', '', 'Publish', 1, 0, '2014-01-29 07:10:10', '2014-01-29 14:10:10'),
+(13, 'ED', '', 'Publish', 1, 0, '2014-01-29 07:10:37', '2014-01-29 14:10:37'),
+(14, 'IA', '', 'Publish', 1, 0, '2014-01-29 07:10:37', '2014-01-29 14:10:37'),
+(15, 'IB', '', 'Publish', 1, 0, '2014-01-29 07:11:01', '2014-01-29 14:11:01'),
+(16, 'MA', '', 'Publish', 1, 0, '2014-01-29 07:11:01', '2014-01-29 14:11:01'),
+(17, 'MB', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25'),
+(18, 'XX', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25');
 
 -- --------------------------------------------------------
 
