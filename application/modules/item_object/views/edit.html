@@ -1,0 +1,149 @@
+<script>
+    var config = {
+		      '#ref8'           : {},
+          '#ref8-deselect'  : {allow_single_deselect:true},
+          '#ref8-no-single' : {disable_search_threshold:10},
+          '#ref8-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref8-width'     : {width:"95%"},
+
+          '#ref9'           : {},
+          '#ref9-deselect'  : {allow_single_deselect:true},
+          '#ref9-no-single' : {disable_search_threshold:10},
+          '#ref9-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref9-width'     : {width:"95%"},
+          
+          '#ref10'           : {},
+          '#ref10-deselect'  : {allow_single_deselect:true},
+          '#ref10-no-single' : {disable_search_threshold:10},
+          '#ref10-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref10-width'     : {width:"95%"},
+          
+          '#ref4'           : {},
+          '#ref4-deselect'  : {allow_single_deselect:true},
+          '#ref4-no-single' : {disable_search_threshold:10},
+          '#ref4-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref4-width'     : {width:"95%"},
+          
+          '#ref5'           : {},
+          '#ref5-deselect'  : {allow_single_deselect:true},
+          '#ref5-no-single' : {disable_search_threshold:10},
+          '#ref5-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref5-width'     : {width:"95%"},
+          
+          '#ref6'           : {},
+          '#ref6-deselect'  : {allow_single_deselect:true},
+          '#ref6-no-single' : {disable_search_threshold:10},
+          '#ref6-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref6-width'     : {width:"95%"},
+          
+          '#ref7'           : {},
+          '#ref7-deselect'  : {allow_single_deselect:true},
+          '#ref7-no-single' : {disable_search_threshold:10},
+          '#ref7-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref7-width'     : {width:"95%"},
+		      
+          '#ref3'           : {},
+          '#ref3-deselect'  : {allow_single_deselect:true},
+          '#ref3-no-single' : {disable_search_threshold:10},
+          '#ref3-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref3-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+    }
+</script>
+        
+        <ul id="breadcrumb">
+            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="{admin_url}{title_link}"><span>{title_head}</span></a></li>
+            <li><span>{add_edit}</span></li>
+        </ul>
+        <div class="clear"></div>
+        
+        
+        <div class="row">
+          <div class="span14">
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+	    
+
+	    <h2>{add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+
+                 <p>Item</p>
+                 {ref8}
+                 <hr />
+
+                 <p>Object Tag No</p>
+                 <input type="input" name="obj_tag_no" value="{obj_tag_no}"/>
+                 <hr />
+
+                 <p>Management Id</p>
+                 <input type="input" name="management_id" value="{management_id}"/>
+                 <hr />
+
+              	 <p>Description</p>
+                 <input type="input" name="desc_" value="{desc_}"/>
+                 <hr />
+
+                 <p>Drawing Reference</p>
+                 <input type="input" name="drawing_ref" value="{drawing_ref}"/>
+                 <hr />
+
+                 <p>Sheet</p>
+                 <input type="input" name="sheet" value="{sheet}"/>
+                 <hr />
+
+                 <p>Rev</p>
+                 <input type="input" name="rev" value="{rev}"/>
+                 <hr />
+
+                 <p>Missing Physical Tag</p>
+                 {ref4}
+                 <hr />
+
+                 <p>Missing Virtual Tag</p>
+                 {ref5}
+                 <hr />
+
+                 <p>Equipment Category</p>
+                 {ref9}
+                 <hr />
+
+                 <p>Ex Service</p>
+                 {ref6}
+                 <hr />
+
+                 <p>Ex Type Code</p>
+                 {ref10}
+                 <hr />
+
+                 <p>CMMS Status</p>
+                 <input type="input" name="cmms_status" value="{cmms_status}"/>
+                 <hr />
+
+                 <p>Work Order</p>
+                 {ref7}
+                 <hr />
+
+                 <p>Publish</p>
+                 {ref3}
+                 <hr />
+				 
+                 <p>Created Date</p>
+                 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                 <hr />
+				 
+				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                 <a href="{admin_url}{title_link}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <input type="hidden" name="id" value="{id}"/>
+	    </form>
+            {/list}
+        </div>
+</div>
