@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2014 at 07:38 AM
+-- Generation Time: Feb 03, 2014 at 09:30 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -19,6 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `rbi`
 --
+
 -- --------------------------------------------------------
 
 --
@@ -158,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=118 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=120 ;
 
 --
 -- Dumping data for table `tbl_menu`
@@ -185,7 +186,9 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (114, 'Folder Item', 'plant_fol_item', '', 'Publish', 33, '', 113, 1, 0, '2014-01-27 07:55:42', '2014-01-27 08:55:42'),
 (115, 'Object', 'item_object', '', 'Publish', 34, '', 113, 1, 1, '2014-01-29 06:38:00', '2014-01-29 07:36:52'),
 (116, 'Ex Type', 'ref_ex_type', '', 'Publish', 35, '', 106, 1, 0, '2014-01-30 04:14:59', '2014-01-30 05:14:59'),
-(117, 'Equipment Category', 'ref_equipment_cat', '', 'Publish', 36, '', 106, 1, 0, '2014-01-30 04:23:15', '2014-01-30 05:23:15');
+(117, 'Equipment Category', 'ref_equipment_cat', '', 'Publish', 36, '', 106, 1, 0, '2014-01-30 04:23:15', '2014-01-30 05:23:15'),
+(118, 'Products', 'ref_products', '', 'Publish', 37, '', 106, 1, 0, '2014-02-03 07:56:29', '2014-02-03 08:56:29'),
+(119, 'System', 'ref_system', '', 'Publish', 38, '', 106, 1, 0, '2014-02-03 08:27:23', '2014-02-03 09:27:23');
 
 -- --------------------------------------------------------
 
@@ -202,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu_auth` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=249 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=251 ;
 
 --
 -- Dumping data for table `tbl_menu_auth`
@@ -274,7 +277,9 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 (245, 1, 114, 1, 0, '2014-01-27 07:55:58', '2014-01-27 08:55:58'),
 (246, 1, 115, 1, 0, '2014-01-29 06:37:06', '2014-01-29 07:37:06'),
 (247, 1, 116, 1, 0, '2014-01-30 04:15:10', '2014-01-30 05:15:10'),
-(248, 1, 117, 1, 0, '2014-01-30 04:23:26', '2014-01-30 05:23:26');
+(248, 1, 117, 1, 0, '2014-01-30 04:23:26', '2014-01-30 05:23:26'),
+(249, 1, 118, 1, 0, '2014-02-03 07:56:40', '2014-02-03 08:56:40'),
+(250, 1, 119, 1, 0, '2014-02-03 08:27:38', '2014-02-03 09:27:38');
 
 -- --------------------------------------------------------
 
@@ -357,6 +362,48 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_fol_item` (
 INSERT INTO `tbl_plant_fol_item` (`id`, `id_plant_folder`, `id_ref_objects`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
 (1, 1, 206, 'pressure vessel test', 'pressure vessel test', 'Publish', 1, 1, '2014-01-28 03:21:20', '2014-01-27 09:30:14'),
 (2, 1, 206, 'PV', 'PV', 'Publish', 1, 1, '2014-01-28 03:22:58', '2014-01-27 09:38:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_pv_info`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_pv_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_item_object` int(11) NOT NULL,
+  `title` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `serial_no` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` text COLLATE latin1_general_ci NOT NULL,
+  `id_product` int(11) NOT NULL,
+  `id_system` int(11) NOT NULL,
+  `shell1_nt_mm` decimal(16,0) NOT NULL,
+  `shell1_nt_in` decimal(16,3) NOT NULL,
+  `shell1_id_cm` decimal(16,3) NOT NULL,
+  `shell1_id_in` decimal(16,0) NOT NULL,
+  `shell2_nt_mm` decimal(16,3) NOT NULL,
+  `shell2_nt_in` decimal(16,3) NOT NULL,
+  `shell2_id_cm` decimal(16,0) NOT NULL,
+  `shell2_id_in` decimal(16,0) NOT NULL,
+  `head1_nt_mm` decimal(16,0) NOT NULL,
+  `head1_nt_in` decimal(16,0) NOT NULL,
+  `head1_ir_mm` decimal(16,0) NOT NULL,
+  `head1_ir_in` decimal(16,0) NOT NULL,
+  `head2_nt_mm` decimal(16,0) NOT NULL,
+  `head2_nt_in` decimal(16,0) NOT NULL,
+  `head2_ir_mm` decimal(16,0) NOT NULL,
+  `head2_ir_in` decimal(16,0) NOT NULL,
+  `comm_date` date NOT NULL,
+  `design_life` int(11) NOT NULL,
+  `retirement_date` date NOT NULL,
+  `ext_design_life` int(11) NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -822,6 +869,351 @@ INSERT INTO `tbl_ref_pipetype` (`id`, `ref_code`, `ref_title`, `publish`, `user_
 (24, 'HEAD 2', 'head 2', 'Publish', 1, 0, '2014-01-23 22:22:56', '2011-06-05 00:00:00'),
 (25, 'HEAD 3', 'Head 3', 'Publish', 1, 0, '2014-01-23 22:22:56', '2011-06-05 00:00:00'),
 (26, 'TUBE', 'Tube', 'Publish', 1, 2, '2014-01-23 17:10:40', '2011-06-05 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_products`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=185 ;
+
+--
+-- Dumping data for table `tbl_ref_products`
+--
+
+INSERT INTO `tbl_ref_products` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'UNKNOWN', 'Specification Unknown', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(2, 'SALES GAS', 'Sales Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(3, 'LEAN SOLUTION', 'Lean solution', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(4, 'ACID GAS', 'Acid Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(5, 'ETHANE', 'Ethane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(6, 'LPG/COND', 'Lpg/Cond', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(7, 'LP.STEAM', 'LP Steam', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(8, 'LIQ.HYD', 'Liquid Hydrogen', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(9, 'GAS HYD', 'Gas Hydrogen', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(10, 'PROPANE/BUTANE', 'Propane/Butane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(11, 'B.C.F.', '(B.C.F.) Brome Chlofo De Fluro', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(12, 'ACID', 'Acid', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(13, 'ADIP', 'ADIP', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(14, 'AIR', 'AIR', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(15, 'ASSOCIATED GAS', 'Associated Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(16, 'BUTANE', 'Butane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(17, 'BUTANE GAS', 'Butane Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(18, 'CAUSTIC', 'Caustic', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(19, 'CLAUS GAS', 'Claus Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(20, 'CONDENSATE', 'Condensate', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(21, 'CONDENSATE WATER', 'Condensate Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(22, 'COOLING WATER', 'Cooling Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(23, 'CRUDE OIL', 'Crude Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(24, 'DIESEL OIL', 'Diesel Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(25, 'DISULPHIDE', 'Disulphide', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(26, 'DISULPHIDE OIL', 'Disulphide Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(27, 'DRY AIR', 'Dry Air', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(28, 'ETHANE RICH GAS', 'Ethane Rich Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(29, 'FEED GAS', 'Feed Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(30, 'FLARE GAS', 'Flare Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(31, 'FOAM', 'Foam', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(32, 'FRESH AIR', 'Fresh Air', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(33, 'FRESH WATER', 'Fresh Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(34, 'FUEL GAS', 'Fuel Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(35, 'GAS', 'Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(36, 'GAS LIQUID LINE', 'Gas Liquid Line', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(37, 'GASOLINE', 'Gasoline', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(38, 'GLYCOL', 'Glycol', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(39, 'HYDRAULIC OIL', 'Hydraulic Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(40, 'HYDROCARBON & ADIP', 'Hydrocarbon & Adip', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(41, 'HYDROCARBON GAS', 'Hydrocarbon Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(42, 'HYDROCARBON LIQUID', 'Hydrocarbon Liquid', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(43, 'HYDROCARBON REFRIGERANT', 'Hydrocarbon Refrigerant', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(44, 'INERT GAS', 'Inert Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(45, 'INHIBITED WATER', 'Inhibited Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(46, 'INSTRUMENT AIR', 'Instrument Air', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(47, 'KHUFF GAS', 'Khuff Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(48, 'LEAN GAS', 'Lean Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(49, 'LEAN/KHUFF GAS', 'Lean/Khuff Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(50, 'LIQUID BUTANE', 'Liquid Butane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(51, 'LIQUID CATALYST', 'Liquid Catalyst', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(52, 'LIQUID NITROGEN', 'Liquid Nitrogen', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(53, 'LIQUID PENTANE', 'Liquid Pentane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(54, 'LIQUID PROPANE', 'Liquid Propane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(55, 'LUBE OIL', 'Lube Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(56, 'MDEA', 'MDEA', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(57, 'METHANE RICH GAS', 'Methane Rich Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(58, 'METHANOL', 'Methanol', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(59, 'N2 STORAGE', 'N2 STORAGE', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(60, 'NITROGEN / INERT GAS', 'Nitrogen / Inert Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(61, 'OFFSHORE GAS', 'Offshore Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(62, 'OFFSHORE LIQUID', 'Offshore Liquid', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(63, 'OIL', 'Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(64, 'PENTANE', 'PENTANE', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(65, 'POTABLE WATER', 'Potable Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(66, 'PROPANE', 'Propane', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(67, 'PROPANE ADIP', 'Propane Adip', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(68, 'RAW GAS', 'Raw Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(69, 'RAW NGL', 'Raw NGL', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(70, 'REFRIGERANT', 'Refrigerant', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(71, 'REGEN GAS', 'Regen Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(72, 'SAG', 'SAG', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(73, 'SEA WATER', 'Sea Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(74, 'SEAL OIL', 'Seal Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(75, 'SEAWATER', 'Seawater', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(76, 'SODIUM HYPOCHLORITE', 'Sodium Hypochlorite', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(77, 'SOUR GAS', 'Sour Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(78, 'SOUR OIL & WATER', 'Sour Oil & Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(79, 'STEAM', 'Steam', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(80, 'SULPHUR', 'Sulphur', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(81, 'TREATED GAS', 'Treated Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(82, 'WASTE GAS', 'Waste Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(83, 'WATER', 'Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(84, 'WET AIR', 'Wet Air', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(85, 'WET SOUR GAS', 'Wet Sour Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(86, 'PROCESS GAS', 'Process Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(87, 'VENT GAS', 'Vent Gas', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(88, 'WASTE WATER', 'Waste Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(89, 'NO RECORD', 'No Record Found', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(90, 'PRODUCTION OIL', 'Production Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(91, 'PROCESS OIL', 'Process Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(92, 'ANTI-SCALE CHEMICAL', 'Anti Scale Chemical', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(93, 'PROCESS WATER', 'Process Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(94, 'INDUSTRIAL WATER', 'Industrial Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(95, 'SERVICE AIR', 'Service Air', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(96, 'OILY WATER', 'Oily Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(97, 'BRINE', 'Brine', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(98, 'OIL BASE MUD', 'Oil Base Mud', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(99, 'HYDROCARBON CLOSED DRAIN', 'Hydrocarbon Closed Drain', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(100, 'FIRE FOAM', 'Fire Foam', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(101, 'RAW CONDENSATE', 'Raw Condensate', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(102, 'DIRTY WATER DRAIN', 'Dirty Water Drain', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(103, 'CHEMICAL INJECTION', 'Chemical Injection', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(104, 'HEATING MEDIUM', 'Heating Medium', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(105, 'CLOSED DRAIN', 'Closed Drain', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(106, 'OPEN DRAIN', 'Open Drain', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(107, 'BACTERICIDE', 'Bactericide', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(108, 'HYDROCARBON', 'Hydrocarbon', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(109, 'HOT OIL', 'Hot Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(110, 'FIRE WATER', 'Fire Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(111, 'TREATED OIL', 'Treated Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(112, 'ANTI FOAM', 'Anti Foam', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(113, 'CORROSION INHIBITOR', 'Corrosion Inhibitor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(114, 'DIESEL ENGINE', 'Diesel Engine', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(115, 'DRINKING WATER', 'Drinking Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(116, 'TREATED WATER', 'Treated Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(117, 'SCALE INHIBITOR', 'Scale Inhibitor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(118, 'INJECTION WATER', 'Injection Water', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(119, 'FLAME ARRESTOR', 'Flame Arrestor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(120, 'FUEL DIESEL', 'Fuel Diesel', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(121, 'NITROGEN', 'Nitrogen', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(122, 'VENT', 'Vent', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(123, 'ULSP', 'Ultra Low Surphur Petrol', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(124, 'ULSD', 'Ultra Low Surphur Diesel', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(125, 'UNLEADED PETROL', 'Unleaded Petrol', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(126, 'KEROSENE', 'Kerosene', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(127, 'STYRENE MONOMER', 'Styrene Monomer', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(128, 'LIGHT FUEL OIL', 'Light Fuel Oil', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(129, 'NOT KNOWN', 'Unknown', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(130, 'STREAM PROCESS 01 : MIXED', 'STREAM PROCESS 01 : MIXED - Total HCP Wellstream Feed', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(131, 'STREAM PROCESS 02 : MIXED', 'STREAM PROCESS 02 : MIXED - Total HCP Wellstream at Choke Outlet', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(132, 'STREAM PROCESS 03 : MIXED', 'STREAM PROCESS 03 : MIXED - 50% HCP Manifold', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(133, 'STREAM PROCESS 09 : MIXED', 'STREAM PROCESS 09 : MIXED - Outlet from Wellstream Cooler', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(134, 'STREAM PROCESS 10 : MIXED', 'STREAM PROCESS 10 : MIXED - 50% Wellstream Feed to Production Separator', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(135, 'STREAM PROCESS 11 : MIXED', 'STREAM PROCESS 11 : MIXED - Total Wellstream Feed to Production Separator', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(136, 'STREAM PROCESS 12 : VAPOUR', 'STREAM PROCESS 12 : VAPOUR - Vapour off Production Separator', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(137, 'STREAM PROCESS 30 : VAPOUR', 'STREAM PROCESS 30 : VAPOUR - Gas to Train ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(138, 'STREAM PROCESS 31 : LIQUID', 'STREAM PROCESS 31 : LIQUID - Liquid from LP Comp. Suction Scrubber ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(139, 'STREAM PROCESS 32 : VAPOUR', 'STREAM PROCESS 32 : VAPOUR - Vapour from LP Comp. Suction Scrubber ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(140, 'STREAM PROCESS 33 : VAPOUR', 'STREAM PROCESS 33 : VAPOUR - Discharge of LP Comp ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(141, 'STREAM PROCESS 34 : MIXED', 'STREAM PROCESS 34 : MIXED - Outlet of LP Comp. after Cooler ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(142, 'STREAM PROCESS 35 : LIQUID', 'STREAM PROCESS 35 : LIQUID - Liquid from HP Comp. Suction Scrubber ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(143, 'STREAM PROCESS 36 : VAPOUR', 'STREAM PROCESS 36 : VAPOUR - Vapour from HP Comp. Suction Scrubber ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(144, 'STREAM PROCESS 37 : VAPOUR', 'STREAM PROCESS 37 : VAPOUR - Discharge of HP Comp ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(145, 'STREAM PROCESS 38 : MIXED', 'STREAM PROCESS 38 : MIXED - Outlet of HP Comp. after Cooler ''A''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(146, 'STREAM PROCESS 40 : MIXED', 'STREAM PROCESS 40 : MIXED - Gas to Glycol Contactor Prescrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(147, 'STREAM PROCESS 45 : MIXED', 'STREAM PROCESS 45 : MIXED - Liquid from HP Comp. Suction Scrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(148, 'STREAM PROCESS 50 : VAPOUR', 'STREAM PROCESS 50 : VAPOUR - Gas to Train ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(149, 'STREAM PROCESS 51 : LIQUID', 'STREAM PROCESS 51 : LIQUID - Liquid from LP Comp. Suction Scrubber ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(150, 'STREAM PROCESS 52 : VAPOUR', 'STREAM PROCESS 52 : VAPOUR - Vapour from LP Comp. Suction Scrubber ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(151, 'STREAM PROCESS 53 : VAPOUR', 'STREAM PROCESS 53 : VAPOUR - Discharge of LP Comp ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(152, 'STREAM PROCESS 54 : MIXED', 'STREAM PROCESS 54 : MIXED - Outlet of LP Comp. after Cooler ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(153, 'STREAM PROCESS 55 : LIQUID', 'STREAM PROCESS 55 : LIQUID - Liquid from HP Comp. Suction Scrubber ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(154, 'STREAM PROCESS 56 : VAPOUR', 'STREAM PROCESS 56 : VAPOUR - Vapour from HP Comp. Suction Scrubber ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(155, 'STREAM PROCESS 57 : VAPOUR', 'STREAM PROCESS 57 : VAPOUR - Discharge of HP Comp ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(156, 'STREAM PROCESS 58 : MIXED', 'STREAM PROCESS 58 : MIXED - Outlet of HP Comp. after Cooler ''B''', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(157, 'STREAM PROCESS 60 : WATER', 'STREAM PROCESS 60 : WATER - Liquid from Glycol Contactor Prescrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(158, 'STREAM PROCESS 62 : VAPOUR', 'STREAM PROCESS 62 : VAPOUR - Feed to Glycol Contactor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(159, 'STREAM PROCESS 63 : WATER', 'STREAM PROCESS 63 : WATER - Water removed in Glycol  Contactor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(160, 'STREAM PROCESS 64 : VAPOUR', 'STREAM PROCESS 64 : VAPOUR - Gas off Glycol Contactor', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(161, 'STREAM PROCESS FG : VAPOUR', 'STREAM PROCESS FG : VAPOUR - Gas to Fuel Gas Scrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(162, 'STREAM PROCESS FGL :LIQUID', 'STREAM PROCESS FGL : LIQUID - Liquid from Fuel Gas Scrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(163, 'STREAM PROCESS FGV : VAPOUR', 'STREAM PROCESS FGV : VAPOUR - Gas off Fuel Gas Scrubber', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(164, 'STREAM PROCESS 65 : VAPOUR', 'STREAM PROCESS 65 : VAPOUR - Upstream of Gas Metering', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(165, 'STREAM PROCESS 66 : VAPOUR', 'STREAM PROCESS 66 : VAPOUR - Downstream of Gas Metering', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(166, 'STREAM PROCESS 67 : VAPOUR', 'STREAM PROCESS 67 : VAPOUR - Gas to Export Pipeline', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(167, 'STREAM PROCESS 68 : MIXED', 'STREAM PROCESS 68 : MIXED - Condensate and Gas export', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(168, 'STREAM PROCESS 688 : LIQUID', 'STREAM PROCESS 688 : LIQUID - C5 + Components in Total Export Stream', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(169, 'STREAM PROCESS 69 : VAPOUR', 'STREAM PROCESS 69 : VAPOUR - C1-C4 Components in Total export Stream', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(170, 'STREAM PROCESS 70 : LIQUID', 'STREAM PROCESS 70 : LIQUID - Liquid from Production Separator', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(171, 'STREAM PROCESS 74 : WATER', 'STREAM PROCESS 74 : WATER - Water from TPS', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(172, 'STREAM PROCESS 76 : LIQUID', 'STREAM PROCESS 76 : LIQUID - Suction of Condensate Booster Pumps', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(173, 'STREAM PROCESS 77 : LIQUID', 'STREAM PROCESS 77 : LIQUID - Discharge of Condensate Booster Pumps', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(174, 'STREAM PROCESS 81 : LIQUID', 'STREAM PROCESS 81 : LIQUID - Outlet from Coalescers Pre Filter', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(175, 'STREAM PROCESS 84 : WATER', 'STREAM PROCESS 84 : WATER - Water from Coalescers', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(176, 'STREAM PROCESS 86 : LIQUID', 'STREAM PROCESS 86 : LIQUID - Condensate from Coalescers', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(177, 'STREAM PROCESS 88 : WATER', 'STREAM PROCESS 88 : WATER - Total Water from Coalescers / TPS', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(178, 'STREAM PROCESS 90 : LIQUID', 'STREAM PROCESS 90 : LIQUID - Suction of Condensate Export Pumps', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(179, 'STREAM PROCESS 92 : LIQUID', 'STREAM PROCESS 92 : LIQUID - Discharge of Condensate Export Pumps', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(180, 'STREAM PROCESS 93 : LIQUID', 'STREAM PROCESS 93 : LIQUID - Outlet from Condensate Level Control Valve', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(181, 'STREAM PROCESS 94 : LIQUID', 'STREAM PROCESS 94 : LIQUID - Condensate to Export Pipeline', 'Not Publish', 1, 1, '2010-05-17 17:00:00', '2010-05-18 00:00:00'),
+(182, 'HIGH STEAM', 'high steam', 'Not Publish', 1, 1, '2011-02-07 17:00:00', '2011-02-08 00:00:00'),
+(183, 'PRODUCED GAS', 'Produced Gas', 'Not Publish', 1, 1, '2011-07-24 17:00:00', '2011-07-25 00:00:00'),
+(184, '[PR] PROCESS LIQUID AND VAPOUR', '[PR] Process Liquid and Vapour', 'Not Publish', 1, 1, '2012-06-20 17:00:00', '2012-06-21 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_system`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_system` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=114 ;
+
+--
+-- Dumping data for table `tbl_ref_system`
+--
+
+INSERT INTO `tbl_ref_system` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'SYSTEM [020] - SPARE', 'SYSTEM [020] - SPARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'SYSTEM [021] - HYDRAULIC CONTROL', 'SYSTEM [021] - HYDRAULIC CONTROL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'SYSTEM [022] - COMPLETION', 'SYSTEM [022] - COMPLETION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'SYSTEM [023] - SPARE', 'SYSTEM [023] - SPARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'SYSTEM [024] - SPARE', 'SYSTEM [024] - SPARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 'SYSTEM [025] - SPARE', 'SYSTEM [025] - SPARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 'SYSTEM [030] - SUBSEA', 'SYSTEM [030] - SUBSEA', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 'SYSTEM [032] - COMPLETION', 'SYSTEM [032] - COMPLETION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 'SYSTEM [035] - UMBILICALS', 'SYSTEM [035] - UMBILICALS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 'SYSTEM [040] - OFFSHORE FLOW LINES', 'SYSTEM [040] - OFFSHORE FLOW LINES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 'SYSTEM [041] - SUBSEA FLOW LINES TO WP', 'SYSTEM [041] - SUBSEA FLOW LINES TO WP', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 'SYSTEM [050] - FUTURE', 'SYSTEM [050] - FUTURE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, 'SYSTEM [060] - TOPSIDES', 'SYSTEM [060] - TOPSIDES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 'SYSTEM [070] - OFFSHORE PIPELINES', 'SYSTEM [070] - OFFSHORE PIPELINES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, 'SYSTEM [071] - WP TO ONSHORE', 'SYSTEM [071] - WP TO ONSHORE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(16, 'SYSTEM [075] - SHORE CROSSING', 'SYSTEM [075] - SHORE CROSSING', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, 'SYSTEM [076] - ONSHORE PIPELINES', 'SYSTEM [076] - ONSHORE PIPELINES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, 'SYSTEM [080] - SPARE', 'SYSTEM [080] - SPARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 'SYSTEM [090] - SEPARATION', 'SYSTEM [090] - SEPARATION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, 'SYSTEM [100] -  CONDENSATE DEHYDRATION', 'SYSTEM [100] -  CONDENSATE DEHYDRATION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(21, 'SYSTEM [130] - GAS DEHYDRATION', 'SYSTEM [130] - GAS DEHYDRATION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(22, 'SYSTEM [210] - GLYCOL TREATMENT AND REGENERATION', 'SYSTEM [210] - GLYCOL TREATMENT AND REGENERATION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(23, 'SYSTEM [230] - GAS COMPRESSION', 'SYSTEM [230] - GAS COMPRESSION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(24, 'SYSTEM [240] - PIPELINE METERING', 'SYSTEM [240] - PIPELINE METERING', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(25, 'SYSTEM [250] - PIG RECEIVERS / LAUNCHERS', 'SYSTEM [250] - PIG RECEIVERS / LAUNCHERS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(26, 'SYSTEM [350] - FUTURE USE', 'SYSTEM [350] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(27, 'SYSTEM [390] - FUTURE USE', 'SYSTEM [390] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(28, 'SYSTEM [400] - ELECTRICAL GENERATION AND DISTRIBUT', 'SYSTEM [400] - ELECTRICAL GENERATION AND DISTRIBUTION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(29, 'SYSTEM [401] - HIGH VOLTAGE POWER GENERATION AND D', 'SYSTEM [401] - HIGH VOLTAGE POWER GENERATION AND DIST.', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(30, 'SYSTEM [402] - NORMAL LOW VOLTAGE POWER GEN AND DI', 'SYSTEM [402] - NORMAL LOW VOLTAGE POWER GEN AND DIST.', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(31, 'SYSTEM [403] - ESSENTIAL LOW VOLTAGE POWER GEN & D', 'SYSTEM [403] - ESSENTIAL LOW VOLTAGE POWER GEN & DIST.', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(32, 'SYSTEM [404] - UPS AND DISTRIBUTION', 'SYSTEM [404] - UPS AND DISTRIBUTION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(33, 'SYSTEM [410] - HEATING MEDIUMS', 'SYSTEM [410] - HEATING MEDIUMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(34, 'SYSTEM [411] - HEATED WATER', 'SYSTEM [411] - HEATED WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(35, 'SYSTEM [412] - HOT OIL', 'SYSTEM [412] - HOT OIL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(36, 'SYSTEM [420] - FUTURE USE', 'SYSTEM [420] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(37, 'SYSTEM [429] - FUTURE USE', 'SYSTEM [429] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(38, 'SYSTEM [430] - DEMINERALISED WATER SYSTEM', 'SYSTEM [430] - DEMINERALISED WATER SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(39, 'SYSTEM [440] - FUEL SYSTEMS', 'SYSTEM [440] - FUEL SYSTEMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(40, 'SYSTEM [441] - FUEL GAS', 'SYSTEM [441] - FUEL GAS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(41, 'SYSTEM [442] - FUEL OIL', 'SYSTEM [442] - FUEL OIL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(42, 'SYSTEM [443] - DIESEL', 'SYSTEM [443] - DIESEL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(43, 'SYSTEM [450] - WATER SYSTEM', 'SYSTEM [450] - WATER SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(44, 'SYSTEM [451] - SERVICE WATER', 'SYSTEM [451] - SERVICE WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(45, 'SYSTEM [452] - POTABLE WATER', 'SYSTEM [452] - POTABLE WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(46, 'SYSTEM [453] - SEAWATER', 'SYSTEM [453] - SEAWATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(47, 'SYSTEM [460] - COOLING MEDIUMS', 'SYSTEM [460] - COOLING MEDIUMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(48, 'SYSTEM [461] - FRESH WATER', 'SYSTEM [461] - FRESH WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(49, 'SYSTEM [462] - TEMPERED WATER', 'SYSTEM [462] - TEMPERED WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(50, 'SYSTEM [470] - AIR', 'SYSTEM [470] - AIR', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(51, 'SYSTEM [471] - INSTRUMENT AIR', 'SYSTEM [471] - INSTRUMENT AIR', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(52, 'SYSTEM [472] - TOOL AIR', 'SYSTEM [472] - TOOL AIR', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(53, 'SYSTEM [480] - INERT GAS SYSTEM', 'SYSTEM [480] - INERT GAS SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(54, 'SYSTEM [481] - NITROGEN', 'SYSTEM [481] - NITROGEN', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(55, 'SYSTEM [510] - ESCAPE AND LIFE SAVING', 'SYSTEM [510] - ESCAPE AND LIFE SAVING', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(56, 'SYSTEM [520] - FUTURE USE', 'SYSTEM [520] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(57, 'SYSTEM [590] - FUTURE USE', 'SYSTEM [590] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(58, 'SYSTEM [600] - FIRE FIGHTING SYSTEM', 'SYSTEM [600] - FIRE FIGHTING SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(59, 'SYSTEM [601] - FIRE WATER PUMPS', 'SYSTEM [601] - FIRE WATER PUMPS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(60, 'SYSTEM [602] - HOSE REELS / MONITORS & HYDRANTS', 'SYSTEM [602] - HOSE REELS / MONITORS & HYDRANTS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(61, 'SYSTEM [603] - DELUGE AND SPRINKLER', 'SYSTEM [603] - DELUGE AND SPRINKLER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(62, 'SYSTEM [604] - FOAM', 'SYSTEM [604] - FOAM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(63, 'SYSTEM [605] - PORTABLE EXTINGUISHERS', 'SYSTEM [605] - PORTABLE EXTINGUISHERS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(64, 'SYSTEM [606] - FIXED CHEMICAL EXTINGUISHER', 'SYSTEM [606] - FIXED CHEMICAL EXTINGUISHER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(65, 'SYSTEM [610] - TELECOMMUNICATIONS', 'SYSTEM [610] - TELECOMMUNICATIONS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(66, 'SYSTEM [611] - COMMUNICATIONS', 'SYSTEM [611] - COMMUNICATIONS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(67, 'SYSTEM [612] - NAVIGATION', 'SYSTEM [612] - NAVIGATION', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(68, 'SYSTEM [620] - PRESSURE RELIEF & LIQUID DISPOSAL', 'SYSTEM [620] - PRESSURE RELIEF & LIQUID DISPOSAL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(69, 'SYSTEM [621] - HP FLARE', 'SYSTEM [621] - HP FLARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(70, 'SYSTEM [622] - LP FLARE', 'SYSTEM [622] - LP FLARE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(71, 'SYSTEM [623] - VENT SYSTEM', 'SYSTEM [623] - VENT SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(72, 'SYSTEM [630] - FUTURE USE', 'SYSTEM [630] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(73, 'SYSTEM [639] - FUTURE USE', 'SYSTEM [639] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(74, 'SYSTEM [640] - DRAINAGE & EFFLUENT TREATING', 'SYSTEM [640] - DRAINAGE & EFFLUENT TREATING', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(75, 'SYSTEM [641] - HAZARDOUS CLOSED DRAINS', 'SYSTEM [641] - HAZARDOUS CLOSED DRAINS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(76, 'SYSTEM [642] - HAZARDOUS OPEN DRAINS', 'SYSTEM [642] - HAZARDOUS OPEN DRAINS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(77, 'SYSTEM [643] - NON HAZARDOUS OPEN DRAINS', 'SYSTEM [643] - NON HAZARDOUS OPEN DRAINS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(78, 'SYSTEM [644] - RECOVERED OIL', 'SYSTEM [644] - RECOVERED OIL', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(79, 'SYSTEM [645] - PRODUCED WATER', 'SYSTEM [645] - PRODUCED WATER', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(80, 'SYSTEM [660] - STRUCTURES & FACILITIES', 'SYSTEM [660] - STRUCTURES & FACILITIES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(81, 'SYSTEM [661] - PIPE BRIDGE & PIPE TRACKS', 'SYSTEM [661] - PIPE BRIDGE & PIPE TRACKS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(82, 'SYSTEM [662] - MODULE STRUCTURES', 'SYSTEM [662] - MODULE STRUCTURES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(83, 'SYSTEM [663] - BRIDGES', 'SYSTEM [663] - BRIDGES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(84, 'SYSTEM [664] - JACKETS', 'SYSTEM [664] - JACKETS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(85, 'SYSTEM [665] - STRUCTURE SUPPORTING TOPSIDES', 'SYSTEM [665] - STRUCTURE SUPPORTING TOPSIDES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(86, 'SYSTEM [666] - PLATFORMS', 'SYSTEM [666] - PLATFORMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(87, 'SYSTEM [667] - HELIDECK', 'SYSTEM [667] - HELIDECK', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(88, 'SYSTEM [680] -  HVAC', 'SYSTEM [680] -  HVAC', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(89, 'SYSTEM [690] - CATHODIC PROTECTION SYSTEM', 'SYSTEM [690] - CATHODIC PROTECTION SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(90, 'SYSTEM [740] - CHEMICAL SYSTEMS', 'SYSTEM [740] - CHEMICAL SYSTEMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(91, 'SYSTEM [750] - FUTURE', 'SYSTEM [750] - FUTURE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(92, 'SYSTEM [760] - AVIATION SYSTEMS', 'SYSTEM [760] - AVIATION SYSTEMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(93, 'SYSTEM [770] - FUTURE', 'SYSTEM [770] - FUTURE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(94, 'SYSTEM [780] - FUTURE', 'SYSTEM [780] - FUTURE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(95, 'SYSTEM [790] - LIFTING EQUIPMENT', 'SYSTEM [790] - LIFTING EQUIPMENT', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(96, 'SYSTEM [791] - CRANES', 'SYSTEM [791] - CRANES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(97, 'SYSTEM [792] - HOISTS', 'SYSTEM [792] - HOISTS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(98, 'SYSTEM [800] - BUILDINGS', 'SYSTEM [800] - BUILDINGS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(99, 'SYSTEM [802] - LIVING QUARTERS', 'SYSTEM [802] - LIVING QUARTERS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(100, 'SYSTEM [803] - CONTROL BUILDINGS', 'SYSTEM [803] - CONTROL BUILDINGS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(101, 'SYSTEM [804] - LABORATORY', 'SYSTEM [804] - LABORATORY', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(102, 'SYSTEM [805] - MCC', 'SYSTEM [805] - MCC', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(103, 'SYSTEM [806] - STORE', 'SYSTEM [806] - STORE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(104, 'SYSTEM [807] - TEMPORARY FACILITIES', 'SYSTEM [807] - TEMPORARY FACILITIES', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(105, 'SYSTEM [830] - FUTURE USE', 'SYSTEM [830] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(106, 'SYSTEM [839] - FUTURE USE', 'SYSTEM [839] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(107, 'SYSTEM [840] - ICSS CONTROL SYSTEM', 'SYSTEM [840] - ICSS CONTROL SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(108, 'SYSTEM [850] - PROCESS CONTROL SYSTEMS', 'SYSTEM [850] - PROCESS CONTROL SYSTEMS', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(109, 'SYSTEM [860] - EMERGENCY SHUTDOWN SYSTEM', 'SYSTEM [860] - EMERGENCY SHUTDOWN SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(110, 'SYSTEM [870] - FIRE AND GAS SYSTEM', 'SYSTEM [870] - FIRE AND GAS SYSTEM', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(111, 'SYSTEM [880] - MISC INSTRUMENT EQUIPMENT', 'SYSTEM [880] - MISC INSTRUMENT EQUIPMENT', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(112, 'SYSTEM [881] - FUTURE USE', 'SYSTEM [881] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(113, 'SYSTEM [890] - FUTURE USE', 'SYSTEM [890] - FUTURE USE', 'Publish', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
