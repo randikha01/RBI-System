@@ -1,0 +1,62 @@
+<script>
+    var config = {
+          '#ref2'           : {},
+          '#ref2-deselect'  : {allow_single_deselect:true},
+          '#ref2-no-single' : {disable_search_threshold:10},
+          '#ref2-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref2-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+    }
+
+    //ajax menu
+    $('select#ref2').change(function() {
+
+        var ajaxParm1 = $(this).val() == "" ? 0 : $(this).val();
+        $.get('{admin_url}menu_auth/ajaxRequest1/'+ajaxParm1, function(data) {
+          $('#ajax1').html(data);
+        });
+        return false;
+    });
+
+</script>
+        <ul id="breadcrumb">
+            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="{admin_url}{title_link}"><span>{title_head}</span></a></li>
+            <li><span>{add_edit}</span></li>
+        </ul>
+        <div class="clear"></div>
+
+
+        <div class="row">
+          <div class="span14">
+         
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+            
+	    	<h2>{add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+                
+                 <p>Admins Level</p>
+                 {ref2}
+                 <hr />
+                
+                 <div id="ajax1"></div>
+
+                 <p>Created Date</p>
+                 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                 <hr />
+				
+                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                 <a href="{admin_url}{title_link}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <input type="hidden" name="id" value="{id}"/>
+	    </form>
+            {/list}
+        </div>
+</div>
