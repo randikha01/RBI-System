@@ -1,0 +1,49 @@
+        <ul id="breadcrumb">
+            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="{admin_url}{title_link}"><span>My Account</span></a></li>
+            <li><span>Edit</span></li>
+        </ul>
+        <div class="clear"></div>
+        
+        
+        <div class="row">
+          <div class="span14">
+           
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+	    
+
+	    <h2>Edit</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit_account" enctype="multipart/form-data" class="navbar-content">
+                
+                 <p>Username</p>
+                 <input type="input" name="username" value="{title}"/>
+                 <hr />
+                 
+                 <p>Password</p>
+                 <input type="password" name="password" value=""/>
+                 <input type="hidden" name="password_old" value="{password}"/>
+                 <hr />
+                 
+                 <p>Admin Level</p>
+                 <input type="input" name="adminlevel" value="{level_title}" disabled="disabled"/>
+                 <hr />
+                 
+                 <input type="hidden" name="publish" value="{publish}"/>
+                 <input type="hidden" name="ref1" value="{ref1}"/>
+                 <p>Created Date</p>
+                 <input type="input" name="title" disabled='disabled' value="{create_date}"/>
+                 <hr />
+				
+                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                 <a href="{admin_url}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <input type="hidden" name="id" value="{id}"/>
+	    </form>
+            {/list}
+        </div>
+</div>

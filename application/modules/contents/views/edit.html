@@ -1,0 +1,94 @@
+<script>
+ CKEDITOR.replace( 'content',
+            				{
+						skin : 'moono-dark',
+						 filebrowserBrowseUrl : '{base_url}ckfinder/ckfinder.html',
+                       filebrowserImageBrowseUrl : '{base_url}ckfinder/ckfinder.html?Type=Images',
+                       filebrowserFlashBrowseUrl : '{base_url}ckfinder/ckfinder.html?Type=Flash',
+                       filebrowserUploadUrl : '{base_url}ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+                       filebrowserImageUploadUrl : '{base_url}ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images',
+                       filebrowserFlashUploadUrl : '{base_url}ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash',
+						toolbar :
+						[
+							['Source','-','Preview','Cut','Copy','Paste','PasteFromWord','PasteText'],
+							['Bold','Italic','Underline','Strike','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+							'/',
+							['NumberedList','BulletedList','Subscript','Superscript',],
+							['Link','Unlink','-','Movie','Image','Anchor','Table','Smiley','SpecialChar'],['TextColor','BGColor','-','FontSize']
+						]
+					});
+		  
+    var config = {
+          '#ref2'           : {},
+          '#ref2-deselect'  : {allow_single_deselect:true},
+          '#ref2-no-single' : {disable_search_threshold:10},
+          '#ref2-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref2-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+		}
+
+</script>
+        
+        <ul id="breadcrumb">
+            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="{admin_url}{title_link}"><span>{title_head}</span></a></li>
+            <li><span>{add_edit}</span></li>
+        </ul>
+        <div class="clear"></div>
+
+
+        <div class="row">
+          <div class="span14">
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+	    
+
+	    <h2>{add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+			<table>
+				<tr>
+				 <td class="no-border">
+					 <p>Title</p>
+					 <input type="input" name="title" value="{title}"/>
+					 <hr />
+					 <p>Content</p>
+					 <table style="width:auto !important;">
+					 <tr><td class="no-border">
+						<textarea id="content" name="content" rows="15" cols="80" style="width: 80%">{content}</textarea>
+					 </td></tr>
+					 </table>
+					 
+					 </td>
+					 <td class="sidebar-right no-border">
+					 
+					<!-- <p>Picture</p>
+					 {file_image}<br>-->
+					 <input type="file" name="file" style="display:none;">
+					 <!--<hr />-->
+					 
+					 <p>Publish</p>
+					 {ref2}
+					 <hr />
+
+					 <p>Created Date</p>
+					 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+					 <hr />
+					 
+					 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+					 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+					 <a href="{admin_url}{title_link}"><input type="button" class="btn info" value="cancel"/></a>
+					 <input type="hidden" name="id" value="{id}"/>
+				 </td>
+			</tr>
+		</table>
+	    </form>
+            {/list}
+        </div>
+</div>
