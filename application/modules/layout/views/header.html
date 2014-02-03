@@ -47,25 +47,126 @@
 <script type="text/javascript" src="{base_url}external-plugins/datetimepicker/jquery-ui-timepicker-addon.js"></script>
 <!-- end datetime picker -->
 
+<!-- finder explorer hcolumn -->
+<link rel="stylesheet" href="{base_url}external-plugins/finder-hcolumn/hcolumns.css" type="text/css">
+
+<script src="{base_url}external-plugins/finder-hcolumn/jquery.hcolumns.js"></script>
+<script type="text/javascript">
+function finder()
+{
+	var nodes = {
+                    0: [
+                        { id: 1, label: "Plant 1", type: "folder" },
+                        { id: 2, label: "Plant 2", type: "folder"}
+                    ],
+
+                    1: [
+                        { id: 1.1, label: "Planning", type: "folder" },
+						{ id: 1.2, label: "Folder Object", type: "folder" },
+                        { id: 1.3, label: "Alerts", type: "folder" },
+						{ id: 1.4, label: "Archive", type: "folder" },
+						{ id: 1.5, label: "Assets Listing", type: "folder" },
+						{ id: 1.6, label: "Criticaly Ratings", type: "folder" },
+						{ id: 1.7, label: "Management Status", type: "folder" },
+						{ id: 1.8, label: "Pending Inspections", type: "folder" },
+						{ id: 1.9, label: "Criticaly Ratings", type: "folder" },
+						{ id: 1.10, label: "Pipe Classes", type: "folder" },
+						{ id: 1.11, label: "Process", type: "folder" },
+						{ id: 1.12, label: "Relative Risk Status", type: "folder" },
+						{ id: 1.13, label: "System", type: "folder" },
+						{ id: 1.14, label: "Task Register", type: "folder" },
+						{ id: 1.15, label: "Technical Libarary", type: "folder" }
+                    ],
+
+                    1.3: [
+                        { id: 1.311, label: "Alarms", type: "folder" },
+                        { id: 1.312, label: "Corrosion", type: "folder" },
+						{ id: 1.313, label: "High Risk", type: "folder" },
+						{ id: 1.314, label: "Inspection Reports", type: "folder" },
+						{ id: 1.315, label: "Overdue", type: "folder" },
+                        /*{ id: 1.113, label: "Hacker News", type:"link", url: "https://news.ycombinator.com/news" }*/
+                    ],
+
+                    1.2: [
+                        // empty node
+                    ],
+
+                    2: [
+                        { id: 2.1, label: "Planning", type: "folder" },
+						{ id: 2.2, label: "Folder Object", type: "folder" },
+                        { id: 2.3, label: "Alerts", type: "folder" },
+						{ id: 2.4, label: "Archive", type: "folder" },
+						{ id: 2.5, label: "Assets Listing", type: "folder" },
+						{ id: 2.6, label: "Criticaly Ratings", type: "folder" },
+						{ id: 2.7, label: "Management Status", type: "folder" },
+						{ id: 2.8, label: "Pending Inspections", type: "folder" },
+						{ id: 2.9, label: "Criticaly Ratings", type: "folder" },
+						{ id: 2.10, label: "Pipe Classes", type: "folder" },
+						{ id: 2.11, label: "Process", type: "folder" },
+						{ id: 2.12, label: "Relative Risk Status", type: "folder" },
+						{ id: 2.13, label: "System", type: "folder" },
+						{ id: 2.14, label: "Task Register", type: "folder" },
+						{ id: 2.15, label: "Technical Libarary", type: "folder" }
+                    ]
+                };
+
+                $("#columns").hColumns({
+                    nodeSource: function(node_id, callback) {
+                       if(node_id === null) {
+                            node_id = 0;
+                        }
+
+                        if( !(node_id in nodes) ) {
+                            return callback("Node not exists");
+                        }
+
+                        return callback(null, nodes[node_id]);
+						
+						 /*$.ajax("{base_url}plant", { node_id: node_id }).done(function(data) {
+							return callback(null, data);
+						 }).fail(function() {
+							return callback("AJAX error");
+						 });*/
+						
+                    }
+                });
+}
+</script>
+
+
 <!-- facebox -->
 <link href="{base_url}external-plugins/facebox/facebox.css" media="screen" rel="stylesheet" type="text/css" />
 <script src="{base_url}external-plugins/facebox/facebox.js" type="text/javascript"></script>
+<script src="{base_url}external-plugins/slimscroll/jquery.nicescroll.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
 		$.facebox.settings.closeImage = '{base_url}external-plugins/facebox/closelabel.png';
 		$.facebox.settings.loadingImage = '{base_url}external-plugins/facebox/loading.gif';
 		$('a[rel*=facebox]').facebox();
+		
+		finder();
+		
+		var dinamyc_height = $("#sidebar").height() - 95;
+		$("#columns").css('height',dinamyc_height+"px");
+		$("#columns ul").css('height',dinamyc_height+"px");
+
+			
     })
+	$("[rel=tooltip]").tooltip();
 </script>
 <!-- end facebox -->
-
-
 </head>
 <body>
+<div id="sidebar" class="page-sidebar mini">
+	<div id="columns"></div>
+</div>
  <div class="topbar">
       <div class="fill">
         <div class="container">
         <ul class="nav">
+			<li>
+				<a rel="tooltip" title="Hide / Show Explorer" id="sidebar-toogle" class="" href="#"><div class="iconset top-menu-toggle-dark"></div> </a>
+			</li>
         	{list_menu}
             <li class="{actived}">
             	<a href="{uri}" {dropdown_toogle}>{title}</a>{caret}

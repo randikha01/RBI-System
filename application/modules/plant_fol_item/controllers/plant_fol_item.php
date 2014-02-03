@@ -116,7 +116,7 @@ class Plant_fol_item extends MX_Controller  {
 				
 				$title = ucwords($r->title);
 				$folder_title = ucwords($this->plant_fol_item->getRefTitle('tbl_plant_folder',$r->id_plant_folder));
-				$equipment_title = ucwords($this->plant_fol_item->getRefTitle('tbl_ref_equipment',$r->id_ref_equipment));
+				$equipment_title = ucwords($this->plant_fol_item->getRefTitle('tbl_ref_objects',$r->id_ref_objects));
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
@@ -126,7 +126,7 @@ class Plant_fol_item extends MX_Controller  {
 								 "id"=>$r->id,
 								 "title" =>$title,
 								 "id_plant_folder" =>$folder_title,
-								 "id_ref_equipment" =>$equipment_title,
+								 "id_ref_objects" =>$equipment_title,
 								 "publish"=>$publish,
 								 "create_date"=>$create_date
 								);
@@ -215,13 +215,13 @@ class Plant_fol_item extends MX_Controller  {
 					#end ref dropdown multi value
 				
 					$id_plant_folder = $r->id_plant_folder;
-					$id_ref_equipment = $r->id_ref_equipment;
+					$id_ref_objects = $r->id_ref_objects;
 					$id = $r->id;
 
 					$list[] = array(
 									"id"=>$r->id,
 									"id_plant_folder"=>$r->id_plant_folder,
-									"id_ref_equipment"=>$r->id_ref_equipment,
+									"id_ref_objects"=>$r->id_ref_objects,
 									"title"=>$r->title,
 									"desc_"=>$r->desc_,
 									"create_date"=>$r->create_date,
@@ -230,7 +230,7 @@ class Plant_fol_item extends MX_Controller  {
 				}
 			}else{
 				
-				$id_plant_folder = $id_ref_equipment = $id = "";
+				$id_plant_folder = $id_ref_objects = $id = "";
 				
 				#ref dropdown multi value
 				/*$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,null,2);*/
@@ -243,7 +243,7 @@ class Plant_fol_item extends MX_Controller  {
 				$list[] = array(
 									"id"=>0,
 									"id_plant_folder"=>"",
-									"id_ref_equipment"=>"",
+									"id_ref_objects"=>"",
 									"title"=>"",
 									"desc_"=>"",
 									"create_date"=>"",
@@ -277,7 +277,7 @@ class Plant_fol_item extends MX_Controller  {
 			#end ref dropdown multi value
 
 			#ref dropdown multi value
-			$ref2 = $this->getDropdownEquipment($id_ref_equipment,2);
+			$ref2 = $this->getDropdownEquipment($id_ref_objects,2);
 			#end ref dropdown multi value
 			
 			$data = array(
@@ -301,7 +301,7 @@ class Plant_fol_item extends MX_Controller  {
 	{
 		$err = "";
 		$id_plant_folder = $this->input->post("ref1");
-		$id_ref_equipment = $this->input->post("ref2");
+		$id_ref_objects = $this->input->post("ref2");
 		$title = strip_tags($this->input->post("title"));
 		$desc_ = $this->input->post("desc_");
 		$is_publish = $this->input->post("ref3");
@@ -318,11 +318,11 @@ class Plant_fol_item extends MX_Controller  {
 		}else{
 			if($id > 0)
 			{
-				$this->plant_fol_item->setUpdate($this->table,$id,$id_plant_folder,$id_ref_equipment,$title,$desc_,$is_publish,$user_id);
+				$this->plant_fol_item->setUpdate($this->table,$id,$id_plant_folder,$id_ref_objects,$title,$desc_,$is_publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				redirect($this->table."/edit/".$id);
 			}else{				
-				$id_term = $this->plant_fol_item->setInsert($this->table,$id,$id_plant_folder,$id_ref_equipment,$title,$desc_,$is_publish,$user_id);
+				$id_term = $this->plant_fol_item->setInsert($this->table,$id,$id_plant_folder,$id_ref_objects,$title,$desc_,$is_publish,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
@@ -382,7 +382,7 @@ class Plant_fol_item extends MX_Controller  {
 
 	function getDropdownEquipment($parent_id,$name,$type=NULL)
 	{
-		$q = $this->plant_fol_item->getRefList('tbl_ref_equipment');
+		$q = $this->plant_fol_item->getRefList('tbl_ref_objects');
 		$list = array();
 		foreach ($q->result() as $val) {
 			$selected = $val->id == $parent_id ? $selected = "selected='selected'" : "tidak";	
@@ -422,7 +422,7 @@ class Plant_fol_item extends MX_Controller  {
 
 	function getEquipmentDropdown($id,$name,$type=NULL)
 	{
-		$q = $this->plant_fol_item->getRefList('tbl_ref_equipment',null,null,null);
+		$q = $this->plant_fol_item->getRefList('tbl_ref_objects',null,null,null);
 		$list = array();
 		foreach ($q->result() as $val) {
 
