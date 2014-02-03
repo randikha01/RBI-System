@@ -3,7 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Jan 30, 2014 at 05:26 AM
+=======
+-- Generation Time: Jan 29, 2014 at 09:40 AM
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -159,7 +163,11 @@ CREATE TABLE IF NOT EXISTS `tbl_menu` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=118 ;
+=======
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=116 ;
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 
 --
 -- Dumping data for table `tbl_menu`
@@ -184,9 +192,13 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (112, 'Plant', 'plant', '', 'Publish', 31, '', 110, 1, 0, '2014-01-27 04:54:54', '2014-01-27 05:54:54'),
 (113, 'Plant Folder', 'plant_folder', '', 'Publish', 32, '', 110, 1, 0, '2014-01-27 04:55:24', '2014-01-27 05:55:24'),
 (114, 'Folder Item', 'plant_fol_item', '', 'Publish', 33, '', 113, 1, 0, '2014-01-27 07:55:42', '2014-01-27 08:55:42'),
+<<<<<<< HEAD
 (115, 'Object', 'item_object', '', 'Publish', 34, '', 113, 1, 1, '2014-01-29 06:38:00', '2014-01-29 07:36:52'),
 (116, 'Ex Type', 'ref_ex_type', '', 'Publish', 35, '', 106, 1, 0, '2014-01-30 04:14:59', '2014-01-30 05:14:59'),
 (117, 'Equipment Category', 'ref_equipment_cat', '', 'Publish', 36, '', 106, 1, 0, '2014-01-30 04:23:15', '2014-01-30 05:23:15');
+=======
+(115, 'Object', 'item_object', '', 'Publish', 34, '', 113, 1, 1, '2014-01-29 06:38:00', '2014-01-29 07:36:52');
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 
 -- --------------------------------------------------------
 
@@ -203,7 +215,11 @@ CREATE TABLE IF NOT EXISTS `tbl_menu_auth` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=249 ;
+=======
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=247 ;
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 
 --
 -- Dumping data for table `tbl_menu_auth`
@@ -273,9 +289,13 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 (243, 1, 112, 1, 0, '2014-01-27 04:55:49', '2014-01-27 05:55:49'),
 (244, 1, 113, 1, 0, '2014-01-27 04:55:49', '2014-01-27 05:55:49'),
 (245, 1, 114, 1, 0, '2014-01-27 07:55:58', '2014-01-27 08:55:58'),
+<<<<<<< HEAD
 (246, 1, 115, 1, 0, '2014-01-29 06:37:06', '2014-01-29 07:37:06'),
 (247, 1, 116, 1, 0, '2014-01-30 04:15:10', '2014-01-30 05:15:10'),
 (248, 1, 117, 1, 0, '2014-01-30 04:23:26', '2014-01-30 05:23:26');
+=======
+(246, 1, 115, 1, 0, '2014-01-29 06:37:06', '2014-01-29 07:37:06');
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 
 -- --------------------------------------------------------
 

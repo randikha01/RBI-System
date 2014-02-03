@@ -243,7 +243,11 @@ class Plant_fol_item extends MX_Controller  {
 				$list[] = array(
 									"id"=>0,
 									"id_plant_folder"=>"",
+<<<<<<< HEAD
 									"id_ref_objects"=>"",
+=======
+									"id_ref_equipment"=>"",
+>>>>>>> 4c5fe09d5d815180eb9e1e7b00e517138e191314
 									"title"=>"",
 									"desc_"=>"",
 									"create_date"=>"",
