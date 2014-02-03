@@ -20,7 +20,7 @@ class model_plant extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_ref_plant_cat',$search3_parm);
+			$this->db->where($table.'.id_ref_units',$search3_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -45,7 +45,7 @@ class model_plant extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_ref_plant_cat',$search3_parm);
+			$this->db->where($table.'.id_ref_units',$search3_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -95,11 +95,11 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function setUpdate($table,$id,$id_ref_plant_cat,$title,$desc_,$publish,$user_id)
+	function setUpdate($table,$id,$id_ref_units,$title,$desc_,$publish,$user_id)
 	{	
 		$data = array(
 			      'title'=>$title,
-				  'id_ref_plant_cat'=>$id_ref_plant_cat,
+				  'id_ref_units'=>$id_ref_units,
 				  'desc_'=>$desc_,
 			      'publish'=>$publish,
 			      'modify_user_id'=>$user_id
@@ -109,12 +109,12 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function setInsert($table,$id,$id_ref_plant_cat,$title,$desc_,$publish,$user_id)
+	function setInsert($table,$id,$id_ref_units,$title,$desc_,$publish,$user_id)
 	{
 
 		$data = array(
 			      'title'=>$title,
-				  'id_ref_plant_cat'=>$id_ref_plant_cat,
+				  'id_ref_units'=>$id_ref_units,
 				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,

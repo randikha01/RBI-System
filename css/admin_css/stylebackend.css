@@ -1033,6 +1033,8 @@ ul.user li.open ul#menu.dropdown-menu li:hover a {
 
 .ui-tooltip {
 	background:#333 !important;
+	box-shadow:none !important;
+	border: none !important;
 }
 
 
@@ -1892,4 +1894,71 @@ body {
 	box-shadow:none !important;
 	border:none !important;
 	color:#414141 !important; 
+}
+
+
+/*sidebar explorer*/
+#columns li{
+	color:#666 !important;
+}
+.topbar-inner, .topbar .fill, .topbar-inner, .topbar .fill .container {
+	padding-left:0px !important;
+}
+
+#sidebar-toogle:hover{
+	background:none !important;
+}
+
+.iconset{
+	background:url("../../images/admin_images/icon/top-tray.png");
+}
+
+.iconset.top-menu-toggle-dark{
+	background-position:-288px -7px;
+	height: 15px;
+	width : 18px;
+}
+
+.page-sidebar{
+	width:37%;
+}
+
+.page-sidebar.mini{
+	width:0px;
+}
+
+#sidebar {
+    background-color: #1B1E24;
+    display: inline-block;
+    float: left;
+    height: 100%;
+    top: 0;
+}
+
+/*hcolumn explorer*/
+#columns {
+	overflow-x:auto;
+}
+.column {
+    border-right: 1px solid #333333 !important;
+}
+
+.column-view-container {
+	margin-top:10px;
+    background: none !important;
+    border: none !important;
+}
+
+.column ul li:hover, .column ul li.active {
+	background: #13161a !important;
+	color: #FFFFFF;
+}
+
+.column ul{
+	height:auto !important;
+}
+
+.column ul li{
+	font-size:12px !important;
+	padding: 8px 10px 8px 8px !important;
 }

@@ -5,3 +5,29 @@
 </div>
 </body>
 </html>
+
+<!-- sidebar explorer -->
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	
+	$('#sidebar-toogle').click(function(){
+		if($('#sidebar').hasClass('mini') == true){
+			$("#sidebar").removeClass("mini");
+			$.cookie('sidebar_open',1,{ path: '/' });
+		}else{
+			$("#sidebar").addClass("mini");
+			$.cookie('sidebar_open',null,{ path: '/' });
+		}
+	});
+});
+
+function read_cookie_sidebar(){
+	if($.cookie('sidebar_open') == 1){
+		$("#sidebar").removeClass("mini");
+	}else{
+		$("#sidebar").addClass("mini");
+	}
+}
+read_cookie_sidebar();
+</script>
+<!-- end sidebar explorer -->

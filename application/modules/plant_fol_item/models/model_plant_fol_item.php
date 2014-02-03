@@ -24,7 +24,7 @@ class model_plant_fol_item extends CI_Model {
 		}
 		if($search4_parm != 'null' && !empty($search4_parm) )
 		{
-			$this->db->where($table.'.id_ref_equipment',$search4_parm);
+			$this->db->where($table.'.id_ref_objects',$search4_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -53,7 +53,7 @@ class model_plant_fol_item extends CI_Model {
 		}
 		if($search4_parm != 'null' && !empty($search4_parm) )
 		{
-			$this->db->where($table.'.id_ref_equipment',$search4_parm);
+			$this->db->where($table.'.id_ref_objects',$search4_parm);
 		}
 	
 		if($this->groupID <> 1){
@@ -103,12 +103,12 @@ class model_plant_fol_item extends CI_Model {
 	}
 	
 	
-	function setUpdate($table,$id,$id_plant_folder,$id_ref_equipment,$title,$desc_,$publish,$user_id)
+	function setUpdate($table,$id,$id_plant_folder,$id_ref_objects,$title,$desc_,$publish,$user_id)
 	{	
 		$data = array(
 			      'title'=>$title,
 				  'id_plant_folder'=>$id_plant_folder,
-				  'id_ref_equipment'=>$id_ref_equipment,
+				  'id_ref_objects'=>$id_ref_objects,
 				  'desc_'=>$desc_,
 			      'publish'=>$publish,
 			      'modify_user_id'=>$user_id
@@ -118,13 +118,13 @@ class model_plant_fol_item extends CI_Model {
 	}
 	
 	
-	function setInsert($table,$id,$id_plant_folder,$id_ref_equipment,$title,$desc_,$publish,$user_id)
+	function setInsert($table,$id,$id_plant_folder,$id_ref_objects,$title,$desc_,$publish,$user_id)
 	{
 
 		$data = array(
 			      'title'=>$title,
 				  'id_plant_folder'=>$id_plant_folder,
-				  'id_ref_equipment'=>$id_ref_equipment,
+				  'id_ref_objects'=>$id_ref_objects,
 				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,

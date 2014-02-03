@@ -1,0 +1,18 @@
+.scrollgeneric {
+line-height:1px;
+font-size:1px;
+position:absolute;
+top:0;left:0;
+}
+.hscrollerbase {
+height:17px;
+background:#13161A;
+}
+.hscrollerbar {
+height:12px;
+background:#282a30;
+cursor:e-resize;
+}
+.hscrollerbar:hover {
+background:#222;
+} 
