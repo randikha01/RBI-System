@@ -55,6 +55,17 @@ class model_plant extends CI_Model {
 		$query = $this->db->get($table,$per_page,$lmt);
 		return $query;
 	}
+
+	function getListFolder($table,$id_plant)
+	{
+		if($this->groupID <> 1){
+			$this->db->where($table.".id !=",6);
+		}
+		$this->db->where($table.".id_plant",$id_plant);
+		$this->db->order_by('create_date','desc');
+		$query = $this->db->get($table);
+		return $query;
+	}
 	
 	
 	function getPlantcatTitle($table,$parent_id)
@@ -126,7 +137,7 @@ class model_plant extends CI_Model {
 	
 	function setDelete($table,$id)
 	{
-		$status = 0;
+		/*$status = 0;
 		#select first
 		$this->db->where('id',$id);
 		$this->db->where('publish','Publish');
@@ -147,6 +158,12 @@ class model_plant extends CI_Model {
 				$this->db->delete($table);
 			}
 		}
+		return $status;*/
+		$status = 0;
+		$this->db->where('id',$id);
+		$this->db->delete($table);
+		$status = 1;
+
 		return $status;
 	}
 	

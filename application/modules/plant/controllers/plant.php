@@ -102,7 +102,7 @@ class Plant extends MX_Controller  {
 		
 		#record
 		$query = $this->plant->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
-		$list = array();
+		$list = $list_folder = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
 			{
@@ -114,16 +114,31 @@ class Plant extends MX_Controller  {
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
+
+				$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id);
+				$qf_num = $qfolder->num_rows();
+				if($qfolder->num_rows() > 0){
+					foreach ($qfolder->result() as $f) {
+						//$f = $qfolder->row();
+						$ftitle = ucwords($f->title);
+						$list_folder[] = array("fid"=>$f->id,"ftitle" =>$ftitle);
+					}
+				}
+
 			
 				$list[] = array(
-								 "no"=>$no,
+								 "no"=>$qf_num,
 								 "id"=>$r->id,
 								 "title" =>$title,
 								 "parent" =>$plant_cat_title,
 								 "publish"=>$publish,
-								 "create_date"=>$create_date
+								 "create_date"=>$create_date,
+				  				 "list_folder"=>$list_folder
 								);
+
+				$list_folder = array();
 			}
+			
 		}	
 		#end record
 	
@@ -143,7 +158,8 @@ class Plant extends MX_Controller  {
 				  'per_page'=>$per_page,
 				  'pg'=>$go_pg,
 				  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
-				  'title_link'=>$this->table
+				  'title_link'=>$this->table,
+
 				  );
 		return $this->parser->parse("list.html", $data, TRUE);
 	}
