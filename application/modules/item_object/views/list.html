@@ -225,7 +225,13 @@ function openclose_search()
 					    <td>Publish</td><td>{ref2}</td>
 					</tr>
 					<tr>
-					    <td>Item</td><td>{ref3}</td>
+					    <td>Folder</td><td>{ref3}</td>
+					</tr>
+					<tr>
+					    <td>Item</td><td>{ref4}</td>
+					</tr>
+					<tr>
+					    <td>Object Type</td><td>{ref5}</td>
 					</tr>
                     </table>
                     <input type="hidden" value="{per_page}" name="per_page"/>
@@ -254,12 +260,14 @@ function openclose_search()
 							<label for="master"></label>
 						</div>
 					</th>
-                    <th width="5%" class="center">No.</th>
-					<th width="5%" class="center">Edit</th>
-                    <th width="15%">Object Tag No</th>
-                    <th width="15%">Item</th>
-                    <th width="15%">Management Id</th>
-                    <th width="10%" class="center">Publish</th>
+                    <th width="3%" class="center">No.</th>
+					<th width="3%" class="center">Edit</th>
+                    <th width="10%">Object Tag No</th>
+                    <th width="10%">Folder</th>
+                    <th width="10%">Item</th>
+                    <th width="15%">Object Type</th>
+                    <th width="10%">Management Id</th>
+                    <th width="3%" class="center">Publish</th>
                     <th width="10%">Create date</th>
                  </tr>
              </table>
@@ -275,12 +283,14 @@ function openclose_search()
 								<label for="choices{id}"></label>
 							</div>
 						</td>
-						<td width="5%" class="td-content center" id="numb">{no}</td>
-						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
-						<td width="15%" class="td-content"><b>{title}</b></td>
-						<td width="15%" class="td-content">{id_plant_fol_item}</td>
-						<td width="15%" class="td-content">{management_id}</td>
-						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
+						<td width="3%" class="td-content center" id="numb">{no}</td>
+						<td width="3%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
+						<td width="10%" class="td-content"><b>{title}</b></td>
+						<td width="10%" class="td-content">{id_plant_folder}</td>
+						<td width="10%" class="td-content">{id_ref_item}</td>
+						<td width="15%" class="td-content">{id_ref_objects}</td>
+						<td width="10%" class="td-content">{management_id}</td>
+						<td width="3%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>
 					</tr>
 					</table>
@@ -301,6 +311,8 @@ function openclose_search()
              	 <input type="hidden" name="search_path" value="{sch1_parm}" id="sch1_parm"/>
 				 <input type="hidden" name="search_path" value="{sch2_parm}" id="sch2_parm"/>
 				 <input type="hidden" name="search_path" value="{sch3_parm}" id="sch3_parm"/>
+				 <input type="hidden" name="search_path" value="{sch4_parm}" id="sch4_parm"/>
+				 <input type="hidden" name="search_path" value="{sch5_parm}" id="sch5_parm"/>
             	 <input type="hidden" name="pg" value="{pg}" id="pg"/>
              </form>
           </div>

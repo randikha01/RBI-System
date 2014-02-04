@@ -163,7 +163,7 @@ function pub()
 
 function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}';
+	window.location='{admin_url}{title_link}/pages/{id_plant}/{sch_path}/{per_page}/{pg}';
 }
 
 function set_search(){
@@ -207,11 +207,12 @@ function openclose_search()
 
 		 <ul id="breadcrumb">
             <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
-            <li><span>{title_head}</span></li>
+            <li><a href="{admin_url}plant/" title="Home"><span>Plant : {title_head}</span></a></li>
+            <li><span>Folder</span></li>
         </ul>
         <div class="row">
           <div class="span_full">
-            <h2>{title_head}</h2>
+            <h2>Folder</h2>
 	    
             <form id="search" method="POST" action="{admin_url}{title_link}/search" class="navbar-inner">
             <button class="close" type="button" id="close" onclick="openclose_search();"><i class="icon-zoom-in"></i></button>
@@ -224,13 +225,11 @@ function openclose_search()
                     <tr>
 					    <td>Publish</td><td>{ref2}</td>
 					</tr>
-					<tr>
-					    	<td>Plant</td><td>{ref3}</td>
-					</tr>
                     </table>
                     <input type="hidden" value="{per_page}" name="per_page"/>
+                    <input type="hidden" value="{id_plant}" name="id_plant"/>
                     <input type="button" class="btn info" value="Search" onclick="set_search()">  
-                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}';">
+                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}/grid/{id_plant}';">
                 </div>
             </form>
 	     
@@ -240,7 +239,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_up" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
                     <a href="#" rel="tooltip" id="delete_btn_up" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-                    <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+                    <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -257,7 +256,6 @@ function openclose_search()
                     <th width="5%" class="center">No.</th>
 					<th width="5%" class="center">Edit</th>
                     <th width="15%">Title</th>
-                    <th width="15%">Plant</th>
                     <th width="10%" class="center">Publish</th>
                     <th width="10%">Create date</th>
                  </tr>
@@ -275,9 +273,8 @@ function openclose_search()
 							</div>
 						</td>
 						<td width="5%" class="td-content center" id="numb">{no}</td>
-						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
+						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id_plant}/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
 						<td width="15%" class="td-content"><b>{title}</b></td>
-						<td width="15%" class="td-content">{id_plant}</td>
 						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>
 					</tr>
@@ -291,14 +288,13 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_down" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
 	                <a href="#" rel="tooltip" id="delete_btn_down" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-	                <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+	                <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
              <div class="clear"></div>
              	 <input type="hidden" name="search_path" value="{sch1_parm}" id="sch1_parm"/>
 				 <input type="hidden" name="search_path" value="{sch2_parm}" id="sch2_parm"/>
-				 <input type="hidden" name="search_path" value="{sch3_parm}" id="sch3_parm"/>
             	 <input type="hidden" name="pg" value="{pg}" id="pg"/>
              </form>
           </div>
@@ -320,7 +316,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{sch_path}/"+val;
+	document.location="{admin_url}{title_link}/pages/{id_plant}/{sch_path}/"+val;
 }
 
 

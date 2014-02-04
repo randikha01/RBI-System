@@ -508,6 +508,11 @@ h1, h2, h3, h4, h5, h6 {
 	float:left;
 }
 
+.icon-folder-close {
+    background-position: -385px -119px !important;
+    float:left;
+}
+
 [class^="icon-"], [class*=" icon-"] {
     background-image: url("../../images/admin_images/glyphicons-halflings.png");
     background-position: 14px 14px;
