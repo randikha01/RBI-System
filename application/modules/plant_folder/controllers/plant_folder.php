@@ -100,7 +100,7 @@ class Plant_folder extends MX_Controller  {
 		
 		#record
 		$query = $this->plant_folder->getList($id_plant,$this->table,$per_page,$lmt,$sch1_parm,$sch2_parm);
-		$list = array();
+		$list = $list_obj = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
 			{
@@ -112,6 +112,16 @@ class Plant_folder extends MX_Controller  {
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
+
+				$qobj = $this->plant_folder->getListObject('tbl_item_object',$r->id);
+				$qf_num = $qobj->num_rows();
+				if($qobj->num_rows() > 0){
+					foreach ($qobj->result() as $f) {
+						$ftitle = ucwords($f->obj_tag_no);
+						$icon = ($f->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+						$list_obj[] = array("fid"=>$f->id,"ftitle" =>$ftitle,"ficon" =>$icon);
+					}
+				}
 			
 				$list[] = array(
 								 "no"=>$no,
@@ -120,8 +130,10 @@ class Plant_folder extends MX_Controller  {
 								 "plant" =>$plant_title,
 								 "id_plant" =>$id_plant,
 								 "publish"=>$publish,
-								 "create_date"=>$create_date
+								 "create_date"=>$create_date,
+								 "list_obj"=>$list_obj
 								);
+				$list_obj = array();
 			}
 		}	
 		#end record
@@ -168,7 +180,7 @@ class Plant_folder extends MX_Controller  {
 	function edit()
 	{
 		$this->setheader();		
-		$id = $this->uri->segment(4);
+		$id = $this->uri->segment(3);
 		$contents = $this->edit_content($id);
 		$add_edit = $id == 0 ? "Add" : "Edit";
 		$data = array(
@@ -185,7 +197,8 @@ class Plant_folder extends MX_Controller  {
 	
 	function edit_content($id)
 	{
-		$id_plant = $this->uri->segment(3);
+		$id_plant = $this->uri->segment(4);
+		$id_parent = $this->uri->segment(5);
 		$number = 0;
 		$file_image = "";
 		
@@ -206,11 +219,13 @@ class Plant_folder extends MX_Controller  {
 					#end ref dropdown multi value
 				
 					$id_plant = $r->id_plant;
+					$id_parent = $r->id_parent;
 					$id = $r->id;
 
 					$list[] = array(
 									"id"=>$r->id,
 									"id_plant"=>$r->id_plant,
+									"id_parent"=>$r->id_parent,
 									"title"=>$r->title,
 									"desc_"=>$r->desc_,
 									"create_date"=>$r->create_date,
@@ -232,6 +247,7 @@ class Plant_folder extends MX_Controller  {
 				$list[] = array(
 									"id"=>0,
 									"id_plant"=>$id_plant,
+									"id_parent"=>$id_parent,
 									"title"=>"",
 									"desc_"=>"",
 									"create_date"=>"",
@@ -273,7 +289,8 @@ class Plant_folder extends MX_Controller  {
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
 				 	  'title_link'=>$this->table,
 					  'ref1'=>$ref1,
-					  'id_plant'=>$id_plant
+					  'id_plant'=>$id_plant,
+					  'id_parent'=>$id_parent
 					  );
 			return $this->parser->parse("edit.html", $data, TRUE);
 		}else{
@@ -286,6 +303,7 @@ class Plant_folder extends MX_Controller  {
 	{
 		$err = "";
 		$id_plant = $this->input->post("id_plant");
+		$id_parent = $this->input->post("id_parent");
 		$title = strip_tags($this->input->post("title"));
 		$desc_ = $this->input->post("desc_");
 		$is_publish = $this->input->post("ref3");
@@ -302,15 +320,17 @@ class Plant_folder extends MX_Controller  {
 		}else{
 			if($id > 0)
 			{
-				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
+				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
-				redirect($this->table."/edit/".$id_plant."/".$id);
+				/*redirect($this->table."/edit/".$id_plant."/".$id);*/
+				redirect('plant');
 			}else{				
-				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
+				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
-				redirect($this->table."/edit/".$id_plant."/".$last_id);
+				/*redirect($this->table."/edit/".$id_plant."/".$last_id);*/
+				redirect('plant');
 			}
 		}
 	}

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2014 at 09:30 AM
+-- Generation Time: Feb 11, 2014 at 08:33 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `rbi`
 --
+CREATE DATABASE IF NOT EXISTS `rbi` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `rbi`;
 
 -- --------------------------------------------------------
 
@@ -132,15 +134,19 @@ CREATE TABLE IF NOT EXISTS `tbl_item_object` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `tbl_item_object`
 --
 
 INSERT INTO `tbl_item_object` (`id`, `id_plant_folder`, `id_ref_item`, `id_ref_objects`, `obj_tag_no`, `management_id`, `desc_`, `drawing_ref`, `sheet`, `rev`, `id_eq_subclass`, `miss_physical_tag`, `miss_virtual_tag`, `id_eq_cat`, `ex_service`, `id_ex_type`, `cmms_status`, `work_order`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(2, 2, 1, 0, 'andi folder lv 1', '', 'desc andi folder lv 1', '', '', '', 0, '', '', 0, '', 0, 0, '', 'Publish', 1, 1, '2014-02-04 04:10:56', '2014-02-04 04:55:58'),
-(3, 2, 2, 206, 'PS01', '', 'Object Pressure Vessel', '', '', '', 0, '', '', 0, '', 0, 0, '', 'Publish', 1, 1, '2014-02-04 04:31:36', '2014-02-04 05:14:25');
+(7, 18, 2, 206, 'PS01 LV 0', '1', '1', '1', '1', '1', 0, 'yes', 'yes', 1, 'yes', 1, 1, 'yes', 'Publish', 1, 1, '2014-02-11 06:07:38', '2014-02-11 06:56:18'),
+(8, 21, 2, 206, 'PS01 LV 1', '1', '1', '1', '1', '1', 0, 'yes', 'yes', 1, 'yes', 1, 1, 'yes', 'Publish', 1, 0, '2014-02-11 06:08:50', '2014-02-11 07:08:50'),
+(9, 18, 2, 2, 'AD01 LV 0', '2', '2', '2', '2', '2', 0, 'yes', 'yes', 2, 'yes', 1, 2, 'yes', 'Publish', 1, 0, '2014-02-11 06:10:04', '2014-02-11 07:10:04'),
+(10, 22, 2, 3, 'AC01 LV 2', '22', '2', '2', '2', '2', 0, 'yes', 'yes', 1, 'yes', 1, 2, 'yes', 'Publish', 1, 0, '2014-02-11 06:23:30', '2014-02-11 07:23:30'),
+(11, 23, 2, 258, 'ST01 LV 3', '3', '3', '3', '3', '3', 0, 'no', 'no', 2, 'yes', 12, 3, 'no', 'Publish', 1, 0, '2014-02-11 06:24:27', '2014-02-11 07:24:27'),
+(12, 24, 2, 194, 'PP01 LV 4', '3', '3', '3', '3', '3', 0, 'yes', 'yes', 2, 'yes', 1, 3, 'yes', 'Publish', 1, 0, '2014-02-11 06:25:23', '2014-02-11 07:25:23');
 
 -- --------------------------------------------------------
 
@@ -308,7 +314,6 @@ CREATE TABLE IF NOT EXISTS `tbl_plant` (
 --
 
 INSERT INTO `tbl_plant` (`id`, `id_ref_units`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(4, 1, 'Andi Procss', 'Andi Procss', 'Publish', 1, 0, '2014-02-04 02:23:21', '2014-02-04 03:23:21'),
 (5, 2, 'Komunigrafik Plant', 'Komunigrafik Plant', 'Publish', 1, 0, '2014-02-04 05:13:54', '2014-02-04 06:13:54');
 
 -- --------------------------------------------------------
@@ -320,6 +325,7 @@ INSERT INTO `tbl_plant` (`id`, `id_ref_units`, `title`, `desc_`, `publish`, `use
 CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_plant` int(11) NOT NULL,
+  `id_parent` int(11) NOT NULL DEFAULT '0',
   `title` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
   `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
@@ -328,14 +334,18 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `tbl_plant_folder`
 --
 
-INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(2, 4, 'ANDI FOLDER', 'ANDI FOLDER', 'Publish', 1, 0, '2014-02-04 02:24:11', '2014-02-04 03:24:11');
+INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `id_parent`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(24, 5, 23, 'LV 4', 'LV 4', 'Publish', 1, 0, '2014-02-11 04:02:11', '2014-02-11 05:02:11'),
+(23, 5, 22, 'LV 3', 'LV 3', 'Publish', 1, 0, '2014-02-11 03:56:50', '2014-02-11 04:56:50'),
+(18, 5, 0, 'lv 0', 'lv 0', 'Publish', 1, 0, '2014-02-10 08:50:50', '2014-02-10 09:50:50'),
+(21, 5, 18, 'lv 1', 'lv 1', 'Publish', 1, 1, '2014-02-10 08:56:11', '2014-02-10 09:53:26'),
+(22, 5, 21, 'Lv 2', 'LV 2', 'Publish', 1, 0, '2014-02-11 03:50:43', '2014-02-11 04:50:43');
 
 -- --------------------------------------------------------
 

@@ -274,7 +274,13 @@ function openclose_search()
 						</td>
 						<td width="5%" class="td-content center" id="numb">{no}</td>
 						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id_plant}/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
-						<td width="15%" class="td-content"><b>{title}</b></td>
+						<td width="15%" class="td-content"><b>{title}</b> - <a href="{admin_url}item_object/edit/{id}/0">Add Object</a>
+							<ul>
+								{list_obj}
+									<li><a href="{admin_url}item_object/edit/{id}/{fid}">{ficon}{ftitle}</a></li>	
+								{/list_obj}
+							</ul>
+						</td>
 						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>
 					</tr>

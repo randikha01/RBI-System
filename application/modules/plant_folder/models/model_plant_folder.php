@@ -50,6 +50,17 @@ class model_plant_folder extends CI_Model {
 		$query = $this->db->get($table,$per_page,$lmt);
 		return $query;
 	}
+
+	function getListObject($table,$id_plant_folder)
+	{
+		if($this->groupID <> 1){
+			$this->db->where($table.".id !=",6);
+		}
+		$this->db->where($table.".id_plant_folder",$id_plant_folder);
+		$this->db->order_by('create_date','desc');
+		$query = $this->db->get($table);
+		return $query;
+	}
 	
 	
 	function getPlantTitle($table,$parent_id)
@@ -90,11 +101,12 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function setUpdate($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
+	function setUpdate($table,$id,$id_plant,$id_parent,$title,$desc_,$publish,$user_id)
 	{	
 		$data = array(
 			      'title'=>$title,
 				  'id_plant'=>$id_plant,
+				  'id_parent'=>$id_parent,
 				  'desc_'=>$desc_,
 			      'publish'=>$publish,
 			      'modify_user_id'=>$user_id
@@ -104,12 +116,13 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function setInsert($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
+	function setInsert($table,$id,$id_plant,$id_parent,$title,$desc_,$publish,$user_id)
 	{
 
 		$data = array(
 			      'title'=>$title,
 				  'id_plant'=>$id_plant,
+				  'id_parent'=>$id_parent,
 				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,

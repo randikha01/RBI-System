@@ -8,11 +8,11 @@ class model_item_object extends CI_Model {
 	}
 	
 	
-	function getTotal($table,$search1_parm,$search2_parm,$search3_parm,$search4_parm,$search5_parm)
+	function getTotal($id_plant_folder,$table,$search1_parm,$search2_parm,$search3_parm,$search4_parm)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
-			$this->db->like($table.'.object_tag_no',$search1_parm);
+			$this->db->like($table.'.obj_tag_no',$search1_parm);
 		}
 		if($search2_parm != 'null' && !empty($search2_parm) )
 		{
@@ -20,20 +20,17 @@ class model_item_object extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_plant_folder',$search3_parm);
+			$this->db->where($table.'.id_ref_item',$search3_parm);
 		}
 		if($search4_parm != 'null' && !empty($search4_parm) )
 		{
-			$this->db->where($table.'.id_ref_item',$search4_parm);
-		}
-		if($search5_parm != 'null' && !empty($search5_parm) )
-		{
-			$this->db->where($table.'.id_ref_objects',$search5_parm);
+			$this->db->where($table.'.id_ref_objects',$search4_parm);
 		}
 	
 		if($this->groupID <> 1){
 			$this->db->where($table.".id !=",6);
 		}
+		$this->db->where($table.".id_plant_folder",$id_plant_folder);
 		$this->db->select("COUNT(id) AS total");
 		$query = $this->db->get($table);
 		$r = $query->row();
@@ -41,11 +38,11 @@ class model_item_object extends CI_Model {
 	}
 	
 	
-	function getList($table,$per_page,$lmt,$search1_parm,$search2_parm,$search3_parm,$search4_parm,$search5_parm)
+	function getList($id_plant_folder,$table,$per_page,$lmt,$search1_parm,$search2_parm,$search3_parm,$search4_parm)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
-			$this->db->like($table.'.object_tag_no',$search1_parm);
+			$this->db->like($table.'.obj_tag_no',$search1_parm);
 		}
 		if($search2_parm != 'null' && !empty($search2_parm) )
 		{
@@ -53,24 +50,34 @@ class model_item_object extends CI_Model {
 		}
 		if($search3_parm != 'null' && !empty($search3_parm) )
 		{
-			$this->db->where($table.'.id_plant_folder',$search3_parm);
+			$this->db->where($table.'.id_ref_item',$search3_parm);
 		}
 		if($search4_parm != 'null' && !empty($search4_parm) )
 		{
-			$this->db->where($table.'.id_ref_item',$search4_parm);
-		}
-		if($search5_parm != 'null' && !empty($search5_parm) )
-		{
-			$this->db->where($table.'.id_ref_objects',$search5_parm);
+			$this->db->where($table.'.id_ref_objects',$search4_parm);
 		}
 		
-	
 		if($this->groupID <> 1){
 			$this->db->where($table.".id !=",6);
 		}
+		$this->db->where($table.".id_plant_folder",$id_plant_folder);
 		$this->db->order_by('create_date','desc');
 		$query = $this->db->get($table,$per_page,$lmt);
 		return $query;
+	}
+
+	function getPlant($table,$id_plant_folder)
+	{
+		$this->db->select("id_plant");
+		$this->db->where('id',$id_plant_folder);
+		$query = $this->db->get($table);
+		$num = $query->num_rows();
+		if($num > 0 ){
+			$r = $query->row();
+			return $r->id_plant;
+		}else{
+			return NULL;
+		}
 	}
 	
 	
@@ -158,6 +165,20 @@ class model_item_object extends CI_Model {
 				  'id_ex_type'=>$id_ex_type,
 				  'cmms_status'=>$cmms_status,
 				  'work_order'=>$work_order,
+				  'publish'=>$publish,
+			      'user_id'=>$user_id,
+			      'create_date'=>date("Y-m-d :H:i:s",now())
+			      );
+		$this->db->insert($table,$data);
+	}
+
+	function setInsertFolder($table,$id_plant,$id_plant_folder,$title,$desc_,$publish,$user_id)
+	{
+		$data = array(
+			      'id_parent'=>$id_plant_folder,
+			      'id_plant'=>$id_plant,
+				  'title'=>$title,
+				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,
 			      'create_date'=>date("Y-m-d :H:i:s",now())
