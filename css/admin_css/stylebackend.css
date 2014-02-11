@@ -1967,3 +1967,13 @@ body {
 	font-size:12px !important;
 	padding: 8px 10px 8px 8px !important;
 }
+
+/*add by Andi@komunigrafik*/
+/*.menutreex0 > li,.menutreex1 > li,.menutreex2 > li,.menutreex3 > li,.menutreex4 > li{
+    display: inline;
+    margin-left: 5px;
+}*/
+.menufolder > li{
+    display: inline;
+    margin-left: 5px;
+}

@@ -180,8 +180,6 @@ class menu_auth extends MX_Controller  {
 		$this->setfooter();
 	}
 	
-	
-	
 	function edit_content($id)
 	{
 		$number = 0;

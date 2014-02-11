@@ -66,7 +66,7 @@
 
      $(document).ready(function($) {
         
-        var valref11 = $("#ref11 option:selected").val();
+        /*var valref11 = $("#ref11 option:selected").val();
         
         switch(valref11)
          {
@@ -91,7 +91,7 @@
           $("#object").hide('fadeOut');
           }
         
-        });
+        });*/
               
     })
 </script>
@@ -118,15 +118,11 @@
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
 
-                 <p>Folder</p>
-                 {ref8}
-                 <hr />
-
-                 <p>Item</p>
+                 <!--p>Item</p>
                  {ref11}
-                 <hr />
+                 <hr /-->
 
-                 <div id="non_object">
+                 <!--div id="non_object">
                      <p id="title">Title</p>
                      <input type="input" name="title" value="{title}"/>
                      <hr />
@@ -134,7 +130,7 @@
                      <p>Description</p>
                      <input type="input" name="desc_non" value="{desc_non}"/>
                      <hr />
-                  </div>
+                  </div-->
 
                   <div id="object">
                     <p>Object Type</p>
@@ -202,10 +198,13 @@
                  <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
                  <hr />
 				 
-				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+				 <a href="{admin_url}{title_link}/edit/{id_plant_folder}/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
                  <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="{admin_url}{title_link}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <a href="{admin_url}plant_folder/grid/{id_plant}"><input type="button" class="btn-reset" value="cancel"/></a>
                  <input type="hidden" name="id" value="{id}"/>
+                 <input type="hidden" name="id_plant_folder" value="{id_plant_folder}"/>
+                 <input type="hidden" name="id_plant" value="{id_plant}"/>
+                 <input type="hidden" name="id_ref_item" value="{id_ref_item}"/>
 	    </form>
             {/list}
         </div>
