@@ -163,7 +163,7 @@ function pub()
 
 function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}';
+	window.location='{admin_url}{title_link}/pages/{id_plant}/{sch_path}/{per_page}/{pg}';
 }
 
 function set_search(){
@@ -191,6 +191,11 @@ function openclose_search()
           '#ref3-no-single' : {disable_search_threshold:10},
           '#ref3-no-results': {no_results_text:'Oops, nothing found!'},
           '#ref3-width'     : {width:"95%"},
+          '#ref4'           : {},
+          '#ref4-deselect'  : {allow_single_deselect:true},
+          '#ref4-no-single' : {disable_search_threshold:10},
+          '#ref4-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref4-width'     : {width:"95%"},
 		  '#ref2'           : {},
           '#ref2-deselect'  : {allow_single_deselect:true},
           '#ref2-no-single' : {disable_search_threshold:10},
@@ -227,10 +232,14 @@ function openclose_search()
 					<tr>
 					    <td>Item</td><td>{ref3}</td>
 					</tr>
+					<tr>
+					    <td>Object Type</td><td>{ref4}</td>
+					</tr>
                     </table>
                     <input type="hidden" value="{per_page}" name="per_page"/>
+                    <input type="hidden" value="{id_plant_folder}" name="id_plant_folder"/>
                     <input type="button" class="btn info" value="Search" onclick="set_search()">  
-                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}';">
+                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}/grid/{id_plant_folder}';">
                 </div>
             </form>
 	     
@@ -240,7 +249,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_up" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
                     <a href="#" rel="tooltip" id="delete_btn_up" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-                    <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+                    <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant_folder}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -254,12 +263,12 @@ function openclose_search()
 							<label for="master"></label>
 						</div>
 					</th>
-                    <th width="5%" class="center">No.</th>
-					<th width="5%" class="center">Edit</th>
+                    <th width="3%" class="center">No.</th>
+					<th width="3%" class="center">Edit</th>
                     <th width="15%">Object Tag No</th>
-                    <th width="15%">Item</th>
-                    <th width="15%">Management Id</th>
-                    <th width="10%" class="center">Publish</th>
+                    <th width="10%">Item</th>
+                    <th width="15%">Object Type</th>
+                    <th width="3%" class="center">Publish</th>
                     <th width="10%">Create date</th>
                  </tr>
              </table>
@@ -275,12 +284,12 @@ function openclose_search()
 								<label for="choices{id}"></label>
 							</div>
 						</td>
-						<td width="5%" class="td-content center" id="numb">{no}</td>
-						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
+						<td width="3%" class="td-content center" id="numb">{no}</td>
+						<td width="3%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
 						<td width="15%" class="td-content"><b>{title}</b></td>
-						<td width="15%" class="td-content">{id_plant_fol_item}</td>
-						<td width="15%" class="td-content">{management_id}</td>
-						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
+						<td width="10%" class="td-content">{id_ref_item}</td>
+						<td width="15%" class="td-content">{id_ref_objects}</td>
+						<td width="3%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>
 					</tr>
 					</table>
@@ -293,7 +302,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_down" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
 	                <a href="#" rel="tooltip" id="delete_btn_down" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-	                <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+	                <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant_folder}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -301,6 +310,7 @@ function openclose_search()
              	 <input type="hidden" name="search_path" value="{sch1_parm}" id="sch1_parm"/>
 				 <input type="hidden" name="search_path" value="{sch2_parm}" id="sch2_parm"/>
 				 <input type="hidden" name="search_path" value="{sch3_parm}" id="sch3_parm"/>
+				 <input type="hidden" name="search_path" value="{sch4_parm}" id="sch4_parm"/>
             	 <input type="hidden" name="pg" value="{pg}" id="pg"/>
              </form>
           </div>
@@ -322,7 +332,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{sch_path}/"+val;
+	document.location="{admin_url}{title_link}/pages/{id_plant_folder}/{sch_path}/"+val;
 }
 
 

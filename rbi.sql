@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2014 at 09:30 AM
+-- Generation Time: Feb 11, 2014 at 08:33 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `rbi`
 --
+CREATE DATABASE IF NOT EXISTS `rbi` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `rbi`;
 
 -- --------------------------------------------------------
 
@@ -109,7 +111,9 @@ INSERT INTO `tbl_configs` (`id`, `meta_title`, `meta_keyword`, `meta_description
 
 CREATE TABLE IF NOT EXISTS `tbl_item_object` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_plant_fol_item` int(11) NOT NULL,
+  `id_plant_folder` int(11) NOT NULL,
+  `id_ref_item` int(11) NOT NULL,
+  `id_ref_objects` int(11) NOT NULL,
   `obj_tag_no` varchar(50) COLLATE latin1_general_ci NOT NULL,
   `management_id` varchar(50) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
@@ -130,14 +134,19 @@ CREATE TABLE IF NOT EXISTS `tbl_item_object` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `tbl_item_object`
 --
 
-INSERT INTO `tbl_item_object` (`id`, `id_plant_fol_item`, `obj_tag_no`, `management_id`, `desc_`, `drawing_ref`, `sheet`, `rev`, `id_eq_subclass`, `miss_physical_tag`, `miss_virtual_tag`, `id_eq_cat`, `ex_service`, `id_ex_type`, `cmms_status`, `work_order`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(1, 1, 'test obj tag no e', 'test management id e', 'test desc e', 'test drawing e', 'test sheet e', 'test rev e', 0, 'yes', 'no', 2, 'yes', 12, 1, 'no', 'Not Publish', 1, 1, '2014-01-29 08:37:28', '2014-01-29 09:35:10');
+INSERT INTO `tbl_item_object` (`id`, `id_plant_folder`, `id_ref_item`, `id_ref_objects`, `obj_tag_no`, `management_id`, `desc_`, `drawing_ref`, `sheet`, `rev`, `id_eq_subclass`, `miss_physical_tag`, `miss_virtual_tag`, `id_eq_cat`, `ex_service`, `id_ex_type`, `cmms_status`, `work_order`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(7, 18, 2, 206, 'PS01 LV 0', '1', '1', '1', '1', '1', 0, 'yes', 'yes', 1, 'yes', 1, 1, 'yes', 'Publish', 1, 1, '2014-02-11 06:07:38', '2014-02-11 06:56:18'),
+(8, 21, 2, 206, 'PS01 LV 1', '1', '1', '1', '1', '1', 0, 'yes', 'yes', 1, 'yes', 1, 1, 'yes', 'Publish', 1, 0, '2014-02-11 06:08:50', '2014-02-11 07:08:50'),
+(9, 18, 2, 2, 'AD01 LV 0', '2', '2', '2', '2', '2', 0, 'yes', 'yes', 2, 'yes', 1, 2, 'yes', 'Publish', 1, 0, '2014-02-11 06:10:04', '2014-02-11 07:10:04'),
+(10, 22, 2, 3, 'AC01 LV 2', '22', '2', '2', '2', '2', 0, 'yes', 'yes', 1, 'yes', 1, 2, 'yes', 'Publish', 1, 0, '2014-02-11 06:23:30', '2014-02-11 07:23:30'),
+(11, 23, 2, 258, 'ST01 LV 3', '3', '3', '3', '3', '3', 0, 'no', 'no', 2, 'yes', 12, 3, 'no', 'Publish', 1, 0, '2014-02-11 06:24:27', '2014-02-11 07:24:27'),
+(12, 24, 2, 194, 'PP01 LV 4', '3', '3', '3', '3', '3', 0, 'yes', 'yes', 2, 'yes', 1, 3, 'yes', 'Publish', 1, 0, '2014-02-11 06:25:23', '2014-02-11 07:25:23');
 
 -- --------------------------------------------------------
 
@@ -179,12 +188,12 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (107, 'Risk Analys', 'ref_risk_analys', '', 'Publish', 26, '', 104, 1, 0, '2014-01-23 22:58:01', '2014-01-23 16:58:01'),
 (108, 'Risk Scaling', 'ref_risk_scaling', '', 'Publish', 27, '', 104, 1, 0, '2014-01-23 22:58:33', '2014-01-23 16:58:33'),
 (109, 'Objects', 'ref_objects', '', 'Publish', 28, '', 106, 1, 1, '2014-02-03 03:49:10', '2014-01-24 08:21:21'),
-(110, 'Plants', '#', '', 'Publish', 29, '', 0, 1, 1, '2014-01-27 04:54:28', '2014-01-24 08:57:36'),
+(110, 'Plants', 'plant', '', 'Publish', 29, '', 0, 1, 1, '2014-02-04 08:22:31', '2014-01-24 08:57:36'),
 (111, 'Units', 'ref_units', '', 'Publish', 30, '', 106, 1, 1, '2014-02-03 03:38:16', '2014-01-24 09:14:57'),
-(112, 'Plant', 'plant', '', 'Publish', 31, '', 110, 1, 0, '2014-01-27 04:54:54', '2014-01-27 05:54:54'),
-(113, 'Plant Folder', 'plant_folder', '', 'Publish', 32, '', 110, 1, 0, '2014-01-27 04:55:24', '2014-01-27 05:55:24'),
-(114, 'Folder Item', 'plant_fol_item', '', 'Publish', 33, '', 113, 1, 0, '2014-01-27 07:55:42', '2014-01-27 08:55:42'),
-(115, 'Object', 'item_object', '', 'Publish', 34, '', 113, 1, 1, '2014-01-29 06:38:00', '2014-01-29 07:36:52'),
+(112, 'Plant', 'plant', '', 'Not Publish', 31, '', 110, 1, 1, '2014-02-04 08:22:00', '2014-01-27 05:54:54'),
+(113, 'Folder', 'plant_folder', '', 'Not Publish', 32, '', 110, 1, 1, '2014-02-04 08:22:00', '2014-01-27 05:55:24'),
+(114, 'Items', 'plant_fol_item', '', 'Not Publish', 33, '', 113, 1, 1, '2014-02-04 03:16:04', '2014-01-27 08:55:42'),
+(115, 'Object', 'item_object', '', 'Not Publish', 34, '', 113, 1, 1, '2014-02-04 08:21:34', '2014-01-29 07:36:52'),
 (116, 'Ex Type', 'ref_ex_type', '', 'Publish', 35, '', 106, 1, 0, '2014-01-30 04:14:59', '2014-01-30 05:14:59'),
 (117, 'Equipment Category', 'ref_equipment_cat', '', 'Publish', 36, '', 106, 1, 0, '2014-01-30 04:23:15', '2014-01-30 05:23:15'),
 (118, 'Products', 'ref_products', '', 'Publish', 37, '', 106, 1, 0, '2014-02-03 07:56:29', '2014-02-03 08:56:29'),
@@ -298,16 +307,14 @@ CREATE TABLE IF NOT EXISTS `tbl_plant` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `tbl_plant`
 --
 
 INSERT INTO `tbl_plant` (`id`, `id_ref_units`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(1, 1, 'test', 'test desc', 'Publish', 1, 1, '2014-01-27 03:11:20', '2014-01-27 00:00:00'),
-(2, 2, 'Andi Plant Process edit ke platform', 'andi plant process description', 'Publish', 1, 1, '2014-01-27 03:36:25', '2014-01-27 04:34:26'),
-(3, 2, 'andi plant platform edit', 'andi plant platform description edit', 'Publish', 1, 1, '2014-01-27 03:36:05', '2014-01-27 04:35:16');
+(5, 2, 'Komunigrafik Plant', 'Komunigrafik Plant', 'Publish', 1, 0, '2014-02-04 05:13:54', '2014-02-04 06:13:54');
 
 -- --------------------------------------------------------
 
@@ -318,6 +325,7 @@ INSERT INTO `tbl_plant` (`id`, `id_ref_units`, `title`, `desc_`, `publish`, `use
 CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_plant` int(11) NOT NULL,
+  `id_parent` int(11) NOT NULL DEFAULT '0',
   `title` varchar(100) COLLATE latin1_general_ci NOT NULL,
   `desc_` text COLLATE latin1_general_ci NOT NULL,
   `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
@@ -326,14 +334,18 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `tbl_plant_folder`
 --
 
-INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(1, 1, 'Test Folder edit', 'test folder description', 'Publish', 1, 1, '2014-01-27 04:59:46', '2014-01-27 05:57:23');
+INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `id_parent`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(24, 5, 23, 'LV 4', 'LV 4', 'Publish', 1, 0, '2014-02-11 04:02:11', '2014-02-11 05:02:11'),
+(23, 5, 22, 'LV 3', 'LV 3', 'Publish', 1, 0, '2014-02-11 03:56:50', '2014-02-11 04:56:50'),
+(18, 5, 0, 'lv 0', 'lv 0', 'Publish', 1, 0, '2014-02-10 08:50:50', '2014-02-10 09:50:50'),
+(21, 5, 18, 'lv 1', 'lv 1', 'Publish', 1, 1, '2014-02-10 08:56:11', '2014-02-10 09:53:26'),
+(22, 5, 21, 'Lv 2', 'LV 2', 'Publish', 1, 0, '2014-02-11 03:50:43', '2014-02-11 04:50:43');
 
 -- --------------------------------------------------------
 
@@ -353,15 +365,14 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_fol_item` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `tbl_plant_fol_item`
 --
 
 INSERT INTO `tbl_plant_fol_item` (`id`, `id_plant_folder`, `id_ref_objects`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
-(1, 1, 206, 'pressure vessel test', 'pressure vessel test', 'Publish', 1, 1, '2014-01-28 03:21:20', '2014-01-27 09:30:14'),
-(2, 1, 206, 'PV', 'PV', 'Publish', 1, 1, '2014-01-28 03:22:58', '2014-01-27 09:38:56');
+(3, 2, 206, 'PS01', 'PS01', 'Publish', 1, 0, '2014-02-04 02:29:24', '2014-02-04 03:29:24');
 
 -- --------------------------------------------------------
 
@@ -474,6 +485,34 @@ INSERT INTO `tbl_ref_ex_type` (`id`, `title`, `desc_`, `publish`, `user_id`, `mo
 (16, 'MA', '', 'Publish', 1, 0, '2014-01-29 07:11:01', '2014-01-29 14:11:01'),
 (17, 'MB', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25'),
 (18, 'XX', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_items`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `tbl_ref_items`
+--
+
+INSERT INTO `tbl_ref_items` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'Folder', 'Folder', 'Publish', 1, 0, '2014-02-04 02:35:36', '2014-02-04 00:00:00'),
+(2, 'Object', 'object', 'Publish', 1, 0, '2014-02-04 02:35:36', '2014-02-04 00:00:00'),
+(3, 'Attach Folder', 'attach folder', 'Publish', 1, 0, '2014-02-04 02:36:16', '2014-02-04 00:00:00'),
+(4, 'Attachment', 'attachment', 'Publish', 1, 0, '2014-02-04 02:36:16', '2014-02-04 00:00:00');
 
 -- --------------------------------------------------------
 

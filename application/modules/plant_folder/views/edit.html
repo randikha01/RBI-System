@@ -23,7 +23,8 @@
         
         <ul id="breadcrumb">
             <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
-            <li><a href="{admin_url}{title_link}"><span>{title_head}</span></a></li>
+            <li><a href="{admin_url}plant/" title="Home"><span>Plant : {plant}</span></a></li>
+            <li><a href="{admin_url}plant_folder/grid/{id_plant}" title="Home"><span>{title_head}</span></a></li>
             <li><span>{add_edit}</span></li>
         </ul>
         <div class="clear"></div>
@@ -42,15 +43,15 @@
 	    <h2>{add_edit}</h2>
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
-                
+
+                 <p>Plant</p>
+                 <label>{plant}</label>
+                 <hr />
+                 
                  <p>Title</p>
                  <input type="input" name="title" value="{title}"/>
                  <hr />
-                 
-                 <p>Plant Category</p>
-                 {ref1}
-                 <hr />
-                 
+                
               	 <p>Description</p>
                  <input type="input" name="desc_" value="{desc_}"/>
                  <hr />
@@ -63,10 +64,12 @@
                  <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
                  <hr />
 				 
-				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+				 <a href="{admin_url}{title_link}/edit/{id_plant}/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
                  <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="{admin_url}{title_link}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <a href="{admin_url}{title_link}/grid/{id_plant}"><input type="button" class="btn-reset" value="cancel"/></a>
                  <input type="hidden" name="id" value="{id}"/>
+                 <input type="hidden" name="id_plant" value="{id_plant}"/>
+                 <input type="hidden" name="id_parent" value="{id_parent}"/>
 	    </form>
             {/list}
         </div>

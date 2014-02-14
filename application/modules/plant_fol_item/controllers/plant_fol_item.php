@@ -339,14 +339,14 @@ class Plant_fol_item extends MX_Controller  {
 		foreach($post as $val)
 		{
 			$order++;
-			$this->plant_folder->ajaxsort($this->table,$val,$order);
+			$this->plant_fol_item->ajaxsort($this->table,$val,$order);
 		}
 	}
 	
 	
 	function delete($id=0)
 	{
-		$del_status = $this->plant_folder->setDelete($this->table,$id);
+		$del_status = $this->plant_fol_item->setDelete($this->table,$id);
 		$response['id'] = $id;
 		$response['status'] = $del_status;
 		echo $result = json_encode($response);
@@ -443,5 +443,5 @@ class Plant_fol_item extends MX_Controller  {
 	
 }
 
-/* End of file plant_folder.php */
-/* Location: ./application/modules/controller/plant_folder.php */
+/* End of file plant_fol_item.php */
+/* Location: ./application/modules/controller/plant_fol_item.php */

@@ -59,7 +59,7 @@ class Plant extends MX_Controller  {
 	
 	
 	function grid_content()
-	{	
+	{
 		#search
 		$sch1_parm = rawurldecode($this->uri->segment(3));
 		$sch1_parm = $sch1_parm != 'null' && !empty($sch1_parm) ? $sch1_parm : 'null';
@@ -102,7 +102,7 @@ class Plant extends MX_Controller  {
 		
 		#record
 		$query = $this->plant->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
-		$list = array();
+		$list = $folder_lv0 = $list_obj0 = $list_obj1 = $list_obj2 = $list_obj3 = $list_obj4 = $folder_lv1 = $folder_lv2 = $folder_lv3 = $folder_lv4 = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
 			{
@@ -114,6 +114,137 @@ class Plant extends MX_Controller  {
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
+
+				$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+				$qf_num = $qfolder->num_rows();
+				if($qfolder->num_rows() > 0){
+					foreach ($qfolder->result() as $f) {
+						//$f = $qfolder->row();
+						$ftitle_lv0 = ucwords($f->title);
+						$fparent_lv0 = ucwords($f->id_parent);
+
+						/*list folder lv 1*/
+						$qfoll = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+						$qfl_num = $qfoll->num_rows();
+						if($qfoll->num_rows() > 0){
+							foreach ($qfoll->result() as $fl) {
+								$ftitle_lvl = ucwords($fl->title);
+								$ficon_lvl = '<i class="icon-folder-close"></i>';
+								$fparent_lv1 = ucwords($fl->id_parent);
+
+								/*list folder lv 2*/
+								$qfoll2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl->id);
+								$qfl2_num = $qfoll2->num_rows();
+								if($qfoll2->num_rows() > 0){
+									foreach ($qfoll2->result() as $fl2) {
+										$ftitle_lv2 = ucwords($fl2->title);
+										$ficon_lv2 = '<i class="icon-folder-close"></i>';
+										$fparent_lv2 = ucwords($fl2->id_parent);
+
+										/*list folder lv 3*/
+										$qfoll3 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl2->id);
+										$qfl3_num = $qfoll3->num_rows();
+										if($qfoll3->num_rows() > 0){
+											foreach ($qfoll3->result() as $fl3) {
+												$ftitle_lv3 = ucwords($fl3->title);
+												$ficon_lv3 = '<i class="icon-folder-close"></i>';
+												$fparent_lv3 = ucwords($fl3->id_parent);
+
+												/*list folder lv 4*/
+												$qfoll4 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl3->id);
+												$qfl4_num = $qfoll4->num_rows();
+												if($qfoll4->num_rows() > 0){
+													foreach ($qfoll4->result() as $fl4) {
+														$ftitle_lv4 = ucwords($fl4->title);
+														$ficon_lv4 = '<i class="icon-folder-close"></i>';
+														$fparent_lv4 = ucwords($fl4->id_parent);
+
+														/*list object lv 4*/
+														$qobj4 = $this->plant->getListObject('tbl_item_object',$fl4->id);
+														$qf4_num = $qobj4->num_rows();
+														if($qobj4->num_rows() > 0){
+															foreach ($qobj4->result() as $b4) {
+																$btitle4 = ucwords($b4->obj_tag_no);
+																$icon4 = ($b4->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+																$list_obj4[] = array("bid4"=>$b4->id,"btitle4" =>$btitle4,"bicon4" =>$icon4);
+															}
+														}
+
+														$folder_lv4[] = array("fid_lv4"=>$fl4->id,"ftitle_lv4" =>$ftitle_lv4,"ficon_lv4" =>$ficon_lv4,"list_obj4"=>$list_obj4);
+													}
+												}else{
+													$folder_lv4[] = array("fid_lv4"=>'',"ftitle_lv4" =>'',"ficon_lv4" =>'');
+												}
+
+												/*list object lv 3*/
+												$qobj3 = $this->plant->getListObject('tbl_item_object',$fl3->id);
+												$qf3_num = $qobj3->num_rows();
+												if($qobj3->num_rows() > 0){
+													foreach ($qobj3->result() as $b3) {
+														$btitle3 = ucwords($b3->obj_tag_no);
+														$icon3 = ($b3->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+														$list_obj3[] = array("bid3"=>$b3->id,"btitle3" =>$btitle3,"bicon3" =>$icon3);
+													}
+												}
+
+												$folder_lv3[] = array("fid_lv3"=>$fl3->id,"ftitle_lv3" =>$ftitle_lv3,"ficon_lv3" =>$ficon_lv3,"folder_lv4"=>$folder_lv4,"list_obj3"=>$list_obj3);
+											}
+										}else{
+											$folder_lv3[] = array("fid_lv3"=>'',"ftitle_lv3" =>'',"ficon_lv3" =>'');
+										}
+
+										/*list object lv 2*/
+										$qobj2 = $this->plant->getListObject('tbl_item_object',$fl2->id);
+										$qf2_num = $qobj2->num_rows();
+										if($qobj2->num_rows() > 0){
+											foreach ($qobj2->result() as $b2) {
+												$btitle2 = ucwords($b2->obj_tag_no);
+												$icon2 = ($b2->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+												$list_obj2[] = array("bid2"=>$b2->id,"btitle2" =>$btitle2,"bicon2" =>$icon2);
+											}
+										}
+
+										$folder_lv2[] = array("fid_lv2"=>$fl2->id,"ftitle_lv2" =>$ftitle_lv2,"ficon_lv2" =>$ficon_lv2,"folder_lv3"=>$folder_lv3,"list_obj2"=>$list_obj2);
+									}
+								}else{
+									$folder_lv2[] = array("fid_lv2"=>'',"ftitle_lv2" =>'',"ficon_lv2" =>'');
+								}
+
+								/*list object lv 1*/
+								$qobj1 = $this->plant->getListObject('tbl_item_object',$fl->id);
+								$qf1_num = $qobj1->num_rows();
+								if($qobj1->num_rows() > 0){
+									foreach ($qobj1->result() as $b1) {
+										$btitle1 = ucwords($b1->obj_tag_no);
+										$icon1 = ($b1->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+										$list_obj1[] = array("bid1"=>$b1->id,"btitle1" =>$btitle1,"bicon1" =>$icon1);
+									}
+								}
+
+								$folder_lvl[] = array("fid_lvl"=>$fl->id,"ftitle_lvl" =>$ftitle_lvl,"ficon_lvl" =>$ficon_lvl,"folder_lv2"=>$folder_lv2,"list_obj1"=>$list_obj1);
+							}
+						}else{
+							$folder_lvl[] = array("fid_lvl"=>'',"ftitle_lvl" =>'',"ficon_lvl" =>'');
+						}
+
+						/*list object lv 0*/
+						$qobj0 = $this->plant->getListObject('tbl_item_object',$f->id);
+						$qf0_num = $qobj0->num_rows();
+						if($qobj0->num_rows() > 0){
+							foreach ($qobj0->result() as $b0) {
+								$btitle0 = ucwords($b0->obj_tag_no);
+								$icon0 = ($b0->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+								$list_obj0[] = array("bid0"=>$b0->id,"btitle0" =>$btitle0,"bicon0" =>$icon0);
+							}
+						}
+
+
+						$folder_lv0[] = array("fid_lv0"=>$f->id,"fparent_lv0" =>$fparent_lv0,"ftitle_lv0" =>$ftitle_lv0,"list_obj0"=>$list_obj0,"folder_lvl"=>$folder_lvl);
+
+						$list_obj0 = $list_obj1 = $list_obj2 = $list_obj3 = $list_obj4 = $folder_lvl = $folder_lv2 = $folder_lv3 = $folder_lv4 = array();
+					}
+				}
+
 			
 				$list[] = array(
 								 "no"=>$no,
@@ -121,9 +252,13 @@ class Plant extends MX_Controller  {
 								 "title" =>$title,
 								 "parent" =>$plant_cat_title,
 								 "publish"=>$publish,
-								 "create_date"=>$create_date
+								 "create_date"=>$create_date,
+				  				 "folder_lv0"=>$folder_lv0
 								);
+
+				$folder_lv0 = array();
 			}
+			
 		}	
 		#end record
 	
@@ -143,7 +278,8 @@ class Plant extends MX_Controller  {
 				  'per_page'=>$per_page,
 				  'pg'=>$go_pg,
 				  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
-				  'title_link'=>$this->table
+				  'title_link'=>$this->table,
+
 				  );
 		return $this->parser->parse("list.html", $data, TRUE);
 	}
