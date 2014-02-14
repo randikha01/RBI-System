@@ -65,6 +65,11 @@
 	right: 5px;
 }
 
+.column ul li div {
+    top: 9px;
+	margin-right:5px;
+}
+
 .column ul li:hover, .column ul li.active {
 	background: #999999;
 	color: #FFFFFF;

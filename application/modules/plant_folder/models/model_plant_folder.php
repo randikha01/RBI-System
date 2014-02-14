@@ -8,7 +8,7 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function getTotal($table,$search1_parm,$search2_parm,$search3_parm)
+	function getTotal($id_plant,$table,$search1_parm,$search2_parm)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
@@ -18,14 +18,11 @@ class model_plant_folder extends CI_Model {
 		{
 			$this->db->where($table.'.publish',$search2_parm);
 		}
-		if($search3_parm != 'null' && !empty($search3_parm) )
-		{
-			$this->db->where($table.'.id_plant',$search3_parm);
-		}
 	
 		if($this->groupID <> 1){
 			$this->db->where($table.".id !=",6);
 		}
+		$this->db->where($table.".id_plant",$id_plant);
 		$this->db->select("COUNT(id) AS total");
 		$query = $this->db->get($table);
 		$r = $query->row();
@@ -33,7 +30,7 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function getList($table,$per_page,$lmt,$search1_parm,$search2_parm,$search3_parm)
+	function getList($id_plant,$table,$per_page,$lmt,$search1_parm,$search2_parm)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
@@ -43,16 +40,25 @@ class model_plant_folder extends CI_Model {
 		{
 			$this->db->where($table.'.publish',$search2_parm);
 		}
-		if($search3_parm != 'null' && !empty($search3_parm) )
-		{
-			$this->db->where($table.'.id_plant',$search3_parm);
-		}
+		
 	
 		if($this->groupID <> 1){
 			$this->db->where($table.".id !=",6);
 		}
+		$this->db->where($table.".id_plant",$id_plant);
 		$this->db->order_by('create_date','desc');
 		$query = $this->db->get($table,$per_page,$lmt);
+		return $query;
+	}
+
+	function getListObject($table,$id_plant_folder)
+	{
+		if($this->groupID <> 1){
+			$this->db->where($table.".id !=",6);
+		}
+		$this->db->where($table.".id_plant_folder",$id_plant_folder);
+		$this->db->order_by('create_date','desc');
+		$query = $this->db->get($table);
 		return $query;
 	}
 	
@@ -95,11 +101,12 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function setUpdate($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
+	function setUpdate($table,$id,$id_plant,$id_parent,$title,$desc_,$publish,$user_id)
 	{	
 		$data = array(
 			      'title'=>$title,
 				  'id_plant'=>$id_plant,
+				  'id_parent'=>$id_parent,
 				  'desc_'=>$desc_,
 			      'publish'=>$publish,
 			      'modify_user_id'=>$user_id
@@ -109,12 +116,13 @@ class model_plant_folder extends CI_Model {
 	}
 	
 	
-	function setInsert($table,$id,$id_plant,$title,$desc_,$publish,$user_id)
+	function setInsert($table,$id,$id_plant,$id_parent,$title,$desc_,$publish,$user_id)
 	{
 
 		$data = array(
 			      'title'=>$title,
 				  'id_plant'=>$id_plant,
+				  'id_parent'=>$id_parent,
 				  'desc_'=>$desc_,
 				  'publish'=>$publish,
 			      'user_id'=>$user_id,
@@ -126,7 +134,7 @@ class model_plant_folder extends CI_Model {
 	
 	function setDelete($table,$id)
 	{
-		$status = 0;
+		/*$status = 0;
 		#select first
 		$this->db->where('id',$id);
 		$this->db->where('publish','Publish');
@@ -147,6 +155,12 @@ class model_plant_folder extends CI_Model {
 				$this->db->delete($table);
 			}
 		}
+		return $status;*/
+		$status = 0;
+		$this->db->where('id',$id);
+		$this->db->delete($table);
+		$status = 1;
+
 		return $status;
 	}
 	

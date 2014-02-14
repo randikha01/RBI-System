@@ -33,7 +33,7 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function getList($table,$per_page,$lmt,$search1_parm,$search2_parm,$search3_parm)
+	function getList($table,$per_page=NULL,$lmt=NULL,$search1_parm=NULL,$search2_parm=NULL,$search3_parm=NULL)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
@@ -53,6 +53,29 @@ class model_plant extends CI_Model {
 		}
 		$this->db->order_by('create_date','desc');
 		$query = $this->db->get($table,$per_page,$lmt);
+		return $query;
+	}
+
+	function getListFolder($table,$id_plant,$id_parent=0)
+	{
+		if($this->groupID <> 1){
+			$this->db->where($table.".id !=",6);
+		}
+		$this->db->where($table.".id_parent",$id_parent);
+		$this->db->where($table.".id_plant",$id_plant);
+		$this->db->order_by('create_date','desc');
+		$query = $this->db->get($table);
+		return $query;
+	}
+
+	function getListObject($table,$id_plant_folder)
+	{
+		if($this->groupID <> 1){
+			$this->db->where($table.".id !=",6);
+		}
+		$this->db->where($table.".id_plant_folder",$id_plant_folder);
+		$this->db->order_by('create_date','desc');
+		$query = $this->db->get($table);
 		return $query;
 	}
 	
@@ -126,7 +149,7 @@ class model_plant extends CI_Model {
 	
 	function setDelete($table,$id)
 	{
-		$status = 0;
+		/*$status = 0;
 		#select first
 		$this->db->where('id',$id);
 		$this->db->where('publish','Publish');
@@ -147,6 +170,34 @@ class model_plant extends CI_Model {
 				$this->db->delete($table);
 			}
 		}
+		return $status;*/
+		$status = 0;
+
+		/*cek folder yang punya plant yang sama*/
+		$this->db->where('id_plant',$id);
+		$qf = $this->db->get('tbl_plant_folder');
+		if($qf->num_rows() > 0){
+			$rf = $qf->row();
+			
+			/*cek object dengan folder yang sama*/
+			$this->db->where('id_plant_folder',$rf->id);
+			$qb = $this->db->get('tbl_item_object');
+			if($qb->num_rows() > 0){
+				/*hapus object dengan folder yang sama*/
+				$this->db->where('id_plant_folder',$rf->id);
+				$this->db->delete('tbl_item_object');				
+			}
+			
+			/*hapus folder yang punya plant yang sama*/
+			$this->db->where('id_plant',$id);
+			$this->db->delete('tbl_plant_folder');	
+			
+		}		
+
+		$this->db->where('id',$id);
+		$this->db->delete($table);
+		$status = 1;
+
 		return $status;
 	}
 	
@@ -167,6 +218,18 @@ class model_plant extends CI_Model {
 	function getMax($table)
 	{
 		$this->db->select_max('ordered','max_ordered');
+		$query = $this->db->get($table);
+		return $query;
+	}
+	
+	
+	function getElement($table,$parent_id=NULL)
+	{
+		if($parent_id != 'null' && !empty($parent_id) )
+		{
+			$this->db->where($table.'.parent_id',$parent_id);
+		}
+		$this->db->order_by('id','asc');
 		$query = $this->db->get($table);
 		return $query;
 	}

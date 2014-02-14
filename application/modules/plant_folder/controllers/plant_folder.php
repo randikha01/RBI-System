@@ -3,7 +3,7 @@
 class Plant_folder extends MX_Controller  {
 	
 	var $table = "plant_folder";
-	var $table_alias = "Plant Folder";
+	var $table_alias = "Folder";
 	var $uri_page = 7;
 	var $per_page = 25;
 	 
@@ -42,10 +42,10 @@ class Plant_folder extends MX_Controller  {
 	}
 
 
-	function grid()
+	function grid($id_plant=NULL)
 	{
 		$this->setheader();		
-		$contents = $this->grid_content();
+		$contents = $this->grid_content($id_plant);
 	
 		$data = array(
 				  'admin_url' => base_url(),
@@ -55,17 +55,15 @@ class Plant_folder extends MX_Controller  {
 		
 		$this->setfooter();
 	}
-	
-	
-	
-	function grid_content()
-	{	
+
+	function grid_content($id_plant=NULL)
+	{
 		#search
-		$sch1_parm = rawurldecode($this->uri->segment(3));
+		$sch1_parm = rawurldecode($this->uri->segment(4));
 		$sch1_parm = $sch1_parm != 'null' && !empty($sch1_parm) ? $sch1_parm : 'null';
 		$sch1_val = $sch1_parm != 'null' ? $sch1_parm : '';
 		
-		$sch2_parm = rawurldecode($this->uri->segment(4));
+		$sch2_parm = rawurldecode($this->uri->segment(5));
 		$sch2_parm = $sch2_parm != 'null' && !empty($sch2_parm) ? $sch2_parm : 'null';
 		$sch2_select_arr[0] = $sch2_parm;
 		$sch2_arr = array(
@@ -74,10 +72,10 @@ class Plant_folder extends MX_Controller  {
 						  );
 		$ref2 = Modules::run('widget/getStaticDropdown',$sch2_arr,$sch2_select_arr,2);
 
-		$sch3_parm = rawurldecode($this->uri->segment(5));
+		/*$sch3_parm = rawurldecode($this->uri->segment(6));
 		$sch3_parm = $sch3_parm != 'null' && !empty($sch3_parm) ? $sch3_parm : 'null';
-		$ref3 = Modules::run('plant_folder/getPlantDropdown',$sch3_parm,3);
-		$sch_path = rawurlencode($sch1_parm)."/".rawurlencode($sch2_parm)."/".rawurlencode($sch3_parm);
+		$ref3 = Modules::run('plant_folder/getPlantDropdown',$sch3_parm,3);*/
+		$sch_path = rawurlencode($sch1_parm)."/".rawurlencode($sch2_parm);
 		#end search
 
 		#paging
@@ -93,16 +91,16 @@ class Plant_folder extends MX_Controller  {
 		}else{
 			$lmt = $pg;
 		}
-		$path = base_url().$this->table."/pages/".$sch1_parm."/".$sch2_parm."/".$sch3_parm."/".$per_page;
-		$jum_record = $this->plant_folder->getTotal($this->table,$sch1_parm,$sch2_parm,$sch3_parm);
+		$path = base_url().$this->table."/pages/".$id_plant."/".$sch1_parm."/".$sch2_parm."/".$per_page;
+		$jum_record = $this->plant_folder->getTotal($id_plant,$this->table,$sch1_parm,$sch2_parm);
 		$paging = Modules::run("widget/page",$jum_record,$per_page,$path,$uri_segment);
 		if(!$paging) $paging = "";
 		$display_record = $jum_record > 0 ? "" : "display:none;";
 		#end paging
 		
 		#record
-		$query = $this->plant_folder->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
-		$list = array();
+		$query = $this->plant_folder->getList($id_plant,$this->table,$per_page,$lmt,$sch1_parm,$sch2_parm);
+		$list = $list_obj = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
 			{
@@ -114,15 +112,28 @@ class Plant_folder extends MX_Controller  {
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
+
+				$qobj = $this->plant_folder->getListObject('tbl_item_object',$r->id);
+				$qf_num = $qobj->num_rows();
+				if($qobj->num_rows() > 0){
+					foreach ($qobj->result() as $f) {
+						$ftitle = ucwords($f->obj_tag_no);
+						$icon = ($f->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+						$list_obj[] = array("fid"=>$f->id,"ftitle" =>$ftitle,"ficon" =>$icon);
+					}
+				}
 			
 				$list[] = array(
 								 "no"=>$no,
 								 "id"=>$r->id,
 								 "title" =>$title,
-								 "id_plant" =>$plant_title,
+								 "plant" =>$plant_title,
+								 "id_plant" =>$id_plant,
 								 "publish"=>$publish,
-								 "create_date"=>$create_date
+								 "create_date"=>$create_date,
+								 "list_obj"=>$list_obj
 								);
+				$list_obj = array();
 			}
 		}	
 		#end record
@@ -136,13 +147,14 @@ class Plant_folder extends MX_Controller  {
 				  'sch1_parm'=>$sch1_parm,
 				  'sch1_val'=>$sch1_val,
 				  'sch2_parm'=>$sch2_parm,
-				  'sch3_parm'=>$sch3_parm,
+				  /*'sch3_parm'=>$sch3_parm,*/
 				  'ref2'=>$ref2,
-				  'ref3'=>$ref3,
+				  /*'ref3'=>$ref3,*/
 				  'sch_path'=>$sch_path,
 				  'per_page'=>$per_page,
 				  'pg'=>$go_pg,
-				  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
+				  'id_plant'=>$id_plant,
+				  'title_head'=>ucfirst(str_replace('_',' ',ucwords($this->plant_folder->getPlantTitle('tbl_plant',$id_plant)))),
 				  'title_link'=>$this->table
 				  );
 		return $this->parser->parse("list.html", $data, TRUE);
@@ -152,15 +164,16 @@ class Plant_folder extends MX_Controller  {
 	{
 		$sch1 = rawurlencode($this->input->post('sch1'));
 		$sch2 = rawurlencode($this->input->post('ref2'));
-		$sch3 = rawurlencode($this->input->post('ref3'));
+		$id_plant = rawurlencode($this->input->post('id_plant'));
+		//$sch3 = rawurlencode($this->input->post('ref3'));
 
 		$per_page = rawurlencode($this->input->post('per_page'));
 		
 		$sch1 = empty($sch1) ? 'null' : $sch1;
 		$sch2 = empty($sch2) ? 'null' : $sch2;
-		$sch3 = empty($sch3) ? 'null' : $sch3;
+		//$sch3 = empty($sch3) ? 'null' : $sch3;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$per_page);
+		redirect($this->table."/pages/".$id_plant."/".$sch1."/".$sch2."/".$per_page);
 	}
 	
 	
@@ -184,6 +197,8 @@ class Plant_folder extends MX_Controller  {
 	
 	function edit_content($id)
 	{
+		$id_plant = $this->uri->segment(4);
+		$id_parent = $this->uri->segment(5);
 		$number = 0;
 		$file_image = "";
 		
@@ -204,11 +219,13 @@ class Plant_folder extends MX_Controller  {
 					#end ref dropdown multi value
 				
 					$id_plant = $r->id_plant;
+					$id_parent = $r->id_parent;
 					$id = $r->id;
 
 					$list[] = array(
 									"id"=>$r->id,
 									"id_plant"=>$r->id_plant,
+									"id_parent"=>$r->id_parent,
 									"title"=>$r->title,
 									"desc_"=>$r->desc_,
 									"create_date"=>$r->create_date,
@@ -217,7 +234,7 @@ class Plant_folder extends MX_Controller  {
 				}
 			}else{
 				
-				$id_plant = $id = "";
+				$id = "";
 				
 				#ref dropdown multi value
 				/*$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,null,2);*/
@@ -229,7 +246,8 @@ class Plant_folder extends MX_Controller  {
 				
 				$list[] = array(
 									"id"=>0,
-									"id_plant"=>"",
+									"id_plant"=>$id_plant,
+									"id_parent"=>$id_parent,
 									"title"=>"",
 									"desc_"=>"",
 									"create_date"=>"",
@@ -257,7 +275,7 @@ class Plant_folder extends MX_Controller  {
 									);
 			}
 			#end notification
-			
+			//echo $id_plant;
 			#ref dropdown multi value
 			$ref1 = $this->getDropdownPlant($id_plant,1);
 			#end ref dropdown multi value
@@ -267,9 +285,12 @@ class Plant_folder extends MX_Controller  {
 					  'notif'=>$notif,
 					  'btn_plus'=>$btn_plus,
 					  'list'=>$list,
+					  'plant'=>ucwords($this->plant_folder->getPlantTitle('tbl_plant',$id_plant)),
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
 				 	  'title_link'=>$this->table,
-					  'ref1'=>$ref1
+					  'ref1'=>$ref1,
+					  'id_plant'=>$id_plant,
+					  'id_parent'=>$id_parent
 					  );
 			return $this->parser->parse("edit.html", $data, TRUE);
 		}else{
@@ -281,7 +302,8 @@ class Plant_folder extends MX_Controller  {
 	function submit()
 	{
 		$err = "";
-		$id_plant = $this->input->post("ref1");
+		$id_plant = $this->input->post("id_plant");
+		$id_parent = $this->input->post("id_parent");
 		$title = strip_tags($this->input->post("title"));
 		$desc_ = $this->input->post("desc_");
 		$is_publish = $this->input->post("ref3");
@@ -298,15 +320,17 @@ class Plant_folder extends MX_Controller  {
 		}else{
 			if($id > 0)
 			{
-				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
+				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
-				redirect($this->table."/edit/".$id);
+				/*redirect($this->table."/edit/".$id_plant."/".$id);*/
+				redirect('plant');
 			}else{				
-				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$title,$desc_,$is_publish,$user_id);
+				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
-				redirect($this->table."/edit/".$last_id);
+				/*redirect($this->table."/edit/".$id_plant."/".$last_id);*/
+				redirect('plant');
 			}
 		}
 	}

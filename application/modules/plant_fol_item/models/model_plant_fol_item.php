@@ -135,15 +135,13 @@ class model_plant_fol_item extends CI_Model {
 	
 	
 	function setDelete($table,$id)
-	{
+	{/*
 		$status = 0;
-		#select first
 		$this->db->where('id',$id);
 		$this->db->where('publish','Publish');
 		$query = $this->db->get($table);
 		if($query->num_rows() == 0){
 		
-			#check menu in menu auth
 			$this->db->where('menu_id',$id);
 			$q1 = $this->db->get('menu_auth');
 			if($q1->num_rows() == 0){
@@ -157,6 +155,12 @@ class model_plant_fol_item extends CI_Model {
 				$this->db->delete($table);
 			}
 		}
+		return $status;*/
+		$status = 0;
+		$this->db->where('id',$id);
+		$this->db->delete($table);
+		$status = 1;
+
 		return $status;
 	}
 	

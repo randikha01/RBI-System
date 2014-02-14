@@ -1,8 +1,13 @@
 <script type="text/javascript">
 	
 	$(document).ready(function(){
-	
-		$('.list').sortable({
+
+		/*$("#filetree").treeview({
+			animated: "slow",
+			prerendered: false
+		});*/
+		
+		/*$('.list').sortable({
 
 			start: function(event, ui) {
 				ui.item.startPos = ui.item.index();
@@ -27,7 +32,65 @@
 				
 			}
 
-		});
+		});*/
+
+		$('.menutreex0').hide();
+		$('.menutreex1').hide();
+		$('.menutreex2').hide();
+		$('.menutreex3').hide();
+		$('.menutreex4').hide();
+
+		$('#folder_lv0').toggle(
+			function(){
+		    	$('.menutreex0').show();
+			}
+			,
+			function(){
+			    $('.menutreex0').hide();
+			}
+		);
+
+		$('#folder_lv1').toggle(
+			function(){
+		    	$('.menutreex1').show();
+			}
+			,
+			function(){
+			    $('.menutreex1').hide();
+			}
+		);
+
+		$('#folder_lv2').toggle(
+			function(){
+		    	$('.menutreex2').show();
+			}
+			,
+			function(){
+			    $('.menutreex2').hide();
+			}
+		);
+
+		$('#folder_lv3').toggle(
+			function(){
+		    	$('.menutreex3').show();
+			}
+			,
+			function(){
+			    $('.menutreex3').hide();
+			}
+		);
+
+		$('#folder_lv4').toggle(
+			function(){
+		    	$('.menutreex4').show();
+			}
+			,
+			function(){
+			    $('.menutreex4').hide();
+			}
+		);
+
+		
 	
 	});
   
@@ -219,7 +282,7 @@ function openclose_search()
                 <div id="search_box">
                     <table border=0>
                     <tr>
-                    	<td>Menu</td><td> <input type="text"  name="sch1" value="{sch1_val}"></td>
+                    	<td>Plant</td><td> <input type="text"  name="sch1" value="{sch1_val}"></td>
                     </tr>
                     <tr>
 					    <td>Publish</td><td>{ref2}</td>
@@ -255,9 +318,8 @@ function openclose_search()
 						</div>
 					</th>
                     <th width="5%" class="center">No.</th>
-					<th width="5%" class="center">Edit</th>
-                    <th width="15%">Menu</th>
-                    <th width="15%">Unit</th>
+                    <th width="15%">Plant</th>
+                    <th width="15%">Plant Category</th>
                     <th width="10%" class="center">Publish</th>
                     <th width="10%">Create date</th>
                  </tr>
@@ -275,8 +337,205 @@ function openclose_search()
 							</div>
 						</td>
 						<td width="5%" class="td-content center" id="numb">{no}</td>
-						<td width="5%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
-						<td width="15%" class="td-content"><b>{title}</b></td>
+						<td width="15%" class="td-content">
+							<b><a href="{admin_url}{title_link}/edit/{id}" rel="tooltip" title="Edit Plant" >{title}</a></b>
+							<a href="{admin_url}plant_folder/edit/0/{id}/0" class="" title="Add Folder" rel="tooltip" style="float:right !important">
+								<i class="icon-plus-sign"></i>
+							</a>
+							<ul id="filetree">
+								<li>Planning</li>
+								{folder_lv0}
+									<li>
+											<a href="#" id="folder_lv0">
+												<i class="icon-folder-close"></i>{ftitle_lv0}
+											</a>
+										<div class="menutreex0">
+											<ul class="menufolder">
+												<li>
+													<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv0}" class="" title="Add Folder" rel="tooltip">
+														Add Folder
+													</a>
+												</li>
+												<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv0}" class="" title="Add Object" rel="tooltip">
+														Add Object
+													</a></li>
+												<li>
+													<a href="{admin_url}plant_folder/edit/{fid_lv0}/{id}/{fparent_lv0}">
+														Edit
+													</a>
+												</li>
+											</ul>
+											<!-- list object lv 0 -->
+											<ul>
+												
+												{list_obj0}
+													<li>
+														<a href="{admin_url}item_object/edit/{bid0}/{id}/{fid_lv0}">
+															{bicon0}{btitle0}
+														</a>
+													</li>
+												{/list_obj0}
+											</ul>
+
+
+												<ul>
+													{folder_lvl}
+														<li>
+															<a href="#" id="folder_lv1">
+																{ficon_lvl}{ftitle_lvl}
+															</a>
+															<div class="menutreex1">
+																<ul class="menufolder">
+																	<li>
+																		<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lvl}" class="" title="Add Folder" rel="tooltip">
+																			Add Folder
+																		</a>
+																	</li>
+																	<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lvl}" class="" title="Add Object" rel="tooltip">
+																			Add Object
+																		</a></li>
+																	<li>
+																		<a href="{admin_url}plant_folder/edit/{fid_lvl}/{id}/{fid_lv0}">
+																			Edit
+																		</a>
+																	</li>
+																</ul>
+																<!-- list object lv 1 -->
+																<ul>
+																	{list_obj1}
+																		<li>
+																			<a href="{admin_url}item_object/edit/{bid1}/{id}/{fid_lvl}">
+																				{bicon1}{btitle1}
+																			</a>
+																		</li>
+																	{/list_obj1}
+																</ul>
+																<ul>
+																	{folder_lv2}
+																		<li>
+																			<a href="#" id="folder_lv2">
+																				{ficon_lv2}{ftitle_lv2}
+																			</a>
+																		<div class="menutreex2">
+																				<ul class="menufolder">
+																					<li>
+																						<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv2}" class="" title="Add Folder" rel="tooltip">
+																							Add Folder
+																						</a>
+																					</li>
+																					<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv2}" class="" title="Add Object" rel="tooltip">
+																							Add Object
+																						</a></li>
+																					<li>
+																						<a href="{admin_url}plant_folder/edit/{fid_lv2}/{id}/{fid_lvl}">
+																							Edit
+																						</a>
+																					</li>
+																				</ul>
+																				<!-- list object lv 2 -->
+																				<ul>
+																					{list_obj2}
+																						<li>
+																							<a href="{admin_url}item_object/edit/{bid2}/{id}/{fid_lv2}">
+																								{bicon2}{btitle2}
+																							</a>
+																						</li>
+																					{/list_obj2}
+																				</ul>
+																				<!--a href="{admin_url}plant_folder/edit/{fid_lv2}/{id}/{fid_lvl}">
+																					{ficon_lv2}{ftitle_lv2}
+																				</a>
+																				<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv2}" class="" title="Add Folder" rel="tooltip" style="float:right !important">
+																					<i class="icon-plus-sign"></i>
+																				</a-->
+																				<ul>
+																					{folder_lv3}
+																						<li>
+																							<a href="#" id="folder_lv3">
+																								{ficon_lv3}{ftitle_lv3}
+																							</a>
+																							<div class="menutreex3">
+																								<ul class="menufolder">
+																									<li>
+																										<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv3}" class="" title="Add Folder" rel="tooltip">
+																											Add Folder
+																										</a>
+																									</li>
+																									<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv3}" class="" title="Add Object" rel="tooltip">
+																											Add Object
+																										</a></li>
+																									<li>
+																										<a href="{admin_url}plant_folder/edit/{fid_lv3}/{id}/{fid_lv2}">
+																											Edit
+																										</a>
+																									</li>
+																								</ul>
+																								<!-- list object lv 3 -->
+																								<ul>
+																									{list_obj3}
+																										<li>
+																											<a href="{admin_url}item_object/edit/{bid3}/{id}/{fid_lv3}">
+																												{bicon3}{btitle3}
+																											</a>
+																										</li>
+																									{/list_obj3}
+																								</ul>
+
+																								<ul>
+																									{folder_lv4}
+																										<li>
+																											<a href="#" id="folder_lv4">
+																												{ficon_lv4}{ftitle_lv4}
+																											</a>
+																											<div class="menutreex4">
+																												<ul class="menufolder">
+																													<li>
+																														<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv4}" class="" title="Add Folder" rel="tooltip">
+																															Add Folder
+																														</a>
+																													</li>
+																													<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv4}" class="" title="Add Object" rel="tooltip">
+																															Add Object
+																														</a></li>
+																													<li>
+																														<a href="{admin_url}plant_folder/edit/{fid_lv4}/{id}/{fid_lv3}">
+																															Edit
+																														</a>
+																													</li>
+																												</ul>
+																												<!-- list object lv 4 -->
+																												<ul>
+																													{list_obj4}
+																														<li>
+																															<a href="{admin_url}item_object/edit/{bid4}/{id}/{fid_lv4}">
+																																{bicon4}{btitle4}
+																															</a>
+																														</li>
+																													{/list_obj4}
+																												</ul>
+																											</div>	
+																										</li>
+																									{/folder_lv4}
+																								</ul>
+																							</div>
+																						</li>
+																					{/folder_lv3}
+																				</ul>
+																			</div>
+																		</li>
+																	{/folder_lv2}
+																</ul>
+															</div>
+														</li>
+													{/folder_lvl}
+												</ul>
+											</div>
+									</li>	
+								{/folder_lv0}
+								<li>Alerts</li>
+							</ul>
+
+						</td>
 						<td width="15%" class="td-content">{parent}</td>
 						<td width="10%" class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
 						<td width="10%" class="td-content"><i class="icon-calendar"></i> {create_date}</td>

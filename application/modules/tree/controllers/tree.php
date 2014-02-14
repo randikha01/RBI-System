@@ -1,27 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Plant extends MX_Controller  {
+class Tree extends MX_Controller  {
 	
-	var $table = "plant";
-	var $table_alias = "Plant";
-	var $uri_page = 7;
-	var $per_page = 25;
+	var $table = "tree";
 	 
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model("".$this->table."/model_".$this->table, $this->table);
+		$this->load->model("plant/model_plant", "plant");
 		$this->lang->load('elemen_layout', 'indonesia');
-	}
-	
-	public function setheader()
-	{
-		return Modules::run('layout/setheader');
-	}
-
-	public function setfooter()
-	{
-		return Modules::run('layout/setfooter');
 	}
 	 
 	public function auth()
@@ -44,16 +31,380 @@ class Plant extends MX_Controller  {
 
 	function grid()
 	{
-		$this->setheader();		
-		$contents = $this->grid_content();
-	
-		$data = array(
-				  'admin_url' => base_url(),
-				  'contents' => $contents,
-				  );
-		$this->parser->parse('layout/contents.html', $data);
+		$node_id = strip_tags($this->input->post("node_id"));
 		
-		$this->setfooter();
+		#plant
+		$tree = array();
+		$q_plant = $this->plant->getList("plant");
+		if($node_id == NULL) {
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						
+						$tree[] = array(
+										"id" => "pl_".$r->id, 
+										"label" => ucwords($r->title), 
+										"type" => "folder",
+										"icon" => "units"
+									   );	
+									 
+				}
+				echo json_encode($tree);
+			}
+		}
+
+		#plant sub
+		$tree = array();
+		if( $node_id != NULL ) {
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+					{
+						if($node_id == "pl_".$r->id){
+						
+							#element
+							$no_element = 0;
+							$q_element = $this->plant->getElement("plant_element");
+							if($q_element->num_rows() > 0){
+								foreach($q_element->result() as $r_e)
+								{
+									$no_element++;
+									
+									$tree[] = array(
+															"id" => "el_".$r_e->id, 
+															"label" => ucwords($r_e->title), 
+															"type" => "folder",
+															"icon" => $r_e->icon
+														   );
+														   
+									if($no_element == 2){
+								
+										#folder lv0
+										$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+										$qf_num = $qfolder->num_rows();
+										if($qfolder->num_rows() > 0){
+											foreach ($qfolder->result() as $f) {
+												$tree[] = array(
+																"id" => "f0_".$f->id, 
+																"label" => ucwords($f->title), 
+																"type" => "folder",
+																"icon" => "folder"
+															   );
+											}
+										}
+									}
+									
+								}
+							}
+							#end element
+							echo json_encode($tree);
+						}
+					}	
+			}
+			
+			
+			#lv1
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						#folder lv0
+						$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+						if($qfolder->num_rows() > 0){
+							foreach ($qfolder->result() as $f) {
+								if($node_id == "f0_".$f->id){
+										#folder lv1
+										$qfolder1 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+										if($qfolder1->num_rows() > 0){
+											foreach ($qfolder1->result() as $f1) {
+												$tree[] = array(
+																"id" => "f1_".$f1->id, 
+																"label" => ucwords($f1->title), 
+																"type" => "folder",
+																"icon" => "folder"
+																);
+											}
+											
+										}
+										#end folder lv1
+										echo json_encode($tree);
+								}
+							}		
+						}
+						#folder lv0
+				}
+				
+			}
+			#lv1
+			
+			
+			#lv2
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						#folder lv0
+						$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+						if($qfolder->num_rows() > 0){
+							foreach ($qfolder->result() as $f) {
+								
+								#folder lv1
+								$qfolder1 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+								if($qfolder1->num_rows() > 0){
+									foreach ($qfolder1->result() as $f1) {
+										if($node_id == "f1_".$f1->id){
+											#folder lv2
+											$qfolder2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f1->id);
+											if($qfolder2->num_rows() > 0){
+												foreach ($qfolder2->result() as $f2) {
+													$tree[] = array(
+																	"id" => "f2_".$f2->id, 
+																	"label" => ucwords($f2->title), 
+																	"type" => "folder",
+																	"icon" => "folder"
+																	);
+												}
+											}
+											#folder lv2
+											echo json_encode($tree);
+										}
+									}
+											
+								}
+								#end folder lv1								
+							}	
+							
+						}
+						#end folder lv0
+				}
+				
+			}
+			#lv2
+			
+			
+			#lv3
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						#folder lv0
+						$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+						if($qfolder->num_rows() > 0){
+							foreach ($qfolder->result() as $f) {
+								
+								#folder lv1
+								$qfolder1 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+								if($qfolder1->num_rows() > 0){
+									foreach ($qfolder1->result() as $f1) {
+											#folder lv2
+											$qfolder2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f1->id);
+											if($qfolder2->num_rows() > 0){
+												foreach ($qfolder2->result() as $f2) {
+													if($node_id == "f2_".$f2->id){
+														#folder lv3
+														$qfolder3 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f2->id);
+														if($qfolder3->num_rows() > 0){
+															foreach ($qfolder3->result() as $f3) {
+																	$tree[] = array(
+																					"id" => "f3_".$f3->id, 
+																					"label" => ucwords($f3->title), 
+																					"type" => "folder",
+																					"icon" => "folder"
+																					);
+															}
+														}
+														#folder lv3
+														echo json_encode($tree);
+													}	
+												}
+											}
+											#folder lv2
+									}
+											
+								}
+								#end folder lv1								
+							}	
+							
+						}
+						#end folder lv0
+				}
+				
+			}
+			#lv3
+			
+			
+			#lv4
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						#folder lv0
+						$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+						if($qfolder->num_rows() > 0){
+							foreach ($qfolder->result() as $f) {
+								
+								#folder lv1
+								$qfolder1 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+								if($qfolder1->num_rows() > 0){
+									foreach ($qfolder1->result() as $f1) {
+											#folder lv2
+											$qfolder2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f1->id);
+											if($qfolder2->num_rows() > 0){
+												foreach ($qfolder2->result() as $f2) {
+														#folder lv3
+														$qfolder3 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f2->id);
+														if($qfolder3->num_rows() > 0){
+															foreach ($qfolder3->result() as $f3) {
+																if($node_id == "f3_".$f3->id){
+																	#folder lv4
+																	$qfolder4 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f3->id);
+																	if($qfolder4->num_rows() > 0){
+																		foreach ($qfolder4->result() as $f4) {
+																			$tree[] = array(
+																							"id" => "f4_".$f4->id, 
+																							"label" => ucwords($f4->title), 
+																							"type" => "folder",
+																							"icon" => "folder"
+																							);
+																		}
+																	}
+																	#folder lv4
+																	echo json_encode($tree);
+																}
+															}
+														}
+														#folder lv3
+			
+												}
+											}#folder lv2
+									}
+											
+								}
+								#end folder lv1								
+							}	
+							
+						}
+						#end folder lv0
+				}
+				
+			}
+			#lv4
+			
+			
+			
+			#lv5
+			if($q_plant->num_rows() > 0){
+				foreach($q_plant->result() as $r)
+				{
+						#folder lv0
+						$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+						if($qfolder->num_rows() > 0){
+							foreach ($qfolder->result() as $f) {
+								
+								#folder lv1
+								$qfolder1 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+								if($qfolder1->num_rows() > 0){
+									foreach ($qfolder1->result() as $f1) {
+											#folder lv2
+											$qfolder2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f1->id);
+											if($qfolder2->num_rows() > 0){
+												foreach ($qfolder2->result() as $f2) {
+														#folder lv3
+														$qfolder3 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f2->id);
+														if($qfolder3->num_rows() > 0){
+															foreach ($qfolder3->result() as $f3) {
+																	#folder lv4
+																	$qfolder4 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f3->id);
+																	if($qfolder4->num_rows() > 0){
+																		foreach ($qfolder4->result() as $f4) {
+																			if($node_id == "f4_".$f4->id){
+																				#folder lv5
+																				$qfolder5 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f4->id);
+																				if($qfolder5->num_rows() > 0){
+																					foreach ($qfolder5->result() as $f5) {
+																						$tree[] = array(
+																										"id" => "f5_".$f5->id, 
+																										"label" => ucwords($f5->title), 
+																										"type" => "folder",
+																										"icon" => "folder"
+																										);
+																					}
+																				}#end folder lv5
+																				echo json_encode($tree);
+																			}
+																		}
+																	}
+																	#folder lv4
+																	
+															}
+														}
+														#folder lv3
+			
+												}
+											}#folder lv2
+									}
+											
+								}
+								#end folder lv1								
+							}	
+							
+						}
+						#end folder lv0
+				}
+				
+			}
+			#lv5
+			
+			
+		}
+		#end plant sub
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	function grid_sample()
+	{
+		#$node_id = filter_input(INPUT_GET, "node_id", FILTER_SANITIZE_NUMBER_INT);
+		$node_id = strip_tags($this->input->post("node_id"));
+		
+		#level 0
+		if( $node_id == NULL ) {
+			echo json_encode(array(
+								0 => array( "id" => 1, 
+											"label" => "from PHP", 
+											"type" => "folder",
+											"icon" => "units"
+										  ),
+								1 => array( "id" => 2, 
+											"label" => "from PHP 2", 
+											"type" => "folder",
+											"icon" => "units"
+								 )
+								)
+							);
+		}
+
+		#level 1
+		$node_element = array("Planning","Folder Object");
+		
+		if( $node_id == 1 ) {
+			echo json_encode(array(
+								0 => array( "id" => 3, 
+											"label" => "Planing", 
+											"type" => "folder"
+										  ),
+								1 => array( "id" => 4, 
+											"label" => "sub 2 from PHP", 
+											"type" => "folder"
+								 )
+								)
+							);
+		}
+		
+		if( $node_id == 2 ) {
+			echo json_encode(array());
+		}
+		
 	}
 	
 	
@@ -76,7 +427,7 @@ class Plant extends MX_Controller  {
 
 		$sch3_parm = rawurldecode($this->uri->segment(5));
 		$sch3_parm = $sch3_parm != 'null' && !empty($sch3_parm) ? $sch3_parm : 'null';
-		$ref3 = Modules::run('plant/getPlantcatDropdown',$sch3_parm,3);
+		$ref3 = Modules::run('tree/getTreecatDropdown',$sch3_parm,3);
 		$sch_path = rawurlencode($sch1_parm)."/".rawurlencode($sch2_parm)."/".rawurlencode($sch3_parm);
 		#end search
 
@@ -94,14 +445,14 @@ class Plant extends MX_Controller  {
 			$lmt = $pg;
 		}
 		$path = base_url().$this->table."/pages/".$sch1_parm."/".$sch2_parm."/".$sch3_parm."/".$per_page;
-		$jum_record = $this->plant->getTotal($this->table,$sch1_parm,$sch2_parm,$sch3_parm);
+		$jum_record = $this->tree->getTotal($this->table,$sch1_parm,$sch2_parm,$sch3_parm);
 		$paging = Modules::run("widget/page",$jum_record,$per_page,$path,$uri_segment);
 		if(!$paging) $paging = "";
 		$display_record = $jum_record > 0 ? "" : "display:none;";
 		#end paging
 		
 		#record
-		$query = $this->plant->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
+		$query = $this->tree->getList($this->table,$per_page,$lmt,$sch1_parm,$sch2_parm,$sch3_parm);
 		$list = $folder_lv0 = $list_obj0 = $list_obj1 = $list_obj2 = $list_obj3 = $list_obj4 = $folder_lv1 = $folder_lv2 = $folder_lv3 = $folder_lv4 = array();
 		if($query->num_rows() > 0){
 			foreach($query->result() as $r)
@@ -110,12 +461,12 @@ class Plant extends MX_Controller  {
 				$zebra = $no % 2 == 0 ? "zebra" : "";
 				
 				$title = ucwords($r->title);
-				$plant_cat_title = ucwords($this->plant->getPlantcatTitle('tbl_ref_units',$r->id_ref_units));
+				$tree_cat_title = ucwords($this->tree->getTreecatTitle('tbl_ref_units',$r->id_ref_units));
 				$title = highlight_phrase($title, $sch1_parm, '<span style="color:#990000">', '</span>');
 				$publish = $r->publish == "Publish" ? "icon-ok-sign" : "icon-minus-sign";
 				$create_date = date("d/m/Y H:i:s",strtotime($r->create_date));
 
-				$qfolder = $this->plant->getListFolder('tbl_plant_folder',$r->id,0);
+				$qfolder = $this->tree->getListFolder('tbl_tree_folder',$r->id,0);
 				$qf_num = $qfolder->num_rows();
 				if($qfolder->num_rows() > 0){
 					foreach ($qfolder->result() as $f) {
@@ -124,7 +475,7 @@ class Plant extends MX_Controller  {
 						$fparent_lv0 = ucwords($f->id_parent);
 
 						/*list folder lv 1*/
-						$qfoll = $this->plant->getListFolder('tbl_plant_folder',$r->id,$f->id);
+						$qfoll = $this->tree->getListFolder('tbl_tree_folder',$r->id,$f->id);
 						$qfl_num = $qfoll->num_rows();
 						if($qfoll->num_rows() > 0){
 							foreach ($qfoll->result() as $fl) {
@@ -133,7 +484,7 @@ class Plant extends MX_Controller  {
 								$fparent_lv1 = ucwords($fl->id_parent);
 
 								/*list folder lv 2*/
-								$qfoll2 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl->id);
+								$qfoll2 = $this->tree->getListFolder('tbl_tree_folder',$r->id,$fl->id);
 								$qfl2_num = $qfoll2->num_rows();
 								if($qfoll2->num_rows() > 0){
 									foreach ($qfoll2->result() as $fl2) {
@@ -142,7 +493,7 @@ class Plant extends MX_Controller  {
 										$fparent_lv2 = ucwords($fl2->id_parent);
 
 										/*list folder lv 3*/
-										$qfoll3 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl2->id);
+										$qfoll3 = $this->tree->getListFolder('tbl_tree_folder',$r->id,$fl2->id);
 										$qfl3_num = $qfoll3->num_rows();
 										if($qfoll3->num_rows() > 0){
 											foreach ($qfoll3->result() as $fl3) {
@@ -151,7 +502,7 @@ class Plant extends MX_Controller  {
 												$fparent_lv3 = ucwords($fl3->id_parent);
 
 												/*list folder lv 4*/
-												$qfoll4 = $this->plant->getListFolder('tbl_plant_folder',$r->id,$fl3->id);
+												$qfoll4 = $this->tree->getListFolder('tbl_tree_folder',$r->id,$fl3->id);
 												$qfl4_num = $qfoll4->num_rows();
 												if($qfoll4->num_rows() > 0){
 													foreach ($qfoll4->result() as $fl4) {
@@ -160,7 +511,7 @@ class Plant extends MX_Controller  {
 														$fparent_lv4 = ucwords($fl4->id_parent);
 
 														/*list object lv 4*/
-														$qobj4 = $this->plant->getListObject('tbl_item_object',$fl4->id);
+														$qobj4 = $this->tree->getListObject('tbl_item_object',$fl4->id);
 														$qf4_num = $qobj4->num_rows();
 														if($qobj4->num_rows() > 0){
 															foreach ($qobj4->result() as $b4) {
@@ -177,7 +528,7 @@ class Plant extends MX_Controller  {
 												}
 
 												/*list object lv 3*/
-												$qobj3 = $this->plant->getListObject('tbl_item_object',$fl3->id);
+												$qobj3 = $this->tree->getListObject('tbl_item_object',$fl3->id);
 												$qf3_num = $qobj3->num_rows();
 												if($qobj3->num_rows() > 0){
 													foreach ($qobj3->result() as $b3) {
@@ -194,7 +545,7 @@ class Plant extends MX_Controller  {
 										}
 
 										/*list object lv 2*/
-										$qobj2 = $this->plant->getListObject('tbl_item_object',$fl2->id);
+										$qobj2 = $this->tree->getListObject('tbl_item_object',$fl2->id);
 										$qf2_num = $qobj2->num_rows();
 										if($qobj2->num_rows() > 0){
 											foreach ($qobj2->result() as $b2) {
@@ -211,7 +562,7 @@ class Plant extends MX_Controller  {
 								}
 
 								/*list object lv 1*/
-								$qobj1 = $this->plant->getListObject('tbl_item_object',$fl->id);
+								$qobj1 = $this->tree->getListObject('tbl_item_object',$fl->id);
 								$qf1_num = $qobj1->num_rows();
 								if($qobj1->num_rows() > 0){
 									foreach ($qobj1->result() as $b1) {
@@ -228,7 +579,7 @@ class Plant extends MX_Controller  {
 						}
 
 						/*list object lv 0*/
-						$qobj0 = $this->plant->getListObject('tbl_item_object',$f->id);
+						$qobj0 = $this->tree->getListObject('tbl_item_object',$f->id);
 						$qf0_num = $qobj0->num_rows();
 						if($qobj0->num_rows() > 0){
 							foreach ($qobj0->result() as $b0) {
@@ -250,7 +601,7 @@ class Plant extends MX_Controller  {
 								 "no"=>$no,
 								 "id"=>$r->id,
 								 "title" =>$title,
-								 "parent" =>$plant_cat_title,
+								 "parent" =>$tree_cat_title,
 								 "publish"=>$publish,
 								 "create_date"=>$create_date,
 				  				 "folder_lv0"=>$folder_lv0
@@ -330,7 +681,7 @@ class Plant extends MX_Controller  {
 			$ref3_arr = array("Not Publish"=>"Not Publish","Publish"=>"Publish");
 			
 			#record
-			$q = $this->plant->getDetail($this->table,$id);
+			$q = $this->tree->getDetail($this->table,$id);
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
@@ -401,7 +752,7 @@ class Plant extends MX_Controller  {
 			#end notification
 			
 			#ref dropdown multi value
-			$ref1 = $this->getRefDropdownPlantcat($id_ref_units,1);
+			$ref1 = $this->getRefDropdownTreecat($id_ref_units,1);
 			#end ref dropdown multi value
 			
 			$data = array(
@@ -441,11 +792,11 @@ class Plant extends MX_Controller  {
 		}else{
 			if($id > 0)
 			{
-				$this->plant->setUpdate($this->table,$id,$ref1,$title,$desc_,$ref3,$user_id);
+				$this->tree->setUpdate($this->table,$id,$ref1,$title,$desc_,$ref3,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				redirect($this->table."/edit/".$id);
 			}else{				
-				$id_term = $this->plant->setInsert($this->table,$id,$ref1,$title,$desc_,$ref3,$user_id);
+				$id_term = $this->tree->setInsert($this->table,$id,$ref1,$title,$desc_,$ref3,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
@@ -462,14 +813,14 @@ class Plant extends MX_Controller  {
 		foreach($post as $val)
 		{
 			$order++;
-			$this->plant->ajaxsort($this->table,$val,$order);
+			$this->tree->ajaxsort($this->table,$val,$order);
 		}
 	}
 	
 	
 	function delete($id=0)
 	{
-		$del_status = $this->plant->setDelete($this->table,$id);
+		$del_status = $this->tree->setDelete($this->table,$id);
 		$response['id'] = $id;
 		$response['status'] = $del_status;
 		echo $result = json_encode($response);
@@ -484,9 +835,9 @@ class Plant extends MX_Controller  {
 		redirect($this->table."/edit/".$id);
 	}
 	
-	function getRefDropdownPlantcat($parent_id,$name,$type=NULL)
+	function getRefDropdownTreecat($parent_id,$name,$type=NULL)
 	{
-		$q = $this->plant->getPlantcatList('tbl_ref_units');
+		$q = $this->tree->getTreecatList('tbl_ref_units');
 		$list = array();
 		foreach ($q->result() as $val) {
 			$selected = $val->id == $parent_id ? $selected = "selected='selected'" : "tidak";	
@@ -503,9 +854,9 @@ class Plant extends MX_Controller  {
 		return $this->parser->parse("layout/ref_dropdown".$type.".html", $data, TRUE);
 	}
 	
-	function getPlantcatDropdown($id,$name,$type=NULL)
+	function getTreecatDropdown($id,$name,$type=NULL)
 	{
-		$q = $this->plant->getPlantcatlist('tbl_ref_units',null,null,null);
+		$q = $this->tree->getTreecatlist('tbl_ref_units',null,null,null);
 		$list = array();
 		foreach ($q->result() as $val) {
 
@@ -524,7 +875,8 @@ class Plant extends MX_Controller  {
 		return $this->parser->parse("layout/ref_dropdown".$type.".html", $data, TRUE);
 	}
 	
+	
 }
 
-/* End of file plant.php */
-/* Location: ./application/modules/controller/plant.php */
+/* End of file tree.php */
+/* Location: ./application/modules/controller/tree.php */
