@@ -62,8 +62,9 @@
 
 
 function finder()
-{
-	var nodes = {
+{	
+
+		/*var nodes = {
                     0: [
                         { id: 1, label: "Plant 1", type: "folder" },
                         { id: 2, label: "Plant 2", type: "folder"}
@@ -93,7 +94,7 @@ function finder()
 						{ id: 1.313, label: "High Risk", type: "folder" },
 						{ id: 1.314, label: "Inspection Reports", type: "folder" },
 						{ id: 1.315, label: "Overdue", type: "folder" },
-                        /*{ id: 1.113, label: "Hacker News", type:"link", url: "https://news.ycombinator.com/news" }*/
+                       //{ id: 1.113, label: "Hacker News", type:"link", url: "https://news.ycombinator.com/news" }
                     ],
 
                     1.2: [
@@ -117,27 +118,50 @@ function finder()
 						{ id: 2.14, label: "Task Register", type: "folder" },
 						{ id: 2.15, label: "Technical Libarary", type: "folder" }
                     ]
-                };
+                };*/
+				
 
                 $("#columns").hColumns({
                     nodeSource: function(node_id, callback) {
-                       if(node_id === null) {
-                            node_id = 0;
-                        }
-
-                        if( !(node_id in nodes) ) {
-                            return callback("Node not exists");
-                        }
-
-                        return callback(null, nodes[node_id]);
 						
-						 /*$.ajax("{base_url}plant", { node_id: node_id }).done(function(data) {
-							return callback(null, data);
+						$.ajax(
+						    { 
+							url:"{base_url}tree",
+							data:{node_id: node_id},
+							type:"POST",
+							dataType: 'json' 
+							}).done(function(data) {
+						    var record = data;
+							return callback(null, record);
 						 }).fail(function() {
 							return callback("AJAX error");
-						 });*/
+						 });
 						
-                    }
+                    },
+
+					// short message for empty node 
+					noContentString: "There is no data here",
+
+					// custom type for the list
+				    customNodeTypeIcon: {
+						units: "icon-hdd",
+						planning: "icon-calendar",
+						alert: "icon-warning-sign",
+						archive: "icon-book",
+						assets: "icon-th-large",
+						criticaly: "icon-exclamation-sign",
+						management: "icon-list-alt",
+						pending: "icon-share-alt",
+						pipe: "icon-tasks",
+						process: "icon-repeat",
+						relative: "icon-th-large",
+						system: "icon-tasks",
+						task: "icon-calendar",
+						technical: "icon-info-sign",
+						folder: "icon-folder-close"						
+					},
+					customNodeTypeHandler: {}
+					
                 });
 }
 </script>
