@@ -513,6 +513,70 @@ h1, h2, h3, h4, h5, h6 {
     float:left;
 }
 
+
+/*element*/
+.icon-warning-sign {
+    background-position: -144px -120px !important;
+	float:left;
+}
+
+.icon-exclamation-sign{
+	background-position: 0 -120px !important;
+	float:left;
+}
+
+.icon-hdd {
+    background-position: 0 -144px !important;
+	float:left;
+}
+
+.icon-calendar {
+    background-position: -192px -120px !important;
+	float:left;
+}
+
+.icon-book {
+    background-position: -48px -48px !important;
+	float:left;
+}
+
+.icon-th-large {
+    background-position: -216px 0 !important;
+	float:left;
+}
+
+.icon-list-alt {
+    background-position: -264px -24px !important;
+	float:left;
+}
+
+.icon-share-alt {
+    background-position: -336px -96px !important;
+	float:left;
+}
+
+.icon-tasks {
+    background-position: -384px -144px !important;
+	float:left;
+}
+
+.icon-repeat {
+    background-position: -216px -24px !important;
+	float:left;
+}
+
+.icon-info-sign {
+    background-position: -120px -96px !important;
+	float:left;
+}
+
+.icon-tasks {
+    background-position: -384px -144px !important;
+	float:left;
+}
+
+/*end element*/
+
 [class^="icon-"], [class*=" icon-"] {
     background-image: url("../../images/admin_images/glyphicons-halflings.png");
     background-position: 14px 14px;

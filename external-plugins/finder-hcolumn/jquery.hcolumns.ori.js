@@ -12,7 +12,6 @@
         searchable: false,
 
         customNodeTypeIndicator: {},
-		customNodeTypeIcon: {},
         customNodeTypeHandler: {}
     };
     
@@ -36,10 +35,6 @@
         folder: "icon-chevron-right",
         link: "icon-globe"
     };
-	
-	var defaultIcon = {
-		globe: "icon-globe" 
-    };
 
     var methods = {
         init: function(options) {
@@ -47,7 +42,6 @@
             var settings = $.extend(defaultConfig , options);
             var handlers = $.extend(defaultHandler, settings.customNodeTypeHandler);
             var indicators = $.extend(defaultIndicator, settings.customNodeTypeIndicator);
-			var icons = $.extend(defaultIcon, settings.customNodeTypeIcon);
             
             // return methods to the chain
             return this.each(function(){
@@ -61,7 +55,6 @@
                 settings.columnView = methods;
                 settings.handlers = handlers;
                 settings.indicators = indicators;
-				settings.icons = icons;
 
                 settings.container_node = this;
                 
@@ -100,7 +93,6 @@
             var current_click_level = $(this).parents(".column").index();
 
             var current_node_type = $(this).data("node-type");
-			var current_node_icon = $(this).data("node-icon");
             var current_node_data = $(this).data("node-data");
 
             // remove another subcolumns
@@ -132,12 +124,10 @@
 			
 			for (var i = 0; i < list.length; i++) {
 			    // we create the element
-               	var EntryElm = $(document.createElement('li')).data("node-id", list[i].id).data("node-type", list[i].type).data("node-icon", list[i].icon).data("node-data", list[i]).attr('title', list[i].label);
+               	var EntryElm = $(document.createElement('li')).data("node-id", list[i].id).data("node-type", list[i].type).data("node-data", list[i]).attr('title', list[i].label);
                 var EntryIconElm = $(document.createElement('i')).addClass( self.settings.indicators[list[i].type] );
-				var EntryIconsElm = $(document.createElement('div')).addClass( self.settings.icons[list[i].icon] );
                 
                 // we build the node entry
-				EntryElm[0].appendChild( EntryIconsElm[0] );
 				EntryElm[0].appendChild( document.createTextNode(list[i].label) );
 				EntryElm[0].appendChild( EntryIconElm[0] );
 				

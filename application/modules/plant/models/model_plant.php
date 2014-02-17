@@ -33,7 +33,7 @@ class model_plant extends CI_Model {
 	}
 	
 	
-	function getList($table,$per_page,$lmt,$search1_parm,$search2_parm,$search3_parm)
+	function getList($table,$per_page=NULL,$lmt=NULL,$search1_parm=NULL,$search2_parm=NULL,$search3_parm=NULL)
 	{
 		if($search1_parm != 'null' && !empty($search1_parm) )
 		{
@@ -218,6 +218,18 @@ class model_plant extends CI_Model {
 	function getMax($table)
 	{
 		$this->db->select_max('ordered','max_ordered');
+		$query = $this->db->get($table);
+		return $query;
+	}
+	
+	
+	function getElement($table,$parent_id=NULL)
+	{
+		if($parent_id != 'null' && !empty($parent_id) )
+		{
+			$this->db->where($table.'.parent_id',$parent_id);
+		}
+		$this->db->order_by('id','asc');
 		$query = $this->db->get($table);
 		return $query;
 	}
