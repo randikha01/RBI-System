@@ -1,101 +1,4 @@
 <script type="text/javascript">
-	
-	$(document).ready(function(){
-
-		/*$("#filetree").treeview({
-			animated: "slow",
-			prerendered: false
-		});*/
-		
-		/*$('.list').sortable({
-
-			start: function(event, ui) {
-				ui.item.startPos = ui.item.index();
-			},
-			update: function(event, ui) {
-				
-				var i = "{pg}";
-				
-				$.post("{admin_url}menu/ajaxsort", {
-							data : $(this).sortable('toArray'),
-							index_order : i
-				}, function(data){
-					timer = 1000;
-					setTimeout("goto()",timer);
-				});
-				
-				$(".list li" ).each(function() {
-					i++;
-					$(this).find("table tr td#numb").text(i);
-				});
-				
-				
-			}
-
-		});*/
-
-		$('.menutreex0').hide();
-		$('.menutreex1').hide();
-		$('.menutreex2').hide();
-		$('.menutreex3').hide();
-		$('.menutreex4').hide();
-
-		$('#folder_lv0').toggle(
-			function(){
-		    	$('.menutreex0').show();
-			}
-			,
-			function(){
-			    $('.menutreex0').hide();
-			}
-		);
-
-		$('#folder_lv1').toggle(
-			function(){
-		    	$('.menutreex1').show();
-			}
-			,
-			function(){
-			    $('.menutreex1').hide();
-			}
-		);
-
-		$('#folder_lv2').toggle(
-			function(){
-		    	$('.menutreex2').show();
-			}
-			,
-			function(){
-			    $('.menutreex2').hide();
-			}
-		);
-
-		$('#folder_lv3').toggle(
-			function(){
-		    	$('.menutreex3').show();
-			}
-			,
-			function(){
-			    $('.menutreex3').hide();
-			}
-		);
-
-		$('#folder_lv4').toggle(
-			function(){
-		    	$('.menutreex4').show();
-			}
-			,
-			function(){
-			    $('.menutreex4').hide();
-			}
-		);
-
-		
-	
-	});
-  
-</script>
-<script type="text/javascript">
 function checkAll()
 {
 	var choice_num = document.getElementsByName("choices").length;
@@ -118,6 +21,12 @@ function checkAll()
 
 $(document).ready(function() 
 {
+	$('[class|="menutreex0"]').hide();
+	$('[class|="menutreex1"]').hide();
+	$('[class|="menutreex2"]').hide();
+	$('[class|="menutreex3"]').hide();
+	$('[class|="menutreex4"]').hide();
+	
 	$('#delete_btn_up').click(function(e) 
 	{
 		confirm("Are you sure ?","javascript:del()");
@@ -223,6 +132,14 @@ function pub()
 		}
 }
 
+function togglefolder(idtarget){
+	if($(idtarget).is(':visible')){
+		$(idtarget).hide();
+	}else{
+		$(idtarget).show();
+	}
+}
+
 
 function goto()
 {
@@ -246,7 +163,6 @@ function openclose_search()
 			$.cookie('search_{title_link}',null,{ path: '/' });
 		}
 }
-
 
     var config = {
           '#ref3'           : {},
@@ -346,10 +262,10 @@ function openclose_search()
 								<li>Planning</li>
 								{folder_lv0}
 									<li>
-											<a href="#" id="folder_lv0">
+											<a href="#" id="folder_lv0-{id}-{fid_lv0}" onclick="togglefolder('.menutreex0-{id}-{fid_lv0}')">
 												<i class="icon-folder-close"></i>{ftitle_lv0}
 											</a>
-										<div class="menutreex0">
+										<div class="menutreex0-{id}-{fid_lv0}">
 											<ul class="menufolder">
 												<li>
 													<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv0}" class="" title="Add Folder" rel="tooltip">
@@ -381,10 +297,10 @@ function openclose_search()
 												<ul>
 													{folder_lvl}
 														<li>
-															<a href="#" id="folder_lv1">
+															<a href="#" id="folder_lv1" onclick="togglefolder('.menutreex1-{id}-{fid_lvl}')">
 																{ficon_lvl}{ftitle_lvl}
 															</a>
-															<div class="menutreex1">
+															<div class="menutreex1-{id}-{fid_lvl}">
 																<ul class="menufolder">
 																	<li>
 																		<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lvl}" class="" title="Add Folder" rel="tooltip">
@@ -413,10 +329,10 @@ function openclose_search()
 																<ul>
 																	{folder_lv2}
 																		<li>
-																			<a href="#" id="folder_lv2">
+																			<a href="#" id="folder_lv2" onclick="togglefolder('.menutreex2-{id}-{fid_lv2}')">
 																				{ficon_lv2}{ftitle_lv2}
 																			</a>
-																		<div class="menutreex2">
+																		<div class="menutreex2-{id}-{fid_lv2}">
 																				<ul class="menufolder">
 																					<li>
 																						<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv2}" class="" title="Add Folder" rel="tooltip">
@@ -451,10 +367,10 @@ function openclose_search()
 																				<ul>
 																					{folder_lv3}
 																						<li>
-																							<a href="#" id="folder_lv3">
+																							<a href="#" id="folder_lv3" onclick="togglefolder('.menutreex3-{id}-{fid_lv3}')">
 																								{ficon_lv3}{ftitle_lv3}
 																							</a>
-																							<div class="menutreex3">
+																							<div class="menutreex3-{id}-{fid_lv3}">
 																								<ul class="menufolder">
 																									<li>
 																										<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv3}" class="" title="Add Folder" rel="tooltip">
@@ -484,10 +400,10 @@ function openclose_search()
 																								<ul>
 																									{folder_lv4}
 																										<li>
-																											<a href="#" id="folder_lv4">
+																											<a href="#" id="folder_lv4" onclick="togglefolder('.menutreex4-{id}-{fid_lv4}')">
 																												{ficon_lv4}{ftitle_lv4}
 																											</a>
-																											<div class="menutreex4">
+																											<div class="menutreex4-{id}-{fid_lv4}">
 																												<ul class="menufolder">
 																													<li>
 																														<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv4}" class="" title="Add Folder" rel="tooltip">
