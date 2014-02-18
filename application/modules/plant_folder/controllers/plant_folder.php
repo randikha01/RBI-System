@@ -212,22 +212,25 @@ class Plant_folder extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
+
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->title;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->desc_;
+					$id_plant = $this->session->flashdata("id_plant") ? $this->session->flashdata("id_plant") : $r->id_plant;
+					$id_parent = $this->session->flashdata("id_parent") ? $this->session->flashdata("id_parent") : $r->id_parent;
 								
-					#ref dropdown multi value					
-					$ref3_select_arr[0] = $r->publish;
+					#ref dropdown multi value				
+					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;				
 					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 					#end ref dropdown multi value
 				
-					$id_plant = $r->id_plant;
-					$id_parent = $r->id_parent;
 					$id = $r->id;
 
 					$list[] = array(
 									"id"=>$r->id,
-									"id_plant"=>$r->id_plant,
-									"id_parent"=>$r->id_parent,
-									"title"=>$r->title,
-									"desc_"=>$r->desc_,
+									"id_plant"=>$id_plant,
+									"id_parent"=>$id_parent,
+									"title"=>$title,
+									"desc_"=>$desc_,
 									"create_date"=>$r->create_date,
 									"ref3"=>$ref3
 									);
@@ -235,21 +238,21 @@ class Plant_folder extends MX_Controller  {
 			}else{
 				
 				$id = "";
+
+				$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : null;
+				$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : null;
 				
 				#ref dropdown multi value
-				/*$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,null,2);*/
-				#end ref dropdown multi value
-				
-				#ref dropdown multi value
-				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,null,3);
+				$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
+				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 				#end ref dropdown multi value
 				
 				$list[] = array(
 									"id"=>0,
 									"id_plant"=>$id_plant,
 									"id_parent"=>$id_parent,
-									"title"=>"",
-									"desc_"=>"",
+									"title"=>$title,
+									"desc_"=>$desc_,
 									"create_date"=>"",
 									"ref3"=>$ref3
 									);
@@ -306,7 +309,7 @@ class Plant_folder extends MX_Controller  {
 		$id_parent = $this->input->post("id_parent");
 		$title = strip_tags($this->input->post("title"));
 		$desc_ = $this->input->post("desc_");
-		$is_publish = $this->input->post("ref3");
+		$ref3 = $this->input->post("ref3");
 		$user_id = $this->session->userdata('adminID');
 		$id = strip_tags($this->input->post("id"));
 		
@@ -316,16 +319,21 @@ class Plant_folder extends MX_Controller  {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata("err",validation_errors());
-			redirect($this->table."/edit/".$id);
+			$this->session->set_flashdata("id_plant",$id_plant);
+			$this->session->set_flashdata("id_parent",$id_parent);
+			$this->session->set_flashdata("title",$title);
+			$this->session->set_flashdata("desc_",$desc_);
+			$this->session->set_flashdata("ref3",$ref3);
+			redirect($this->table."/edit/".$id."/".$id_plant."/".$id_parent);
 		}else{
 			if($id > 0)
 			{
-				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
+				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$ref3,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				/*redirect($this->table."/edit/".$id_plant."/".$id);*/
 				redirect('plant');
 			}else{				
-				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
+				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$ref3,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
