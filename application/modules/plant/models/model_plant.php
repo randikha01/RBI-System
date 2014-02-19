@@ -233,5 +233,27 @@ class model_plant extends CI_Model {
 		$query = $this->db->get($table);
 		return $query;
 	}
+
+	function cekobject($table,$id_item_object=NULL){
+		$this->db->where("id_item_object",$id_item_object);
+		$q = $this->db->get($table);
+		if($q->num_rows() > 0){
+			$v = $q->row();
+			return $v->id;
+		}else{
+			return 0;
+		}
+	}
+
+	/*function cekobject($table,$id_item_object=NULL){
+		$this->db->where("id_item_object",$id_item_object);
+		$q = $this->db->get($table);
+		if($q->num_rows() > 0){
+			$v = $q->row();
+			return $v->id;
+		}else{
+			return 0;
+		}
+	}*/
 }
 ?>
