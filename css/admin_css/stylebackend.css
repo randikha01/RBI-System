@@ -2037,7 +2037,30 @@ body {
     display: inline;
     margin-left: 5px;
 }*/
-.menufolder > li{
+.menufolder > li,.menuobj > li{
     display: inline;
     margin-left: 5px;
+}
+
+.formobj50 {
+    width: 50%;
+    float:left;
+}
+
+.formobj100 {
+    width: 100%;
+    float:left;
+}
+
+.formobj14 {
+    width: 14%;
+    float:left;
+}
+
+.clearfix {
+    clear:both;
+}
+
+.pendek {
+    width: 100px;
 }

@@ -2,10 +2,17 @@
 -- version 3.1.3.1
 -- http://www.phpmyadmin.net
 --
+<<<<<<< HEAD
+-- Host: 127.0.0.1
+-- Generation Time: Feb 17, 2014 at 06:01 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
+=======
 -- Host: localhost
 -- Generation Time: Feb 13, 2014 at 11:28 PM
 -- Server version: 5.1.33
 -- PHP Version: 5.2.9
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -304,15 +311,24 @@ CREATE TABLE IF NOT EXISTS `tbl_plant` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=7 ;
+=======
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=8 ;
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 --
 -- Dumping data for table `tbl_plant`
 --
 
 INSERT INTO `tbl_plant` (`id`, `id_ref_units`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+<<<<<<< HEAD
+(5, 2, 'Komunigrafik Plant', 'Komunigrafik Plant', 'Publish', 1, 0, '2014-02-04 05:13:54', '2014-02-04 06:13:54'),
+(6, 2, 'Randikha Plant', 'Randikha Tes Plant', 'Publish', 1, 0, '2014-02-14 02:46:20', '2014-02-14 02:46:20');
+=======
 (5, 2, 'Komunigrafik Plant', 'Komunigrafik Plant', 'Publish', 1, 0, '2014-02-04 12:13:54', '2014-02-04 06:13:54'),
 (7, 1, 'Randikha Plant', 'Randikha Tes Plant', 'Publish', 1, 0, '2014-02-13 21:53:10', '2014-02-13 21:53:10');
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 -- --------------------------------------------------------
 
@@ -338,6 +354,21 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_element` (
 --
 
 INSERT INTO `tbl_plant_element` (`id`, `parent_id`, `title`, `icon`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+<<<<<<< HEAD
+(1, 0, 'Planning', 'planning', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:25:18'),
+(2, 0, 'Alerts', 'alert', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:17:53'),
+(3, 0, 'Archive', 'archive', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:17:57'),
+(4, 0, 'Assets Listing', 'assets', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:18:21'),
+(5, 0, 'Criticaly Ratings', 'criticaly', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:18:33'),
+(6, 0, 'Management Status', 'management', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:18:46'),
+(7, 0, 'Pending Inspections', 'pending', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:18:57'),
+(8, 0, 'Pipe Classes', 'pipe', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:20:06'),
+(9, 0, 'Process', 'process', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:20:38'),
+(10, 0, 'Relative Risk Status', 'relative', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:20:56'),
+(11, 0, 'System', 'system', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:23:52'),
+(12, 0, 'Task Register', 'task', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:21:15'),
+(13, 0, 'Technical Libarary', 'technical', 'Publish', 1, 0, '2014-02-14 02:25:25', '2014-02-13 20:21:37');
+=======
 (1, 0, 'Planning', 'planning', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:25:18'),
 (2, 0, 'Alerts', 'alert', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:17:53'),
 (3, 0, 'Archive', 'archive', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:17:57'),
@@ -351,6 +382,7 @@ INSERT INTO `tbl_plant_element` (`id`, `parent_id`, `title`, `icon`, `publish`, 
 (11, 0, 'System', 'system', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:23:52'),
 (12, 0, 'Task Register', 'task', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:21:15'),
 (13, 0, 'Technical Libarary', 'technical', 'Publish', 1, 0, '2014-02-13 20:25:25', '2014-02-13 20:21:37');
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 -- --------------------------------------------------------
 
@@ -370,13 +402,27 @@ CREATE TABLE IF NOT EXISTS `tbl_plant_folder` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
+<<<<<<< HEAD
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=28 ;
+=======
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=35 ;
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 --
 -- Dumping data for table `tbl_plant_folder`
 --
 
 INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `id_parent`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+<<<<<<< HEAD
+(24, 5, 23, 'LV 4', 'LV 4', 'Publish', 1, 0, '2014-02-11 04:02:11', '2014-02-11 05:02:11'),
+(23, 5, 22, 'LV 3', 'LV 3', 'Publish', 1, 0, '2014-02-11 03:56:50', '2014-02-11 04:56:50'),
+(18, 5, 0, 'lv 0', 'lv 0', 'Publish', 1, 0, '2014-02-10 08:50:50', '2014-02-10 09:50:50'),
+(21, 5, 18, 'lv 1', 'lv 1', 'Publish', 1, 1, '2014-02-10 08:56:11', '2014-02-10 09:53:26'),
+(22, 5, 21, 'Lv 2', 'LV 2', 'Publish', 1, 0, '2014-02-11 03:50:43', '2014-02-11 04:50:43'),
+(25, 6, 0, 'R Lv0', 'R Lv0', 'Publish', 1, 0, '2014-02-14 02:47:17', '2014-02-14 02:47:17'),
+(26, 6, 0, 'R2 Lv0', 'R2 Lv0', 'Publish', 1, 0, '2014-02-14 02:47:47', '2014-02-14 02:47:47'),
+(27, 6, 26, 'R2 Lv1', 'R2 Lv1', 'Publish', 1, 0, '2014-02-14 02:48:26', '2014-02-14 02:48:26');
+=======
 (24, 5, 23, 'LV 4', 'LV 4', 'Publish', 1, 0, '2014-02-11 11:02:11', '2014-02-11 05:02:11'),
 (23, 5, 22, 'LV 3', 'LV 3', 'Publish', 1, 0, '2014-02-11 10:56:50', '2014-02-11 04:56:50'),
 (18, 5, 0, 'lv 0', 'lv 0', 'Publish', 1, 0, '2014-02-10 15:50:50', '2014-02-10 09:50:50'),
@@ -385,6 +431,7 @@ INSERT INTO `tbl_plant_folder` (`id`, `id_plant`, `id_parent`, `title`, `desc_`,
 (34, 7, 0, 'R2 Lv0', 'R2 Lv0', 'Publish', 1, 0, '2014-02-13 21:54:51', '2014-02-13 21:54:51'),
 (33, 7, 32, 'R Lv1', 'R Lv1', 'Publish', 1, 0, '2014-02-13 21:54:14', '2014-02-13 21:54:14'),
 (32, 7, 0, 'R1 Lv0', 'R Lv0', 'Publish', 1, 1, '2014-02-13 21:56:35', '2014-02-13 21:53:47');
+>>>>>>> e664160bb448cf4ce0c3a41ea20c11b8883a6cf0
 
 -- --------------------------------------------------------
 
