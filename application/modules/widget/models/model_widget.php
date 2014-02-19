@@ -4,6 +4,7 @@ class model_widget extends CI_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->groupID = $this->session->userdata('adminGroupsID');
 	}
 	
 	
@@ -18,6 +19,11 @@ class model_widget extends CI_Model {
 		if(empty($sort) || is_null($sort)){
 			$sort = "ref_title";
 		}
+		
+		if($this->groupID <> 1 && $table == "adminusers_level"){
+			$this->db->where($table.".id !=",1);
+		}
+		
 		$this->db->order_by($table.".".$sort,"asc");
 		$q = $this->db->get($table);
 		return $q;

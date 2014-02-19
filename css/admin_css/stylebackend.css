@@ -1523,7 +1523,12 @@ input, textarea, select, .uneditable-input {
     height: 18px;
     line-height: 18px;
     padding: 4px;
-    width: 495px;
+    width: 395px;
+}
+
+
+.chzn-container {
+    width: 395px !important;
 }
 
 .chzn-single {
@@ -2063,4 +2068,37 @@ body {
 
 .pendek {
     width: 100px;
+}
+#facebox .content {
+	background:#FFF !important;
+    -webkit-border-radius:0px !important;
+	-moz-border-radius:0px !important;
+	border-radius:0px !important;
+}
+
+/*form*/
+.form {
+    background-color: #FFF !important;
+}
+
+.float-no{
+	float:none !important;
+}
+
+#load-tree{
+	background:url("../../images/admin_images/loading-tree.gif") no-repeat;
+	width:24px;
+	margin-left: 470px;
+    margin-top: 20px;
+    position: absolute;
+    height: 24px;
+}
+
+#load-content{
+	background:url("../../images/admin_images/loading-content.gif") no-repeat;
+	width:24px;
+	height:24px;
+	float: left;
+    margin-left: 10px;
+    margin-top: 20px;
 }

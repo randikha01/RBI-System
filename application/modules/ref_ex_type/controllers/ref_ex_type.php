@@ -4,7 +4,7 @@ class ref_ex_type extends MX_Controller  {
 	
 	var $table = "ref_ex_type";
 	var $table_alias = "Ex Type";	
-	var $uri_page = 7;
+	var $uri_page = 6;
 	var $per_page = 25;
 	 
 	function __construct()
@@ -16,7 +16,7 @@ class ref_ex_type extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class ref_ex_type extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{		
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +51,6 @@ class ref_ex_type extends MX_Controller  {
 				  'contents'=>$contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -153,7 +150,7 @@ class ref_ex_type extends MX_Controller  {
 		$sch1 = empty($sch1) ? 'null' : $sch1;
 		$sch2 = empty($sch2) ? 'null' : $sch2;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$per_page);
+		echo base_url().$this->table."/pages/".$sch1."/".$sch2."/".$per_page;
 	}
 	
 	
@@ -168,9 +165,7 @@ class ref_ex_type extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
 	}
 	
 	
@@ -208,7 +203,7 @@ class ref_ex_type extends MX_Controller  {
 									);
 				}
 			}else{
-					$code = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : "";
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : "";
 					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : "";
 					
 					#ref dropdown no multi value
@@ -218,8 +213,7 @@ class ref_ex_type extends MX_Controller  {
 				
 					$list[] = array(
 										"id"=>0,
-										"member_id" => "",
-										"ref_code"=>"",
+										"desc_"=>$desc_,
 										"title" => $title,
 										"ref2"=>$ref2,
 										"create_date"=>""

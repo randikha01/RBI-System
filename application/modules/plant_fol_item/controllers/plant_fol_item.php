@@ -4,7 +4,7 @@ class Plant_fol_item extends MX_Controller  {
 	
 	var $table = "plant_fol_item";
 	var $table_alias = "Plant Folder Object";
-	var $uri_page = 7;
+	var $uri_page = 8;
 	var $per_page = 25;
 	 
 	function __construct()
@@ -16,7 +16,7 @@ class Plant_fol_item extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class Plant_fol_item extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{	
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +51,6 @@ class Plant_fol_item extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -171,7 +168,7 @@ class Plant_fol_item extends MX_Controller  {
 		$sch3 = empty($sch3) ? 'null' : $sch3;
 		$sch4 = empty($sch4) ? 'null' : $sch4;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page);
+		echo base_url().$this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page;
 	}
 	
 	
@@ -186,9 +183,8 @@ class Plant_fol_item extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
+
 	}
 	
 	

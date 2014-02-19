@@ -136,12 +136,32 @@ function pub()
 
 function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}';
+	parent.openModal('{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}');
 }
 
-//search
 function set_search(){
-	document.forms["search"].submit();
+
+	$("#search").submit(function(e)
+	{
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		$.ajax(
+		{
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data)
+			{
+				var url = data;
+				parent.openModal(url);
+			}
+		});
+		e.preventDefault(); //STOP default action
+		e.unbind(); //unbind. to stop multiple form submit.
+	});
+	 
+	$("#search").submit(); 
+
 }
 
 function openclose_search()
@@ -192,7 +212,7 @@ $("[rel=tooltip]").tooltip();
 </script>
 
         <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="javascript:void(0);" onclick="parent.openModal('{admin_url}dashboard/home');" title="Home"><span class="icon-home"></span></a></li>
             <li><span>{title_head}</span></li>
         </ul>
         <div class="clear"></div>
@@ -218,7 +238,7 @@ $("[rel=tooltip]").tooltip();
 					    </table>
 					<input type="hidden" value="{per_page}" name="per_page"/>
                     <input type="button" class="btn info" value="Search" onclick="set_search()" />  
-                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}';" />
+                    <input type="button" class="btn-reset" value="Reset" onclick="parent.openModal('{admin_url}{title_link}');"/>
                 </div>
             </form>
 	     
@@ -227,7 +247,7 @@ $("[rel=tooltip]").tooltip();
                  <div class="navigation">
 					<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_up" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
-					<a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+					<a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -257,7 +277,7 @@ $("[rel=tooltip]").tooltip();
 						</div>
 					</td>
                     <td class="td-content center">{no}</td>
-					<td class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
+					<td class="td-content center"><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/{id}');" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
                     <td class="td-content">{ref_code}</td>
 					<td class="td-content">{title}</td>
 					<td class="td-content center"><div id="pub{id}"><i class="{publish}"></i></div></td>
@@ -269,7 +289,7 @@ $("[rel=tooltip]").tooltip();
                  <div class="navigation">
 					<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_down" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
-					<a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
+					<a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">
 				 {paging}
@@ -296,7 +316,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{sch_path}/"+val;
+	parent.openModal("{admin_url}{title_link}/pages/{sch_path}/"+val);
 }
 
 function read_cookie_search(){

@@ -16,7 +16,7 @@ class Item_object extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class Item_object extends MX_Controller  {
 
 
 	function grid($id_plant_folder=NULL)
-	{
-		$this->setheader();		
+	{		
 		$contents = $this->grid_content($id_plant_folder);
 	
 		$data = array(
@@ -52,8 +51,6 @@ class Item_object extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -182,7 +179,7 @@ class Item_object extends MX_Controller  {
 		$sch3 = empty($sch3) ? 'null' : $sch3;
 		$sch4 = empty($sch4) ? 'null' : $sch4;
 		
-		redirect($this->table."/pages/".$id_plant_folder."/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page);
+		echo base_url().$this->table."/pages/".$id_plant_folder."/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page;
 	}
 	
 	function edit()
@@ -196,9 +193,7 @@ class Item_object extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
 	}
 	
 	function edit_content($id)
@@ -225,132 +220,105 @@ class Item_object extends MX_Controller  {
 				foreach($q->result() as $r){
 								
 					#ref dropdown multi value					
-					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;
+					$ref3_select_arr[0] = $r->publish;
 					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 					#end ref dropdown multi value
 
-					#ref dropdown multi value	
-					$ref4_select_arr[0] = $this->session->flashdata("ref4") ? $this->session->flashdata("ref4") : $r->miss_physical_tag;
+					#ref dropdown multi value					
+					$ref4_select_arr[0] = $r->miss_physical_tag;
 					$ref4 = Modules::run('widget/getStaticDropdown',$ref4_arr,$ref4_select_arr,4);
 					#end ref dropdown multi value
 
-					#ref dropdown multi value
-					$ref5_select_arr[0] = $this->session->flashdata("ref5") ? $this->session->flashdata("ref5") : $r->miss_virtual_tag;
+					#ref dropdown multi value					
+					$ref5_select_arr[0] = $r->miss_virtual_tag;
 					$ref5 = Modules::run('widget/getStaticDropdown',$ref5_arr,$ref5_select_arr,5);
 					#end ref dropdown multi value
 
 					#ref dropdown multi value					
-					$ref6_select_arr[0] = $this->session->flashdata("ref6") ? $this->session->flashdata("ref6") : $r->ex_service;
+					$ref6_select_arr[0] = $r->ex_service;
 					$ref6 = Modules::run('widget/getStaticDropdown',$ref6_arr,$ref6_select_arr,6);
 					#end ref dropdown multi value
 
 					#ref dropdown multi value					
-					$ref7_select_arr[0] = $this->session->flashdata("ref7") ? $this->session->flashdata("ref7") : $r->work_order;
+					$ref7_select_arr[0] = $r->work_order;
 					$ref7 = Modules::run('widget/getStaticDropdown',$ref7_arr,$ref7_select_arr,7);
 					#end ref dropdown multi value
 				
-					$id_plant_folder = $this->session->flashdata("id_plant_folder") ? $this->session->flashdata("id_plant_folder") : $r->id_plant_folder;
-					$id_ref_item = $this->session->flashdata("id_ref_item") ? $this->session->flashdata("id_ref_item") : $r->id_ref_item;
-					$id_ref_objects = $this->session->flashdata("ref12") ? $this->session->flashdata("ref12") : $r->id_ref_objects;
-					$id_eq_cat = $this->session->flashdata("ref9") ? $this->session->flashdata("ref9") : $r->id_eq_cat;
-					$id_ex_type = $this->session->flashdata("ref10") ? $this->session->flashdata("ref10") : $r->id_ex_type;
-					$id = $this->session->flashdata("id") ? $this->session->flashdata("id") : $r->id;
-					$obj_tag_no = $this->session->flashdata("obj_tag_no") ? $this->session->flashdata("obj_tag_no") : $r->obj_tag_no;
-					$management_id = $this->session->flashdata("management_id") ? $this->session->flashdata("management_id") : $r->management_id;
-					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->management_id;
-					$drawing_ref = $this->session->flashdata("drawing_ref") ? $this->session->flashdata("drawing_ref") : $r->drawing_ref;
-					$sheet = $this->session->flashdata("sheet") ? $this->session->flashdata("sheet") : $r->sheet;
-					$rev = $this->session->flashdata("rev") ? $this->session->flashdata("rev") : $r->rev;
-					$cmms_status = $this->session->flashdata("cmms_status") ? $this->session->flashdata("cmms_status") : $r->cmms_status;
-					$create_date = $this->session->flashdata("create_date") ? $this->session->flashdata("create_date") : $r->create_date;
+					$id_plant_folder = $r->id_plant_folder;
+					$id_ref_item = $r->id_ref_item;
+					$id_ref_objects = $r->id_ref_objects;
+					$id_eq_cat = $r->id_eq_cat;
+					$id_ex_type = $r->id_ex_type;
+					$id = $r->id;
 
 					$list[] = array(
-									"id"=>$id,
-									"id_plant_folder"=>$id_plant_folder,
-									"id_ref_item"=>$id_ref_item,
-									"id_ref_objects"=>$id_ref_objects,
-									"obj_tag_no"=>$obj_tag_no,
-									"title"=>$obj_tag_no,
-									"management_id"=>$management_id,
-									"desc_"=>$desc_,
-									"desc_non"=>$desc_,
-									"drawing_ref"=>$drawing_ref,
-									"sheet"=>$sheet,
-									"rev"=>$rev,
+									"id"=>$r->id,
+									"id_plant_folder"=>$r->id_plant_folder,
+									"id_ref_item"=>$r->id_ref_item,
+									"id_ref_objects"=>$r->id_ref_objects,
+									"obj_tag_no"=>$r->obj_tag_no,
+									"title"=>$r->obj_tag_no,
+									"management_id"=>$r->management_id,
+									"desc_"=>$r->desc_,
+									"desc_non"=>$r->desc_,
+									"drawing_ref"=>$r->drawing_ref,
+									"sheet"=>$r->sheet,
+									"rev"=>$r->rev,
 									"ref4"=>$ref4,
 									"ref5"=>$ref5,
-									"id_eq_cat"=>$id_eq_cat,
+									"id_eq_cat"=>$r->id_eq_cat,
 									"ref6"=>$ref6,
-									"id_ex_type"=>$id_ex_type,
-									"cmms_status"=>$cmms_status,
+									"id_ex_type"=>$r->id_ex_type,
+									"cmms_status"=>$r->cmms_status,
 									"ref7"=>$ref7,
-									"create_date"=>$create_date,
+									"create_date"=>$r->create_date,
 									"ref3"=>$ref3
 									);
 				}
 			}else{
 				
-				$id = "";
+				$id_plant_folder = $id_plant_folder;
+				$id_eq_cat = $id = $id_ex_type = $id_ref_item = $id_ref_objects ="";
+				
+				#ref dropdown multi value
+				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,null,3);
+				#end ref dropdown multi value
 
-				$id_ref_item = $this->session->flashdata("id_ref_item") ? $this->session->flashdata("id_ref_item") : null;
-				$id_ref_objects = $this->session->flashdata("ref12") ? $this->session->flashdata("ref12") : null;
-				$id_eq_cat = $this->session->flashdata("ref9") ? $this->session->flashdata("ref9") : null;
-				$id_ex_type = $this->session->flashdata("ref10") ? $this->session->flashdata("ref10") : null;
-				$obj_tag_no = $this->session->flashdata("obj_tag_no") ? $this->session->flashdata("obj_tag_no") : null;
-				$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : null;
-				$management_id = $this->session->flashdata("management_id") ? $this->session->flashdata("management_id") : null;
-				$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : null;
-				$desc_non = $this->session->flashdata("desc_non") ? $this->session->flashdata("desc_non") : null;
-				$drawing_ref = $this->session->flashdata("drawing_ref") ? $this->session->flashdata("drawing_ref") : null;
-				$sheet = $this->session->flashdata("sheet") ? $this->session->flashdata("sheet") : null;
-				$rev = $this->session->flashdata("rev") ? $this->session->flashdata("rev") : null;
-				$cmms_status = $this->session->flashdata("cmms_status") ? $this->session->flashdata("cmms_status") : null;
-				
-				
 				#ref dropdown multi value					
-					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
-					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
-					#end ref dropdown multi value
+				$ref4 = Modules::run('widget/getStaticDropdown',$ref4_arr,null,4);
+				#end ref dropdown multi value
 
-					#ref dropdown multi value	
-					$ref4_select_arr[0] = $this->session->flashdata("ref4") ? $this->session->flashdata("ref4") : null;
-					$ref4 = Modules::run('widget/getStaticDropdown',$ref4_arr,$ref4_select_arr,4);
-					#end ref dropdown multi value
+				#ref dropdown multi value					
+				$ref5 = Modules::run('widget/getStaticDropdown',$ref5_arr,null,5);
+				#end ref dropdown multi value
 
-					#ref dropdown multi value
-					$ref5_select_arr[0] = $this->session->flashdata("ref5") ? $this->session->flashdata("ref5") : null;
-					$ref5 = Modules::run('widget/getStaticDropdown',$ref5_arr,$ref5_select_arr,5);
-					#end ref dropdown multi value
+				#ref dropdown multi value					
+				$ref6 = Modules::run('widget/getStaticDropdown',$ref6_arr,null,6);
+				#end ref dropdown multi value
 
-					#ref dropdown multi value					
-					$ref6_select_arr[0] = $this->session->flashdata("ref6") ? $this->session->flashdata("ref6") : null;
-					$ref6 = Modules::run('widget/getStaticDropdown',$ref6_arr,$ref6_select_arr,6);
-					#end ref dropdown multi value
-
-					#ref dropdown multi value					
-					$ref7_select_arr[0] = $this->session->flashdata("ref7") ? $this->session->flashdata("ref7") : null;
-					$ref7 = Modules::run('widget/getStaticDropdown',$ref7_arr,$ref7_select_arr,7);
-					#end ref dropdown multi value
+				#ref dropdown multi value					
+				$ref7 = Modules::run('widget/getStaticDropdown',$ref7_arr,null,7);
+				#end ref dropdown multi value
 				
 				$list[] = array(
 									"id"=>0,
 									"id_plant_folder"=>$id_plant_folder,
 									"id_ref_item"=>2,
-									"id_ref_objects"=>$id_ref_objects,
-									"obj_tag_no"=>$obj_tag_no,
-									"title"=>$title,
-									"management_id"=>$management_id,
-									"desc_"=>$desc_,
-									"desc_non"=>$desc_non,
-									"drawing_ref"=>$drawing_ref,
-									"sheet"=>$sheet,
-									"rev"=>$rev,
+									"id_ref_objects"=>"",
+									"obj_tag_no"=>"",
+									"title"=>"",
+									"management_id"=>"",
+									"desc_"=>"",
+									"desc_non"=>"",
+									"drawing_ref"=>"",
+									"sheet"=>"",
+									"rev"=>"",
 									"ref4"=>$ref4,
 									"ref5"=>$ref5,
-									"id_eq_cat"=>$id_eq_cat,
+									"id_eq_cat"=>"",
 									"ref6"=>$ref6,
-									"id_ex_type"=>$id_ex_type,
-									"cmms_status"=>$cmms_status,
+									"id_ex_type"=>"",
+									"cmms_status"=>"",
 									"ref7"=>$ref7,
 									"create_date"=>"",
 									"ref3"=>$ref3
@@ -427,22 +395,22 @@ class Item_object extends MX_Controller  {
 		$id_plant_folder = $this->input->post("id_plant_folder");
 		/*$id_ref_item = $this->input->post("ref11");*/
 		$id_ref_item = $this->input->post("id_ref_item");
-		$ref12 = $this->input->post("ref12");
-		$ref9 = $this->input->post("ref9");
-		$ref10 = $this->input->post("ref10");
+		$id_ref_objects = $this->input->post("ref12");
+		$id_eq_cat = $this->input->post("ref9");
+		$id_ex_type = $this->input->post("ref10");
 		$obj_tag_no = ($id_ref_item == 2) ? strip_tags($this->input->post("obj_tag_no")) : strip_tags($this->input->post("title"));
 		$management_id = $this->input->post("management_id");
 		$desc_ = ($id_ref_item == 2) ? $this->input->post("desc_") : $this->input->post("desc_non");
 		$drawing_ref = $this->input->post("drawing_ref");
 		$sheet = $this->input->post("sheet");
 		$rev = $this->input->post("rev");
-		$ref4 = $this->input->post("ref4");
-		$ref5 = $this->input->post("ref5");
-		$ref6 = $this->input->post("ref6");
+		$miss_physical_tag = $this->input->post("ref4");
+		$miss_virtual_tag = $this->input->post("ref5");
+		$ex_service = $this->input->post("ref6");
 		$cmms_status = $this->input->post("cmms_status");
-		$ref7 = $this->input->post("ref7");
+		$work_order = $this->input->post("ref7");
 
-		$ref3 = $this->input->post("ref3");
+		$publish = $this->input->post("ref3");
 		$user_id = $this->session->userdata('adminID');
 		$id = strip_tags($this->input->post("id"));
 		$id_plant = $this->input->post("id_plant");
@@ -454,35 +422,17 @@ class Item_object extends MX_Controller  {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata("err",validation_errors());
-			$this->session->set_flashdata("id_plant_folder",$id_plant_folder);
-			$this->session->set_flashdata("id_ref_item",$id_ref_item);
-			$this->session->set_flashdata("ref12",$ref12);
-			$this->session->set_flashdata("ref9",$ref9);
-			$this->session->set_flashdata("ref10",$ref10);
-			$this->session->set_flashdata("obj_tag_no",$obj_tag_no);
-			$this->session->set_flashdata("management_id",$management_id);
-			$this->session->set_flashdata("desc_",$desc_);
-			$this->session->set_flashdata("drawing_ref",$drawing_ref);
-			$this->session->set_flashdata("sheet",$sheet);
-			$this->session->set_flashdata("rev",$rev);
-			$this->session->set_flashdata("ref4",$ref4);
-			$this->session->set_flashdata("ref5",$ref5);
-			$this->session->set_flashdata("ref6",$ref6);
-			$this->session->set_flashdata("cmms_status",$cmms_status);
-			$this->session->set_flashdata("ref7",$ref7);
-			$this->session->set_flashdata("ref3",$ref3);
-			$this->session->set_flashdata("id_plant",$id_plant);
 			redirect($this->table."/edit/".$id."/".$id_plant."/".$id_plant_folder);
 		}else{
 			if($id > 0)
 			{
-				$this->item_object->setUpdate($this->table,$id,$id_plant_folder,$id_ref_item,$ref12,$obj_tag_no,$management_id,$desc_,$drawing_ref,$sheet,$rev,$ref4,$ref5,$ref9,$ref6,$ref10,$cmms_status,$ref7,$ref3,$user_id);
+				$this->item_object->setUpdate($this->table,$id,$id_plant_folder,$id_ref_item,$id_ref_objects,$obj_tag_no,$management_id,$desc_,$drawing_ref,$sheet,$rev,$miss_physical_tag,$miss_virtual_tag,$id_eq_cat,$ex_service,$id_ex_type,$cmms_status,$work_order,$publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				/*redirect($this->table."/edit/".$id."/".$id_plant."/".$id_plant_folder);*/
 				redirect('plant');
 			}else{
 				if($id_ref_item == 2){
-					$id_term = $this->item_object->setInsert($this->table,$id,$id_plant_folder,$id_ref_item,$ref12,$obj_tag_no,$management_id,$desc_,$drawing_ref,$sheet,$rev,$ref4,$ref5,$ref9,$ref6,$ref10,$cmms_status,$ref7,$ref3,$user_id);
+					$id_term = $this->item_object->setInsert($this->table,$id,$id_plant_folder,$id_ref_item,$id_ref_objects,$obj_tag_no,$management_id,$desc_,$drawing_ref,$sheet,$rev,$miss_physical_tag,$miss_virtual_tag,$id_eq_cat,$ex_service,$id_ex_type,$cmms_status,$work_order,$publish,$user_id);
 					$last_id = $this->db->insert_id();
 				}else{
 					$id_term = $this->item_object->setInsertFolder('tbl_plant_folder',$id_plant,$id_plant_folder,$obj_tag_no,$desc_,$publish,$user_id);

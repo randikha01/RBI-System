@@ -16,7 +16,7 @@ class menu_auth extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class menu_auth extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{	
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +51,6 @@ class menu_auth extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -160,7 +157,7 @@ class menu_auth extends MX_Controller  {
 		$sch1 = empty($sch1) ? 'null' : $sch1;
 		$sch2 = empty($sch2) ? 'null' : $sch2;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$per_page);
+		echo base_url().$this->table."/pages/".$sch1."/".$sch2."/".$per_page;
 	}
 	
 	
@@ -175,9 +172,7 @@ class menu_auth extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
 	}
 	
 	function edit_content($id)
