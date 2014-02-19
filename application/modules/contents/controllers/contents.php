@@ -43,8 +43,7 @@ class contents extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{	
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +51,6 @@ class contents extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	

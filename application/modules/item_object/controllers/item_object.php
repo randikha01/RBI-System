@@ -16,7 +16,7 @@ class Item_object extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class Item_object extends MX_Controller  {
 
 
 	function grid($id_plant_folder=NULL)
-	{
-		$this->setheader();		
+	{		
 		$contents = $this->grid_content($id_plant_folder);
 	
 		$data = array(
@@ -52,8 +51,6 @@ class Item_object extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -182,7 +179,7 @@ class Item_object extends MX_Controller  {
 		$sch3 = empty($sch3) ? 'null' : $sch3;
 		$sch4 = empty($sch4) ? 'null' : $sch4;
 		
-		redirect($this->table."/pages/".$id_plant_folder."/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page);
+		echo base_url().$this->table."/pages/".$id_plant_folder."/".$sch1."/".$sch2."/".$sch3."/".$sch4."/".$per_page;
 	}
 	
 	function edit()
@@ -196,9 +193,7 @@ class Item_object extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
 	}
 	
 	function edit_content($id)
