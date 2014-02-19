@@ -71,7 +71,8 @@
 				 
 				 <a href="{admin_url}{title_link}/edit/{id_plant}/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
                  <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="javascript:void(0);" onclick="parent.openModal('{admin_url}{title_link}/grid/{id_plant}');parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <!--a href="javascript:void(0);" onclick="parent.openModal('{admin_url}{title_link}/grid/{id_plant}');parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a-->
+                  <a href="javascript:void(0);" onclick="parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
                  <input type="hidden" name="id" value="{id}"/>
                  <input type="hidden" name="id_plant" value="{id_plant}"/>
                  <input type="hidden" name="id_parent" value="{id_parent}"/>
