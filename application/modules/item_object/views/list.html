@@ -163,11 +163,31 @@ function pub()
 
 function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{id_plant}/{sch_path}/{per_page}/{pg}';
+	parent.openModal('{admin_url}{title_link}/pages/{id_plant}/{sch_path}/{per_page}/{pg}');
 }
 
 function set_search(){
-	document.forms["search"].submit();
+
+	$("#search").submit(function(e)
+	{
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		$.ajax(
+		{
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data)
+			{
+				var url = data;
+				parent.openModal(url);
+			}
+		});
+		e.preventDefault(); //STOP default action
+		e.unbind(); //unbind. to stop multiple form submit.
+	});
+	 
+	$("#search").submit(); 
 
 }
 
@@ -211,7 +231,7 @@ function openclose_search()
 </script>
 
 		 <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="javascript:void(0);" onclick="parent.openModal('{admin_url}dashboard/home');" title="Home"><span class="icon-home"></span></a></li>
             <li><span>{title_head}</span></li>
         </ul>
         <div class="row">
@@ -239,7 +259,7 @@ function openclose_search()
                     <input type="hidden" value="{per_page}" name="per_page"/>
                     <input type="hidden" value="{id_plant_folder}" name="id_plant_folder"/>
                     <input type="button" class="btn info" value="Search" onclick="set_search()">  
-                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}/grid/{id_plant_folder}';">
+                    <input type="button" class="btn-reset" value="Reset" onclick="parent.openModal('{admin_url}{title_link}/grid/{id_plant_folder}');">
                 </div>
             </form>
 	     
@@ -249,7 +269,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_up" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
                     <a href="#" rel="tooltip" id="delete_btn_up" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-                    <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant_folder}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+                    <a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/{id_plant_folder}/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -285,7 +305,7 @@ function openclose_search()
 							</div>
 						</td>
 						<td width="3%" class="td-content center" id="numb">{no}</td>
-						<td width="3%" class="td-content center"><a href="{admin_url}{title_link}/edit/{id}" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
+						<td width="3%" class="td-content center"><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/{id_plant_folder}/{id}');" class="btn-edit"  rel="tooltip" title="Click to edit"><i class="icon-pencil"></i></a></td>
 						<td width="15%" class="td-content"><b>{title}</b></td>
 						<td width="10%" class="td-content">{id_ref_item}</td>
 						<td width="15%" class="td-content">{id_ref_objects}</td>
@@ -302,7 +322,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_down" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
 	                <a href="#" rel="tooltip" id="delete_btn_down" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-	                <a rel="tooltip" href="{admin_url}{title_link}/edit/{id_plant_folder}/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+	                <a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/{id_plant_folder}/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -332,7 +352,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{id_plant_folder}/{sch_path}/"+val;
+	parent.openModal("{admin_url}{title_link}/pages/{id_plant_folder}/{sch_path}/"+val);
 }
 
 

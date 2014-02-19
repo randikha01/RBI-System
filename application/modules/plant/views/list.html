@@ -26,12 +26,6 @@ $(document).ready(function()
 	$('[class|="menutreex2"]').hide();
 	$('[class|="menutreex3"]').hide();
 	$('[class|="menutreex4"]').hide();
-	$('[class|="menuobj0"]').hide();
-	$('[class|="menuobj1"]').hide();
-	$('[class|="menuobj2"]').hide();
-	$('[class|="menuobj3"]').hide();
-	$('[class|="menuobj4"]').hide();
-
 	
 	$('#delete_btn_up').click(function(e) 
 	{
@@ -149,11 +143,31 @@ function togglefolder(idtarget){
 
 function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}';
+	parent.openModal('{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}');
 }
 
 function set_search(){
-	document.forms["search"].submit();
+
+	$("#search").submit(function(e)
+	{
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		$.ajax(
+		{
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data)
+			{
+				var url = data;
+				parent.openModal(url);
+			}
+		});
+		e.preventDefault(); //STOP default action
+		e.unbind(); //unbind. to stop multiple form submit.
+	});
+	 
+	$("#search").submit(); 
 
 }
 
@@ -191,7 +205,7 @@ function openclose_search()
 </script>
 
 		 <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="javascript:void(0);" onclick="parent.openModal('{admin_url}dashboard/home');" title="Home"><span class="icon-home"></span></a></li>
             <li><span>{title_head}</span></li>
         </ul>
         <div class="row">
@@ -215,7 +229,7 @@ function openclose_search()
                     </table>
                     <input type="hidden" value="{per_page}" name="per_page"/>
                     <input type="button" class="btn info" value="Search" onclick="set_search()">  
-                    <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}';">
+                    <input type="button" class="btn-reset" value="Reset" onclick="parent.openModal('{admin_url}{title_link}');">
                 </div>
             </form>
 	     
@@ -225,7 +239,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_up" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
                     <a href="#" rel="tooltip" id="delete_btn_up" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-                    <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+                    <a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -260,8 +274,8 @@ function openclose_search()
 						</td>
 						<td width="5%" class="td-content center" id="numb">{no}</td>
 						<td width="15%" class="td-content">
-							<b><a href="{admin_url}{title_link}/edit/{id}" rel="tooltip" title="Edit Plant" >{title}</a></b>
-							<a href="{admin_url}plant_folder/edit/0/{id}/0" class="" title="Add Folder" rel="tooltip" style="float:right !important">
+							<b><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/{id}');" rel="tooltip" title="Edit Plant" >{title}</a></b>
+							<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/0');" class="" title="Add Folder" rel="tooltip" style="float:right !important">
 								<i class="icon-plus-sign"></i>
 							</a>
 							<ul id="filetree">
@@ -274,15 +288,15 @@ function openclose_search()
 										<div class="menutreex0-{id}-{fid_lv0}">
 											<ul class="menufolder">
 												<li>
-													<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv0}" class="" title="Add Folder" rel="tooltip">
+													<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/{fid_lv0}');" class="" title="Add Folder" rel="tooltip">
 														Add Folder
 													</a>
 												</li>
-												<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv0}" class="" title="Add Object" rel="tooltip">
+												<li><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/0/{id}/{fid_lv0}');" class="" title="Add Object" rel="tooltip">
 														Add Object
 													</a></li>
 												<li>
-													<a href="{admin_url}plant_folder/edit/{fid_lv0}/{id}/{fparent_lv0}">
+													<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/{fid_lv0}/{id}/{fparent_lv0}');">
 														Edit
 													</a>
 												</li>
@@ -292,23 +306,9 @@ function openclose_search()
 												
 												{list_obj0}
 													<li>
-														<a href="#" id="object_lv0-{bid0}-{fid_lv0}" onclick="togglefolder('.menuobj0-{bid0}-{fid_lv0}')">
+														<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid0}/{id}/{fid_lv0}');">
 															{bicon0}{btitle0}
 														</a>
-														<div class="menuobj0-{bid0}-{fid_lv0}">
-															<ul class="menuobj">
-																<li>
-																	<a href="{url_spec}" class="" title="Specification" rel="tooltip">
-																		Spec
-																	</a>
-																</li>
-																<li>
-																	<a href="{admin_url}item_object/edit/{bid0}/{id}/{fid_lv0}" title="Edit Object" rel="tooltip">
-																		Edit
-																	</a>
-																</li>
-															</ul>
-														</div>
 													</li>
 												{/list_obj0}
 											</ul>
@@ -323,15 +323,15 @@ function openclose_search()
 															<div class="menutreex1-{id}-{fid_lvl}">
 																<ul class="menufolder">
 																	<li>
-																		<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lvl}" class="" title="Add Folder" rel="tooltip">
+																		<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/{fid_lvl}');" class="" title="Add Folder" rel="tooltip">
 																			Add Folder
 																		</a>
 																	</li>
-																	<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lvl}" class="" title="Add Object" rel="tooltip">
+																	<li><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/0/{id}/{fid_lvl}');" class="" title="Add Object" rel="tooltip">
 																			Add Object
 																		</a></li>
 																	<li>
-																		<a href="{admin_url}plant_folder/edit/{fid_lvl}/{id}/{fid_lv0}">
+																		<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/{fid_lvl}/{id}/{fid_lv0}');">
 																			Edit
 																		</a>
 																	</li>
@@ -340,7 +340,7 @@ function openclose_search()
 																<ul>
 																	{list_obj1}
 																		<li>
-																			<a href="{admin_url}item_object/edit/{bid1}/{id}/{fid_lvl}">
+																			<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid1}/{id}/{fid_lvl}');">
 																				{bicon1}{btitle1}
 																			</a>
 																		</li>
@@ -355,15 +355,15 @@ function openclose_search()
 																		<div class="menutreex2-{id}-{fid_lv2}">
 																				<ul class="menufolder">
 																					<li>
-																						<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv2}" class="" title="Add Folder" rel="tooltip">
+																						<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/{fid_lv2}');" class="" title="Add Folder" rel="tooltip">
 																							Add Folder
 																						</a>
 																					</li>
-																					<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv2}" class="" title="Add Object" rel="tooltip">
+																					<li><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/0/{id}/{fid_lv2}');" class="" title="Add Object" rel="tooltip">
 																							Add Object
 																						</a></li>
 																					<li>
-																						<a href="{admin_url}plant_folder/edit/{fid_lv2}/{id}/{fid_lvl}">
+																						<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/{fid_lv2}/{id}/{fid_lvl}');">
 																							Edit
 																						</a>
 																					</li>
@@ -372,7 +372,7 @@ function openclose_search()
 																				<ul>
 																					{list_obj2}
 																						<li>
-																							<a href="{admin_url}item_object/edit/{bid2}/{id}/{fid_lv2}">
+																							<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid2}/{id}/{fid_lv2}');">
 																								{bicon2}{btitle2}
 																							</a>
 																						</li>
@@ -393,15 +393,15 @@ function openclose_search()
 																							<div class="menutreex3-{id}-{fid_lv3}">
 																								<ul class="menufolder">
 																									<li>
-																										<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv3}" class="" title="Add Folder" rel="tooltip">
+																										<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/{fid_lv3}');" class="" title="Add Folder" rel="tooltip">
 																											Add Folder
 																										</a>
 																									</li>
-																									<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv3}" class="" title="Add Object" rel="tooltip">
+																									<li><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/0/{id}/{fid_lv3}');" class="" title="Add Object" rel="tooltip">
 																											Add Object
 																										</a></li>
 																									<li>
-																										<a href="{admin_url}plant_folder/edit/{fid_lv3}/{id}/{fid_lv2}">
+																										<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/{fid_lv3}/{id}/{fid_lv2}');">
 																											Edit
 																										</a>
 																									</li>
@@ -410,7 +410,7 @@ function openclose_search()
 																								<ul>
 																									{list_obj3}
 																										<li>
-																											<a href="{admin_url}item_object/edit/{bid3}/{id}/{fid_lv3}">
+																											<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid3}/{id}/{fid_lv3}');">
 																												{bicon3}{btitle3}
 																											</a>
 																										</li>
@@ -426,15 +426,15 @@ function openclose_search()
 																											<div class="menutreex4-{id}-{fid_lv4}">
 																												<ul class="menufolder">
 																													<li>
-																														<a href="{admin_url}plant_folder/edit/0/{id}/{fid_lv4}" class="" title="Add Folder" rel="tooltip">
+																														<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/0/{id}/{fid_lv4}');" class="" title="Add Folder" rel="tooltip">
 																															Add Folder
 																														</a>
 																													</li>
-																													<li><a href="{admin_url}item_object/edit/0/{id}/{fid_lv4}" class="" title="Add Object" rel="tooltip">
+																													<li><a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/0/{id}/{fid_lv4}');" class="" title="Add Object" rel="tooltip">
 																															Add Object
 																														</a></li>
 																													<li>
-																														<a href="{admin_url}plant_folder/edit/{fid_lv4}/{id}/{fid_lv3}">
+																														<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}plant_folder/edit/{fid_lv4}/{id}/{fid_lv3}');">
 																															Edit
 																														</a>
 																													</li>
@@ -443,7 +443,7 @@ function openclose_search()
 																												<ul>
 																													{list_obj4}
 																														<li>
-																															<a href="{admin_url}item_object/edit/{bid4}/{id}/{fid_lv4}">
+																															<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid4}/{id}/{fid_lv4}');">
 																																{bicon4}{btitle4}
 																															</a>
 																														</li>
@@ -486,7 +486,7 @@ function openclose_search()
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
                  	<a href="#"  rel="tooltip" id="publish_btn_down" style="{display_record}" class="btn info" title="Publish / Not Publish"><span class="white-icon-ok-sign"></span></a>
 	                <a href="#" rel="tooltip" id="delete_btn_down" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-	                <a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"/><span class="white-icon-plus"></span></a>
+	                <a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -515,7 +515,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{sch_path}/"+val;
+	parent.openModal("{admin_url}{title_link}/pages/{sch_path}/"+val);
 }
 
 

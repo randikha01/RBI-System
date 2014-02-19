@@ -72,13 +72,33 @@ function del()
 			}
 }
 
-function goto(sch1_parm,sch2_parm,pg)
+function goto()
 {
-	window.location='{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}';
+	parent.openModal('{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}');
 }
 
 function set_search(){
-	document.forms["search"].submit();
+
+	$("#search").submit(function(e)
+	{
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		$.ajax(
+		{
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data)
+			{
+				var url = data;
+				parent.openModal(url);
+			}
+		});
+		e.preventDefault(); //STOP default action
+		e.unbind(); //unbind. to stop multiple form submit.
+	});
+	 
+	$("#search").submit(); 
 
 }
 
@@ -110,7 +130,7 @@ $("[rel=tooltip]").tooltip();
 
 </script>
         <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
+            <li><a href="javascript:void(0);" onclick="parent.openModal('{admin_url}dashboard/home');" title="Home"><span class="icon-home"></span></a></li>
             <li><span>{title_head}</span></li>
         </ul>
         <div class="clear"></div>
@@ -134,7 +154,7 @@ $("[rel=tooltip]").tooltip();
                 </table>
                 <input type="hidden" value="{per_page}" name="per_page"/>
                 <input type="button" class="btn info" value="Search" onclick="set_search()">  
-                <input type="button" class="btn-reset" value="Reset" onclick="window.location='{admin_url}{title_link}';">
+                <input type="button" class="btn-reset" value="Reset" onclick="parent.openModal('{admin_url}{title_link}');">
             </div>
 	    </form>
 	     
@@ -144,7 +164,7 @@ $("[rel=tooltip]").tooltip();
                  <div class="navigation">
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
 					<a href="#" rel="tooltip" id="delete_btn_up" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-					<a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
+					<a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -183,7 +203,7 @@ $("[rel=tooltip]").tooltip();
                  <div class="navigation">
                  	<input type="text" value="{per_page}" maxlength="3" class="perpage" onchange="sendLimit(this.value)" onkeypress="validateLimit(event,this.value)"/>
 					<a href="#" rel="tooltip" id="delete_btn_down" style="{display_record}" class="btn info" title="Delete"><span class="white-icon-trash"></span></a>
-					<a rel="tooltip" href="{admin_url}{title_link}/edit/0" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
+					<a rel="tooltip" href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}{title_link}/edit/0');" id="add_btn" class="btn info" title="Add"><span class="white-icon-plus"></span></a>
                  </div>
                  <div class="pagination pagination-right">{paging}</div>
              </div>
@@ -211,7 +231,7 @@ function validateLimit(evt,val) {
 	
 function sendLimit(val)
 {
-	document.location="{admin_url}{title_link}/pages/{sch_path}/"+val;
+	parent.openModal("{admin_url}{title_link}/pages/{sch_path}/"+val);
 }
 
 function read_cookie_search(){
