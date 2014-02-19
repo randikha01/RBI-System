@@ -330,49 +330,47 @@ class Plant extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-					
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->title;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->desc_;
+
 					#ref dropdown multi value
-					/*$ref2_select_arr[0] = $r->divider;
-					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);*/
-					#end ref dropdown multi value
-					
-					#ref dropdown multi value					
-					$ref3_select_arr[0] = $r->publish;
+					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;	
 					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 					#end ref dropdown multi value
-				
-					$id_ref_units = $r->id_ref_units;
+
+					$id_ref_units = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : $r->id_ref_units;
 					$id = $r->id;
 
 					$list[] = array(
-									"id"=>$r->id,
-									"id_ref_units"=>$r->id_ref_units,
-									"title"=>$r->title,
-									"desc_"=>$r->desc_,
-									"create_date"=>$r->create_date,
-									"ref3"=>$ref3
-									);
+					"id"=>$r->id,
+					"id_ref_units"=>$r->id_ref_units,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>$r->create_date,
+					"ref3"=>$ref3
+					);
 				}
 			}else{
 				
-				$id_ref_units = $id = "";
-				
+				$id = "";
+				$id_ref_units = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : null;
+
+				$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : "";
+				$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : "";
+
 				#ref dropdown multi value
-				/*$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,null,2);*/
+				$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
+				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);	
 				#end ref dropdown multi value
-				
-				#ref dropdown multi value
-				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,null,3);
-				#end ref dropdown multi value
-				
+
 				$list[] = array(
-									"id"=>0,
-									"id_ref_units"=>"",
-									"title"=>"",
-									"desc_"=>"",
-									"create_date"=>"",
-									"ref3"=>$ref3
-									);
+					"id"=>0,
+					"id_ref_units"=>$id_ref_units,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>"",
+					"ref3"=>$ref3
+				);
 			}
 			#end record
 
@@ -432,7 +430,12 @@ class Plant extends MX_Controller  {
 		$this->form_validation->set_rules('desc_', 'Description', 'required');
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->session->set_flashdata("err",validation_errors());
+				$this->session->set_flashdata("err",validation_errors());
+				$this->session->set_flashdata("desc_",$desc_);
+				$this->session->set_flashdata("title",$title);
+				$this->session->set_flashdata("ref1",$ref1);
+				$this->session->set_flashdata("ref2",$ref2);
+				$this->session->set_flashdata("ref3",$ref3);
 			redirect($this->table."/edit/".$id);
 		}else{
 			if($id > 0)
