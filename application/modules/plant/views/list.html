@@ -26,6 +26,11 @@ $(document).ready(function()
 	$('[class|="menutreex2"]').hide();
 	$('[class|="menutreex3"]').hide();
 	$('[class|="menutreex4"]').hide();
+	$('[class|="menuobj0"]').hide();
+	$('[class|="menuobj1"]').hide();
+	$('[class|="menuobj2"]').hide();
+	$('[class|="menuobj3"]').hide();
+	$('[class|="menuobj4"]').hide();
 	
 	$('#delete_btn_up').click(function(e) 
 	{
@@ -306,10 +311,29 @@ function openclose_search()
 												
 												{list_obj0}
 													<li>
+														<a href="#" id="object_lv0-{bid0}-{fid_lv0}" onclick="togglefolder('.menuobj0-{bid0}-{fid_lv0}')">
+														{bicon0}{btitle0}
+														</a>
+														<div class="menuobj0-{bid0}-{fid_lv0}">
+															<ul class="menuobj">
+																<li>
+																	<a href="javascript:void(0);" onclick="parent.openModalFacebox('{url_spec}');">
+																	Spec
+																	</a>
+																</li>
+																<li>
+																	<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid0}/{id}/{fid_lv0}');">
+																	Edit
+																	</a>
+																</li>
+															</ul>
+														</div>
+													</li>
+													<!-- <li>
 														<a href="javascript:void(0);" onclick="parent.openModalFacebox('{admin_url}item_object/edit/{bid0}/{id}/{fid_lv0}');">
 															{bicon0}{btitle0}
 														</a>
-													</li>
+													</li> -->
 												{/list_obj0}
 											</ul>
 
