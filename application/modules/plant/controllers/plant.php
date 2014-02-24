@@ -230,8 +230,15 @@ class Plant extends MX_Controller  {
 						if($qobj0->num_rows() > 0){
 							foreach ($qobj0->result() as $b0) {
 								$btitle0 = ucwords($b0->obj_tag_no);
-								$icon0 = ($b0->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
-								$list_obj0[] = array("bid0"=>$b0->id,"btitle0" =>$btitle0,"bicon0" =>$icon0);
+									if($b0->id_ref_objects == 206){
+										$cekobj = $this->plant->cekobject("tbl_pv_info",$b0->id);
+										/*{bid0}/{id}/{fid_lv0}*/
+										$url_spec = base_url()."pv_info/edit/".$cekobj."/".$b0->id."/".$r->id."/".$f->id;
+									}else{
+										$url_spec = "#";
+									}
+									$icon0 = ($b0->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+									$list_obj0[] = array("bid0"=>$b0->id,"btitle0" =>$btitle0,"bicon0" =>$icon0,"url_spec"=>$url_spec);
 							}
 						}
 
@@ -330,8 +337,8 @@ class Plant extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->title;
-					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->desc_;
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->desc_;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->title;
 
 					#ref dropdown multi value
 					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;	

@@ -43,38 +43,38 @@
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
               <table>
-				<tr>
-				 <td class="no-border">  
-                 <p>Title</p>
-                 <input type="input" name="title" value="{title}"/>
-                 <hr />
-                 
-                 <p>Unit</p>
-                 {ref1}
-                 <hr />
-                 
-              	 <p>Description</p>
-                 <input type="input" name="desc_" value="{desc_}"/>
-                 <hr />
-				
-				 </td>
-				 <td class="sidebar-right no-border">
-				
-                 <p>Publish</p>
-                 {ref3}
-                 <hr />
-				 
-                 <p>Created Date</p>
-                 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
-                 <hr />
-				 
-				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
-                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="javascript:void(0);" onclick="parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
-                 <input type="hidden" name="id" value="{id}"/>
-				 </td>
-			</tr>
-		</table>
+      				<tr>
+      				 <td class="no-border">  
+                       <p>Title</p>
+                       <input type="input" name="title" value="{title}"/>
+                       <hr />
+                       
+                       <p>Unit</p>
+                       {ref1}
+                       <hr />
+                       
+                    	 <p>Description</p>
+                       <input type="input" name="desc_" value="{desc_}"/>
+                       <hr />
+      				
+      				 </td>
+      				 <td class="sidebar-right no-border">
+      				
+                       <p>Publish</p>
+                       {ref3}
+                       <hr />
+      				 
+                       <p>Created Date</p>
+                       <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                       <hr />
+      				 
+      				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+                       <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                       <a href="javascript:void(0);" onclick="parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
+                       <input type="hidden" name="id" value="{id}"/>
+      				 </td>
+      			</tr>
+      		</table>
 	    </form>
             {/list}
         </div>

@@ -18,19 +18,20 @@
         }
         for (var selector in config) {
           $(selector).chosen(config[selector]);
-    }
+        }
 	
-
-		/*$('#comm_date').datepicker({
-			dateFormat: 'yy-mm-dd',
-			showOtherMonths: true,
-			changeMonth: true,
-			changeYear: true
-		});*/
-
         $('#comm_date').datetimepicker({
             showTimepicker: false,
             dateFormat: "dd-mm-yy"
+        });
+
+         $('#design_life').keyup(function() {
+            var design_life = $(this).val();
+
+            var dateMin = $('#comm_date').datepicker("getDate");
+            var rMax = new Date(dateMin.getFullYear() + parseInt(design_life), dateMin.getMonth(),dateMin.getDate() - 1); 
+            $('#retirement_date').val($.datepicker.formatDate('dd-mm-yy', new Date(rMax)));
+         
         });
 
         default_dec_zero('input[name="shell1_nt_mm"]');
@@ -47,7 +48,6 @@
         $('input[name="head1_ir_cm"]').maskMoney({thousands:'',decimal:'.', precision:3,});
         $('input[name="head2_ir_cm"]').maskMoney({thousands:'',decimal:'.', precision:3,});
         $('input[name="design_life"]').maskMoney({thousands:'',decimal:'.', precision:0,});
-       /* $('input[name="shell1_nt_in"]').maskMoney({thousands:'',decimal:'.', precision:3,});*/
 
        $('input[name="shell1_nt_in"]').attr('readonly', true);
        $('input[name="shell1_id_in"]').attr('readonly', true);
@@ -126,16 +126,16 @@
             }
         }
 
+        function updateData()
+        {
+            var btn_plus = "{btn_plus}";
+            if(btn_plus == ""){
+                parent.openModal('{admin_url}{title_link}');
+            }
+        }
+        updateData();
+
 </script>
-        
-        <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
-            <li><a href="{admin_url}{title_link}"><span>{title_head}</span></a></li>
-            <li><span>{add_edit}</span></li>
-        </ul>
-        <div class="clear"></div>
-
-
         <div class="row">
           <div class="span14">
             {notif}
@@ -146,209 +146,171 @@
             {/notif}
 	    
 
-	    <h2>{add_edit}</h2>
+	    <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+                <table>
+                    <tr>
+                        <td class="no-border" colspan="3">
+                            <p>Title</p>
+                            <input type="input" name="title" value="{title}" readonly/>
+                        </td>
+                         <td class="no-border" colspan="3">
+                            <p >Serial No.</p>
+                            <input type="input" name="serial_no" value="{serial_no}"/>
+                         </td>
+                    </tr>
+                    <tr>
+                        <td class="no-border" colspan="3">
+                            <p>Description</p>
+                            <input type="input" name="desc_" value="{desc_}"/>
+                        </td>
+                        <td class="no-border" colspan="3">
+                            <p >Product</p>
+                            {ref1}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="no-border" colspan="6">
+                            <p>System</p>
+                            {ref3}
+                        </td>
+                    </tr>
 
-                <div class="formobj50">
-                 <p >Title</p>
-                 <input type="input" name="title" value="{title}" disabled='disabled'/>
-                </div>
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Shell 1&nbsp;&nbsp;&nbsp;Nominal Thk.
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell1_nt_mm" value="{shell1_nt_mm}" class="pendek"/> mm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell1_nt_in" value="{shell1_nt_in}" class="pendek"/> in
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <p>Internal Diameter</p>
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell1_id_cm" value="{shell1_id_cm}" class="pendek"/> cm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell1_id_in" value="{shell1_id_in}" class="pendek"/> in
+                        </td>
+                    </tr>
 
-                <div class="formobj50">
-                 <p >Serial No.</p>
-                 <input type="input" name="serial_no" value="{serial_no}"/>
-                </div>
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Shell 2&nbsp;&nbsp;&nbsp;Nominal Thk.
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell2_nt_mm" value="{shell2_nt_mm}" class="pendek"/> mm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell2_nt_in" value="{shell2_nt_in}" class="pendek"/> in
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <p>Internal Diameter</p>
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell2_id_cm" value="{shell2_id_cm}" class="pendek"/> cm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="shell2_id_in" value="{shell2_id_in}" class="pendek"/> in
+                        </td>
+                    </tr>
 
-                <div class="clearfix"></div>
-           
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Head 1&nbsp;&nbsp;&nbsp;Nominal Thk.
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head1_nt_mm" value="{head1_nt_mm}" class="pendek"/> mm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head1_nt_in" value="{head1_nt_in}" class="pendek"/> in
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <p>Internal Radius</p>
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head1_ir_cm" value="{head1_ir_cm}" class="pendek"/> cm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head1_ir_in" value="{head1_ir_in}" class="pendek"/> in
+                        </td>
+                    </tr>
 
-                <div class="formobj50">
-                <p>Description</p>
-                 <input type="input" name="desc_" value="{desc_}"/>
-                </div>
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Head 2&nbsp;&nbsp;&nbsp;Nominal Thk.
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head2_nt_mm" value="{head2_nt_mm}" class="pendek"/> mm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head2_nt_in" value="{head2_nt_in}" class="pendek"/> in
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <p>Internal Radius</p>
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head2_ir_cm" value="{head2_ir_cm}" class="pendek"/> cm
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="head2_ir_in" value="{head2_ir_in}" class="pendek"/> in
+                        </td>
+                    </tr>
 
-                <div class="formobj50">
-                 <p >Product</p>
-                 {ref1}
-                </div>
+                    <tr>
+                        <td class="no-border" colspan="3">
+                            <p >Commission Date</p>
+                            <input type="input" name="comm_date" value="{comm_date}" id="comm_date" class="pendek"/>
+                        </td>
+                        <td class="no-border" colspan="3">
+                             <p>Design Life</p>
+                             <input type="input" name="design_life" value="{design_life}" id="design_life" class="pendek"/>
+                        </td>
+                    </tr>
 
-                <div class="clearfix"></div>
+                    <tr>
+                        <td class="no-border" colspan="3">
+                             <p >Retirement Date</p>
+                             <input type="input" name="retirement_date" value="{retirement_date}" id="retirement_date" readonly class="pendek"/>
+                        </td>
+                        <td class="no-border" colspan="3">
+                             <p>Extended design Life</p>
+                             <input type="input" name="ext_design_life" value="{ext_design_life}" readonly class="pendek"/>
+                        </td>
+                    </tr>
 
-                <div class="formobj100">
-                 <p>System</p>
-                 {ref3}
-                </div>
-                <div class="clearfix"></div>
-                 
-                <hr />
+                    <tr>
+                        <td class="no-border" colspan="3">
+                             <p>Publish</p>
+                             {ref2}
+                         </td>
+                        <td class="no-border" colspan="3">
+                            <p>Created Date</p>
+                            <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                        </td>
+                    </tr>
 
-                <div class="formobj14">
-                 <p>Shell 1</p>
-                </div>
-
-                <div class="formobj14">
-                 <p>Nominal Thk.</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell1_nt_mm" value="{shell1_nt_mm}" class="pendek"/> mm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell1_nt_in" value="{shell1_nt_in}" class="pendek"/> in
-                </div>
-
-                <div class="formobj14">
-                 <p>Internal Diameter</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell1_id_cm" value="{shell1_id_cm}" class="pendek"/> cm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell1_id_in" value="{shell1_id_in}" class="pendek"/> in
-                </div>
-
-                <div class="clearfix"></div>
-
-                <hr />
-
-                <div class="formobj14">
-                 <p>Shell 2</p>
-                </div>
-
-                <div class="formobj14">
-                 <p>Nominal Thk.</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell2_nt_mm" value="{shell2_nt_mm}" class="pendek"/> mm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell2_nt_in" value="{shell2_nt_in}" class="pendek"/> in
-                </div>
-
-                <div class="formobj14">
-                 <p>Internal Diameter</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell2_id_cm" value="{shell2_id_cm}" class="pendek"/> cm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="shell2_id_in" value="{shell2_id_in}" class="pendek"/> in
-                </div>
-
-                <div class="clearfix"></div>
-
-                <hr />
-
-                <div class="formobj14">
-                 <p>Head 1</p>
-                </div>
-
-                <div class="formobj14">
-                 <p>Nominal Thk.</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head1_nt_mm" value="{head1_nt_mm}" class="pendek"/> mm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head1_nt_in" value="{head1_nt_in}" class="pendek"/> in
-                </div>
-
-                <div class="formobj14">
-                 <p>Internal Radius</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head1_ir_cm" value="{head1_ir_cm}" class="pendek"/> cm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head1_ir_in" value="{head1_ir_in}" class="pendek"/> in
-                </div>
-
-                <div class="clearfix"></div>
-
-                <hr />
-
-                <div class="formobj14">
-                 <p>Head 2</p>
-                </div>
-
-                <div class="formobj14">
-                 <p>Nominal Thk.</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head2_nt_mm" value="{head2_nt_mm}" class="pendek"/> mm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head2_nt_in" value="{head2_nt_in}" class="pendek"/> in
-                </div>
-
-                <div class="formobj14">
-                 <p>Internal Radius</p>
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head2_ir_cm" value="{head2_ir_cm}" class="pendek"/> cm
-                </div>
-
-                <div class="formobj14">
-                 <input type="input" name="head2_ir_in" value="{head2_ir_in}" class="pendek"/> in
-                </div>
-
-                <div class="clearfix"></div>
-
-                <hr/>
-
-                <div class="formobj50">
-                 <p >Commission Date</p>
-                 <input type="input" name="comm_date" value="{comm_date}" id="comm_date" class="pendek"/>
-                </div>
-
-                <div class="formobj50">
-                 <p>Design Life</p>
-                 <input type="input" name="design_life" value="{design_life}" class="pendek"/>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <div class="formobj50">
-                 <p >Retirement Date</p>
-                 <input type="input" name="retirement_date" value="{retirement_date}" id="retirement_date" disabled='disabled' class="pendek"/>
-                </div>
-
-                <div class="formobj50">
-                 <p>Extended design Life</p>
-                 <input type="input" name="ext_design_life" value="{ext_design_life}" disabled='disabled' class="pendek"/>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <hr/>
-
-				 <p>Publish</p>
-                 {ref2}
-                 <hr />
-
-                 <p>Created Date</p>
-                 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
-                 <hr />
-				
-				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
-                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="{admin_url}{title_link}"><input type="button" class="btn-reset" value="cancel"/></a>
-                 <input type="hidden" name="id" value="{id}"/>
+                    <tr>
+                        <td class="no-border" colspan="6">
+                            <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}">
+                                <input type="button" class="btn info" value="add more" id="more_btn"/>
+                            </a>
+                            <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                            <a href="javascript:void(0);" onclick="parent.closeModalFacebox();">
+                                <input type="button" class="btn-reset" value="cancel"/>
+                            </a>
+                            <input type="hidden" name="id" value="{id}">
+                            <input type="hidden" name="id_item_object" value="{id_item_object}">
+                            <input type="hidden" name="id_plant" value="{id_plant}">
+                            <input type="hidden" name="id_plant_folder" value="{id_plant_folder}">
+                        </td>
+                    </tr>
+                    
+                </table>
 	    </form>
             {/list}
         </div>

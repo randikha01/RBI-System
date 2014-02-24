@@ -16,7 +16,7 @@ class pv_info extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -168,9 +168,7 @@ class pv_info extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
 	}
 	
 	
@@ -197,64 +195,153 @@ class pv_info extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-					
-					$code = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->desc_;
+					$id_item_object = $this->session->flashdata("id_item_object") ? $this->session->flashdata("id_item_object") : $r->id_item_object;
 					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->title;
+					$serial_no = $this->session->flashdata("serial_no") ? $this->session->flashdata("serial_no") : $r->serial_no;
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->desc_;
+					$id_product = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : $r->id_product;
+					$id_system = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->id_system;
 					
-					#ref dropdown no multi value
-					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : $r->publish;
+					$shell1_nt_mm = $this->session->flashdata("shell1_nt_mm") ? $this->session->flashdata("shell1_nt_mm") : $r->shell1_nt_mm;
+					$shell1_nt_in = $this->session->flashdata("shell1_nt_in") ? $this->session->flashdata("shell1_nt_in") : $r->shell1_nt_in;
+					$shell1_id_cm = $this->session->flashdata("shell1_id_cm") ? $this->session->flashdata("shell1_id_cm") : $r->shell1_id_cm;
+					$shell1_id_in = $this->session->flashdata("shell1_id_in") ? $this->session->flashdata("shell1_id_in") : $r->shell1_id_in;
+					
+					$shell2_nt_mm = $this->session->flashdata("shell2_nt_mm") ? $this->session->flashdata("shell2_nt_mm") : $r->shell2_nt_mm;
+					$shell2_nt_in = $this->session->flashdata("shell2_nt_in") ? $this->session->flashdata("shell2_nt_in") : $r->shell2_nt_in;
+					$shell2_id_cm = $this->session->flashdata("shell2_id_cm") ? $this->session->flashdata("shell2_id_cm") : $r->shell2_id_cm;
+					$shell2_id_in = $this->session->flashdata("shell2_id_in") ? $this->session->flashdata("shell2_id_in") : $r->shell2_id_in;
+
+					$head1_nt_mm = $this->session->flashdata("head1_nt_mm") ? $this->session->flashdata("head1_nt_mm") : $r->head1_nt_mm;
+					$head1_nt_in = $this->session->flashdata("head1_nt_in") ? $this->session->flashdata("head1_nt_in") : $r->head1_nt_in;
+					$head1_ir_cm = $this->session->flashdata("head1_ir_cm") ? $this->session->flashdata("head1_ir_cm") : $r->head1_ir_cm;
+					$head1_ir_in = $this->session->flashdata("head1_ir_in") ? $this->session->flashdata("head1_ir_in") : $r->head1_ir_in;
+
+					$head2_nt_mm = $this->session->flashdata("head2_nt_mm") ? $this->session->flashdata("head2_nt_mm") : $r->head2_nt_mm;
+					$head2_nt_in = $this->session->flashdata("head2_nt_in") ? $this->session->flashdata("head2_nt_in") : $r->head2_nt_in;
+					$head2_ir_cm = $this->session->flashdata("head2_ir_cm") ? $this->session->flashdata("head2_ir_cm") : $r->head2_ir_cm;
+					$head2_ir_in = $this->session->flashdata("head2_ir_in") ? $this->session->flashdata("head2_ir_in") : $r->head2_ir_in;
+
+					$comm_date = $this->session->flashdata("comm_date") ? $this->session->flashdata("comm_date") : $r->comm_date;
+					$design_life = $this->session->flashdata("design_life") ? $this->session->flashdata("design_life") : $r->design_life;
+					$retirement_date = $this->session->flashdata("retirement_date") ? $this->session->flashdata("retirement_date") : $r->retirement_date;
+					$ext_design_life = $this->session->flashdata("ext_design_life") ? $this->session->flashdata("ext_design_life") : $r->ext_design_life;
+					
+					#ref dropdown multi value
+					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : $r->publish;	
 					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);
-					#end ref dropdown no multi value
-				
+					#end ref dropdown multi value
+
+					$id = $r->id;
+
 					$list[] = array(
-									"id"=>$r->id,
-									"desc_"=>"$desc_obj",
-									"title" =>$title_obj,
-									"ref2"=>$ref2,
-									"create_date"=>$r->create_date
-									);
+					"id"=>$id,
+					"id_item_object"=>$id_item_object,
+					"title"=>$title,
+					"serial_no"=>$serial_no,
+					"desc_"=>$desc_,
+					"id_product"=>$id_product,
+					"id_system"=>$id_system,
+					"shell1_nt_mm"=>$shell1_nt_mm,
+					"shell1_nt_in"=>$shell1_nt_in,
+					"shell1_id_cm"=>$shell1_id_cm,
+					"shell1_id_in"=>$shell1_id_in,
+					"shell2_nt_mm"=>$shell2_nt_mm,
+					"shell2_nt_in"=>$shell2_nt_in,
+					"shell2_id_cm"=>$shell2_id_cm,
+					"shell2_id_in"=>$shell2_id_in,
+					"head1_nt_mm"=>$head1_nt_mm,
+					"head1_nt_in"=>$head1_nt_in,
+					"head1_ir_cm"=>$head1_ir_cm,
+					"head1_ir_in"=>$head1_ir_in,
+					"head2_nt_mm"=>$head2_nt_mm,
+					"head2_nt_in"=>$head2_nt_in,
+					"head2_ir_cm"=>$head2_ir_cm,
+					"head2_ir_in"=>$head2_ir_in,
+					"comm_date"=>$comm_date,
+					"design_life"=>$design_life,
+					"retirement_date"=>$retirement_date,
+					"ext_design_life"=>$ext_design_life,
+					"create_date"=>$r->create_date,
+					"ref2"=>$ref2,
+					"id_plant"=>$id_plant,
+					"id_plant_folder"=>$id_plant_folder
+					);
 				}
 			}else{
 
-					$id_product = $id_system = $id = "";
+					$id = "";
 
-					$code = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : "";
-					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : "";
+					//$id_item_object = $this->session->flashdata("id_item_object") ? $this->session->flashdata("id_item_object") : $id_item_object;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $title_obj;
+					$serial_no = $this->session->flashdata("serial_no") ? $this->session->flashdata("serial_no") : null;
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $desc_obj;
+					$id_product = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : null;
+					$id_system = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
 					
-					#ref dropdown no multi value
-					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : null;
-					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);	
-					#end ref dropdown no multi value
-				
+					$shell1_nt_mm = $this->session->flashdata("shell1_nt_mm") ? $this->session->flashdata("shell1_nt_mm") : null;
+					$shell1_nt_in = $this->session->flashdata("shell1_nt_in") ? $this->session->flashdata("shell1_nt_in") : null;
+					$shell1_id_cm = $this->session->flashdata("shell1_id_cm") ? $this->session->flashdata("shell1_id_cm") : null;
+					$shell1_id_in = $this->session->flashdata("shell1_id_in") ? $this->session->flashdata("shell1_id_in") : null;
+					
+					$shell2_nt_mm = $this->session->flashdata("shell2_nt_mm") ? $this->session->flashdata("shell2_nt_mm") : null;
+					$shell2_nt_in = $this->session->flashdata("shell2_nt_in") ? $this->session->flashdata("shell2_nt_in") : null;
+					$shell2_id_cm = $this->session->flashdata("shell2_id_cm") ? $this->session->flashdata("shell2_id_cm") : null;
+					$shell2_id_in = $this->session->flashdata("shell2_id_in") ? $this->session->flashdata("shell2_id_in") : null;
+
+					$head1_nt_mm = $this->session->flashdata("head1_nt_mm") ? $this->session->flashdata("head1_nt_mm") : null;
+					$head1_nt_in = $this->session->flashdata("head1_nt_in") ? $this->session->flashdata("head1_nt_in") : null;
+					$head1_ir_cm = $this->session->flashdata("head1_ir_cm") ? $this->session->flashdata("head1_ir_cm") : null;
+					$head1_ir_in = $this->session->flashdata("head1_ir_in") ? $this->session->flashdata("head1_ir_in") : null;
+
+					$head2_nt_mm = $this->session->flashdata("head2_nt_mm") ? $this->session->flashdata("head2_nt_mm") : null;
+					$head2_nt_in = $this->session->flashdata("head2_nt_in") ? $this->session->flashdata("head2_nt_in") : null;
+					$head2_ir_cm = $this->session->flashdata("head2_ir_cm") ? $this->session->flashdata("head2_ir_cm") : null;
+					$head2_ir_in = $this->session->flashdata("head2_ir_in") ? $this->session->flashdata("head2_ir_in") : null;
+
+					$comm_date = $this->session->flashdata("comm_date") ? $this->session->flashdata("comm_date") : null;
+					$design_life = $this->session->flashdata("design_life") ? $this->session->flashdata("design_life") : null;
+					$retirement_date = $this->session->flashdata("retirement_date") ? $this->session->flashdata("retirement_date") : null;
+					$ext_design_life = $this->session->flashdata("ext_design_life") ? $this->session->flashdata("ext_design_life") : null;
+					
+					#ref dropdown multi value
+					$ref2_select_arr[0] = $this->session->flashdata("ref2") ? $this->session->flashdata("ref2") : null;	
+					$ref2 = Modules::run('widget/getStaticDropdown',$ref2_arr,$ref2_select_arr,2);
+					#end ref dropdown multi value
+
 					$list[] = array(
-										"id"=>0,
-										"id_item_object"=>$id_item_object,
-										"title" =>$title_obj,
-										"serial_no" =>"",
-										"desc_"=>$desc_obj,
-										"shell1_nt_mm" =>"",
-										"shell1_nt_in" =>"",
-										"shell1_id_cm" =>"",
-										"shell1_id_in" =>"",
-										"shell2_nt_mm" =>"",
-										"shell2_nt_in" =>"",
-										"shell2_id_cm" =>"",
-										"shell2_id_in" =>"",
-										"head1_nt_mm" =>"",
-										"head1_nt_in" =>"",
-										"head1_ir_cm" =>"",
-										"head1_ir_in" =>"",
-										"head2_nt_mm" =>"",
-										"head2_nt_in" =>"",
-										"head2_ir_cm" =>"",
-										"head2_ir_in" =>"",
-										"comm_date" =>"",
-										"design_life" =>"",
-										"retirement_date" =>"",
-										"ext_design_life" =>"",
-										"ref2"=>$ref2,
-										"create_date"=>""
-										);
+					"id"=>0,
+					"id_item_object"=>$id_item_object,
+					"title"=>$title,
+					"serial_no"=>$serial_no,
+					"desc_"=>$desc_,
+					"id_product"=>$id_product,
+					"id_system"=>$id_system,
+					"shell1_nt_mm"=>$shell1_nt_mm,
+					"shell1_nt_in"=>$shell1_nt_in,
+					"shell1_id_cm"=>$shell1_id_cm,
+					"shell1_id_in"=>$shell1_id_in,
+					"shell2_nt_mm"=>$shell2_nt_mm,
+					"shell2_nt_in"=>$shell2_nt_in,
+					"shell2_id_cm"=>$shell2_id_cm,
+					"shell2_id_in"=>$shell2_id_in,
+					"head1_nt_mm"=>$head1_nt_mm,
+					"head1_nt_in"=>$head1_nt_in,
+					"head1_ir_cm"=>$head1_ir_cm,
+					"head1_ir_in"=>$head1_ir_in,
+					"head2_nt_mm"=>$head2_nt_mm,
+					"head2_nt_in"=>$head2_nt_in,
+					"head2_ir_cm"=>$head2_ir_cm,
+					"head2_ir_in"=>$head2_ir_in,
+					"comm_date"=>$comm_date,
+					"design_life"=>$design_life,
+					"retirement_date"=>$retirement_date,
+					"ext_design_life"=>$ext_design_life,
+					"create_date"=>"",
+					"ref2"=>$ref2,
+					"id_plant"=>$id_plant,
+					"id_plant_folder"=>$id_plant_folder
+					);
 			}
 			#end record
 
@@ -306,34 +393,118 @@ class pv_info extends MX_Controller  {
 	
 	function submit()
 	{
+		$id_item_object = $this->input->post("id_item_object");
 		$desc_ = strip_tags($this->input->post("desc_"));
 		$title = strip_tags($this->input->post("title"));
+		$serial_no = strip_tags($this->input->post("serial_no"));
+		$ref1 = $this->input->post("ref1");
 		$ref2 = $this->input->post("ref2");
+		$ref3 = $this->input->post("ref3");
+		$shell1_nt_mm = $this->input->post("shell1_nt_mm");
+		$shell1_nt_in = $this->input->post("shell1_nt_in");
+		$shell1_id_cm = $this->input->post("shell1_id_cm");
+		$shell1_id_in = $this->input->post("shell1_id_in");
+		
+		$shell2_nt_mm = $this->input->post("shell2_nt_mm");
+		$shell2_nt_in = $this->input->post("shell2_nt_in");
+		$shell2_id_cm = $this->input->post("shell2_id_cm");
+		$shell2_id_in = $this->input->post("shell2_id_in");
+
+		$head1_nt_mm = $this->input->post("head1_nt_mm");
+		$head1_nt_in = $this->input->post("head1_nt_in");
+		$head1_ir_cm = $this->input->post("head1_ir_cm");
+		$head1_ir_in = $this->input->post("head1_ir_in");
+
+		$head2_nt_mm = $this->input->post("head2_nt_mm");
+		$head2_nt_in = $this->input->post("head2_nt_in");
+		$head2_ir_cm = $this->input->post("head2_ir_cm");
+		$head2_ir_in = $this->input->post("head2_ir_in");
+
+		$comm_date = $this->input->post("comm_date");
+		$design_life = $this->input->post("design_life");
+		$retirement_date = $this->input->post("retirement_date");
+		$ext_design_life = $this->input->post("ext_design_life");
 		$id = $this->input->post("id");
+		$id_plant = $this->input->post("id_plant");
+		$id_plant_folder = $this->input->post("id_plant_folder");
 		$user_id = $this->session->userdata('adminID');
 
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('title', 'title', 'required');
+		$this->form_validation->set_rules('serial_no', 'Serial no', 'required');
+		$this->form_validation->set_rules('shell1_nt_mm', 'Shell1 nominal tank (mm)', 'required');
+		$this->form_validation->set_rules('shell1_nt_in', 'Shell1 nominal tank (in)', 'required');
+		$this->form_validation->set_rules('shell1_id_cm', 'Shell1 Internal diameter (cm)', 'required');
+		$this->form_validation->set_rules('shell1_id_in', 'Shell1 Internal diameter (in)', 'required');
+
+		$this->form_validation->set_rules('shell2_nt_mm', 'Shell2 nominal tank (mm)', 'required');
+		$this->form_validation->set_rules('shell2_nt_in', 'Shell2 nominal tank (in)', 'required');
+		$this->form_validation->set_rules('shell2_id_cm', 'Shell2 Internal diameter (cm)', 'required');
+		$this->form_validation->set_rules('shell2_id_in', 'Shell2 Internal diameter (in)', 'required');
+	
+		$this->form_validation->set_rules('head1_nt_mm', 'Head1 nominal tank (mm)', 'required');
+		$this->form_validation->set_rules('head1_nt_in', 'Head1 nominal tank (in)', 'required');
+		$this->form_validation->set_rules('head1_ir_cm', 'Head1 internal radius (cm)', 'required');
+		$this->form_validation->set_rules('head1_ir_in', 'Head1 internal radius (in)', 'required');
+
+		$this->form_validation->set_rules('head2_nt_mm', 'Head2 nominal tank (mm)', 'required');
+		$this->form_validation->set_rules('head2_nt_in', 'Head2 nominal tank (in)', 'required');
+		$this->form_validation->set_rules('head2_ir_cm', 'Head2 internal radius (cm)', 'required');
+		$this->form_validation->set_rules('head2_ir_in', 'Head2 internal radius (in)', 'required');
+		$this->form_validation->set_rules('comm_date', 'Commission date', 'required');
+		$this->form_validation->set_rules('design_life', 'Design life', 'required');
+		$this->form_validation->set_rules('retirement_date', 'Retirement date', 'required');
 	
 		if ($this->form_validation->run($this) == FALSE)
 		{
 			$this->session->set_flashdata("err",validation_errors());
 			$this->session->set_flashdata("desc_",$desc_);
 			$this->session->set_flashdata("title",$title);
+			$this->session->set_flashdata("serial_no",$serial_no);
+			$this->session->set_flashdata("shell1_nt_mm",$shell1_nt_mm);
+			$this->session->set_flashdata("shell1_nt_in",$shell1_nt_in);
+			$this->session->set_flashdata("shell1_id_cm",$shell1_id_cm);
+			$this->session->set_flashdata("shell1_id_in",$shell1_id_in);
+
+			$this->session->set_flashdata("shell2_nt_mm",$shell2_nt_mm);
+			$this->session->set_flashdata("shell2_nt_in",$shell2_nt_in);
+			$this->session->set_flashdata("shell2_id_cm",$shell2_id_cm);
+			$this->session->set_flashdata("shell2_id_in",$shell2_id_in);
+
+			$this->session->set_flashdata("head1_nt_mm",$head1_nt_mm);
+			$this->session->set_flashdata("head1_nt_in",$head1_nt_in);
+			$this->session->set_flashdata("head1_ir_cm",$head1_ir_cm);
+			$this->session->set_flashdata("head1_ir_in",$head1_ir_in);
+
+			$this->session->set_flashdata("head2_nt_mm",$head2_nt_mm);
+			$this->session->set_flashdata("head2_nt_in",$head2_nt_in);
+			$this->session->set_flashdata("head2_ir_cm",$head2_ir_cm);
+			$this->session->set_flashdata("head2_ir_in",$head2_ir_in);
+
+			$this->session->set_flashdata("comm_date",$comm_date);
+			$this->session->set_flashdata("design_life",$design_life);
+			$this->session->set_flashdata("retirement_date",$retirement_date);
+			$this->session->set_flashdata("ext_design_life",$ext_design_life);
+
+			$this->session->set_flashdata("ref1",$ref1);
+			$this->session->set_flashdata("ref3",$ref3);
 			$this->session->set_flashdata("ref2",$ref2);
-			redirect($this->table."/edit/".$id);
+
+			redirect($this->table."/edit/".$id."/".$id_item_object."/".$id_plant."/".$id_plant_folder);
 		}else{
 			if($id > 0)
 			{
-				$this->pv_info->setUpdate($this->table,$id,$title,$desc_,$ref2,$user_id);
+				$this->pv_info->setUpdate($this->table,$id,$id_item_object,$title,$serial_no,$desc_,$ref1,$ref3,$shell1_nt_mm,$shell1_nt_in,$shell1_id_cm,$shell1_id_in,$shell2_nt_mm,$shell2_nt_in,$shell2_id_cm,$shell2_id_in,$head1_nt_mm,$head1_nt_in,$head1_ir_cm,$head1_ir_in,$head2_nt_mm,$head2_nt_in,$head2_ir_cm,$head2_ir_in,$comm_date,$design_life,$retirement_date,$ext_design_life,$ref2,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
-				redirect($this->table."/edit/".$id);
+				/*redirect($this->table."/edit/".$id."/".$id_item_object."/".$id_plant."/".$id_plant_folder);*/
+				redirect('plant');
 			}else{
-				$id_term = $this->pv_info->setInsert($this->table,$id,$title,$desc_,$ref2,$user_id);
+				$id_term = $this->pv_info->setInsert($this->table,$id,$id_item_object,$title,$serial_no,$desc_,$ref1,$ref3,$shell1_nt_mm,$shell1_nt_in,$shell1_id_cm,$shell1_id_in,$shell2_nt_mm,$shell2_nt_in,$shell2_id_cm,$shell2_id_in,$head1_nt_mm,$head1_nt_in,$head1_ir_cm,$head1_ir_in,$head2_nt_mm,$head2_nt_in,$head2_ir_cm,$head2_ir_in,$comm_date,$design_life,$retirement_date,$ext_design_life,$ref2,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
-				redirect($this->table."/edit/".$last_id);
+				/*redirect($this->table."/edit/".$last_id."/".$id_item_object."/".$id_plant."/".$id_plant_folder);*/
+				redirect('plant');
 			}
 		}
 	}

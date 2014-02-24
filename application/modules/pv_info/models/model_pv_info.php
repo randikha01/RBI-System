@@ -65,27 +65,82 @@ class Model_pv_info extends CI_Model {
 		return $query;
 	}
 	
-	function setUpdate($table,$id,$title,$desc_,$ref1,$user_id)
+	function setUpdate($table,$id,$id_item_object,$title,$serial_no,$desc_,$ref1,$ref3,$shell1_nt_mm,$shell1_nt_in,$shell1_id_cm,$shell1_id_in,$shell2_nt_mm,$shell2_nt_in,$shell2_id_cm,$shell2_id_in,$head1_nt_mm,$head1_nt_in,$head1_ir_cm,$head1_ir_in,$head2_nt_mm,$head2_nt_in,$head2_ir_cm,$head2_ir_in,$comm_date,$design_life,$retirement_date,$ext_design_life,$ref2,$user_id)
 	{
 
-		$data = array(
+		/*$data = array(
 				  "title"=>$title,
 				  "desc_"=>$desc_,
 				  "publish"=>$ref1,
 				  "modify_user_id"=>$user_id
+			      );*/
+
+		$data = array(
+			      "id_item_object"=>$id_item_object,
+			      "title"=>$title,
+			      "serial_no"=>$serial_no,
+			      "desc_"=>$desc_,
+			      "id_product"=>$ref1,
+			      "id_system"=>$ref3,
+			      "shell1_nt_mm"=>$shell1_nt_mm,
+			      "shell1_nt_in"=>$shell1_nt_in,
+			      "shell1_id_cm"=>$shell1_id_cm,
+			      "shell1_id_in"=>$shell1_id_in,
+			      "shell2_nt_mm"=>$shell2_nt_mm,
+			      "shell2_nt_in"=>$shell2_nt_in,
+			      "shell2_id_cm"=>$shell2_id_cm,
+			      "shell2_id_in"=>$shell2_id_in,
+			      "head1_nt_mm"=>$head1_nt_mm,
+			      "head1_nt_in"=>$head1_nt_in,
+			      "head1_ir_cm"=>$head1_ir_cm,
+			      "head1_ir_in"=>$head1_ir_in,
+			      "head2_nt_mm"=>$head2_nt_mm,
+			      "head2_nt_in"=>$head2_nt_in,
+			      "head2_ir_cm"=>$head2_ir_cm,
+			      "head2_ir_in"=>$head2_ir_in,
+			      "comm_date"=>date("Y-m-d :H:i:s",strtotime($comm_date)),
+			      "design_life"=>$design_life,
+			      "retirement_date"=>date("Y-m-d :H:i:s",strtotime($retirement_date)),
+			      "ext_design_life"=>$ext_design_life,
+				  "publish"=>$ref2,
+				  "modify_user_id"=>$user_id,
+			      "modify_date"=>date("Y-m-d :H:i:s",now())
 			      );
 		$this->db->where('id',$id);
 		$this->db->update($table,$data);
 
 	}
 	
-	function setInsert($table,$id,$title,$desc_,$ref1,$user_id)
+	function setInsert($table,$id,$id_item_object,$title,$serial_no,$desc_,$ref1,$ref3,$shell1_nt_mm,$shell1_nt_in,$shell1_id_cm,$shell1_id_in,$shell2_nt_mm,$shell2_nt_in,$shell2_id_cm,$shell2_id_in,$head1_nt_mm,$head1_nt_in,$head1_ir_cm,$head1_ir_in,$head2_nt_mm,$head2_nt_in,$head2_ir_cm,$head2_ir_in,$comm_date,$design_life,$retirement_date,$ext_design_life,$ref2,$user_id)
 	{
-
 		$data = array(
+			      "id_item_object"=>$id_item_object,
 			      "title"=>$title,
+			      "serial_no"=>$serial_no,
 			      "desc_"=>$desc_,
-				  "publish"=>$ref1,
+			      "id_product"=>$ref1,
+			      "id_system"=>$ref3,
+			      "shell1_nt_mm"=>$shell1_nt_mm,
+			      "shell1_nt_in"=>$shell1_nt_in,
+			      "shell1_id_cm"=>$shell1_id_cm,
+			      "shell1_id_in"=>$shell1_id_in,
+			      "shell2_nt_mm"=>$shell2_nt_mm,
+			      "shell2_nt_in"=>$shell2_nt_in,
+			      "shell2_id_cm"=>$shell2_id_cm,
+			      "shell2_id_in"=>$shell2_id_in,
+			      "head1_nt_mm"=>$head1_nt_mm,
+			      "head1_nt_in"=>$head1_nt_in,
+			      "head1_ir_cm"=>$head1_ir_cm,
+			      "head1_ir_in"=>$head1_ir_in,
+			      "head2_nt_mm"=>$head2_nt_mm,
+			      "head2_nt_in"=>$head2_nt_in,
+			      "head2_ir_cm"=>$head2_ir_cm,
+			      "head2_ir_in"=>$head2_ir_in,
+			      "comm_date"=>date("Y-m-d :H:i:s",strtotime($comm_date)),
+			      "design_life"=>$design_life,
+			      "retirement_date"=>date("Y-m-d :H:i:s",strtotime($retirement_date)),
+			      "ext_design_life"=>$ext_design_life,
+				  "publish"=>$ref2,
 				  "user_id"=>$user_id,
 			      "create_date"=>date("Y-m-d :H:i:s",now())
 			      );
