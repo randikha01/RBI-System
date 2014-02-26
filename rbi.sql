@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2014 at 05:41 AM
+-- Generation Time: Feb 26, 2014 at 01:10 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=120 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=125 ;
 
 --
 -- Dumping data for table `tbl_menu`
@@ -196,7 +196,12 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (116, 'Ex Type', 'ref_ex_type', '', 'Publish', 35, '', 106, 1, 0, '2014-01-30 04:14:59', '2014-01-30 05:14:59'),
 (117, 'Equipment Category', 'ref_equipment_cat', '', 'Publish', 36, '', 106, 1, 0, '2014-01-30 04:23:15', '2014-01-30 05:23:15'),
 (118, 'Products', 'ref_products', '', 'Publish', 37, '', 106, 1, 0, '2014-02-03 07:56:29', '2014-02-03 08:56:29'),
-(119, 'System', 'ref_system', '', 'Publish', 38, '', 106, 1, 0, '2014-02-03 08:27:23', '2014-02-03 09:27:23');
+(119, 'System', 'ref_system', '', 'Publish', 38, '', 106, 1, 0, '2014-02-03 08:27:23', '2014-02-03 09:27:23'),
+(120, 'Insulation Type', 'ref_insulation', '', 'Publish', 39, '', 106, 1, 1, '2014-02-26 04:44:11', '2014-02-26 05:37:58'),
+(121, 'Coating Type', 'ref_coating', '', 'Publish', 40, '', 106, 1, 0, '2014-02-26 04:49:08', '2014-02-26 05:49:08'),
+(122, 'Criticality Rating', 'ref_criticality', '', 'Publish', 41, '', 106, 1, 0, '2014-02-26 04:59:01', '2014-02-26 05:59:01'),
+(123, 'Deterioration Mechanism', 'ref_deterioration', '', 'Publish', 42, '', 106, 1, 0, '2014-02-26 05:02:02', '2014-02-26 06:02:02'),
+(124, 'Corrosion Control', 'ref_corrosion', '', 'Publish', 43, '', 106, 1, 0, '2014-02-26 05:14:38', '2014-02-26 06:14:38');
 
 -- --------------------------------------------------------
 
@@ -213,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu_auth` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=251 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=258 ;
 
 --
 -- Dumping data for table `tbl_menu_auth`
@@ -287,7 +292,13 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 (247, 1, 116, 1, 0, '2014-01-30 04:15:10', '2014-01-30 05:15:10'),
 (248, 1, 117, 1, 0, '2014-01-30 04:23:26', '2014-01-30 05:23:26'),
 (249, 1, 118, 1, 0, '2014-02-03 07:56:40', '2014-02-03 08:56:40'),
-(250, 1, 119, 1, 0, '2014-02-03 08:27:38', '2014-02-03 09:27:38');
+(250, 1, 119, 1, 0, '2014-02-03 08:27:38', '2014-02-03 09:27:38'),
+(252, 1, 120, 1, 0, '2014-02-26 04:39:26', '2014-02-26 05:39:26'),
+(253, 2, 120, 1, 0, '2014-02-26 04:41:26', '2014-02-26 05:41:26'),
+(254, 1, 121, 1, 0, '2014-02-26 04:49:23', '2014-02-26 05:49:23'),
+(255, 1, 122, 1, 0, '2014-02-26 04:59:16', '2014-02-26 05:59:16'),
+(256, 1, 123, 1, 0, '2014-02-26 05:02:16', '2014-02-26 06:02:16'),
+(257, 1, 124, 1, 0, '2014-02-26 05:14:55', '2014-02-26 06:14:55');
 
 -- --------------------------------------------------------
 
@@ -426,6 +437,95 @@ INSERT INTO `tbl_plant_fol_item` (`id`, `id_plant_folder`, `id_ref_objects`, `ti
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_pv_corrosion`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_pv_corrosion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pv_feature` int(11) NOT NULL,
+  `id_ref_corrosion` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `tbl_pv_corrosion`
+--
+
+INSERT INTO `tbl_pv_corrosion` (`id`, `id_pv_feature`, `id_ref_corrosion`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 1, 1, 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46'),
+(2, 1, 4, 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46'),
+(3, 1, 5, 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_pv_deterioration`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_pv_deterioration` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pv_feature` int(11) NOT NULL,
+  `id_ref_deterioration` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `tbl_pv_deterioration`
+--
+
+INSERT INTO `tbl_pv_deterioration` (`id`, `id_pv_feature`, `id_ref_deterioration`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 1, 6, 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46'),
+(2, 1, 31, 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_pv_feature`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_pv_feature` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_item_object` int(11) NOT NULL,
+  `id_ref_insulation` int(11) NOT NULL,
+  `ins_thick_mm` decimal(16,3) NOT NULL,
+  `ins_thick_in` decimal(16,3) NOT NULL,
+  `id_ref_coating_in` int(11) NOT NULL,
+  `id_ref_coating_ex` int(11) NOT NULL,
+  `ves_length_m` decimal(16,3) NOT NULL,
+  `ves_length_f` decimal(16,3) NOT NULL,
+  `trace_heating` tinyint(1) NOT NULL,
+  `cath_protected` tinyint(1) NOT NULL,
+  `sur_area_cm` decimal(16,3) NOT NULL,
+  `sur_area_in` decimal(16,3) NOT NULL,
+  `num_nozzle` int(11) NOT NULL,
+  `id_ref_criticality` int(11) NOT NULL,
+  `draw_ref` varchar(254) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `tbl_pv_feature`
+--
+
+INSERT INTO `tbl_pv_feature` (`id`, `id_item_object`, `id_ref_insulation`, `ins_thick_mm`, `ins_thick_in`, `id_ref_coating_in`, `id_ref_coating_ex`, `ves_length_m`, `ves_length_f`, `trace_heating`, `cath_protected`, `sur_area_cm`, `sur_area_in`, `num_nozzle`, `id_ref_criticality`, `draw_ref`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 7, 4, '1.000', '1.000', 18, 18, '1.000', '1.000', 1, 1, '1.000', '1.000', 1, 1, '1', 'Publish', 1, 0, '2014-02-26 08:53:46', '2014-02-26 09:53:46');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_pv_info`
 --
 
@@ -510,7 +610,194 @@ CREATE TABLE IF NOT EXISTS `tbl_pv_pressure` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `tbl_pv_pressure`
+--
+
+INSERT INTO `tbl_pv_pressure` (`id`, `id_item_object`, `design_press_bar`, `design_press_psi`, `design_press_kpa`, `design_press_kg`, `design_press_nm`, `operating_press_bar`, `operating_press_psi`, `operating_press_kpa`, `operating_press_kg`, `operating_press_nm`, `test_press_bar`, `test_press_psi`, `test_press_kpa`, `test_press_kg`, `test_press_nm`, `design_temp_c`, `design_temp_f`, `normal_op_c`, `normal_op_f`, `min_op_c`, `min_op_f`, `max_op_c`, `max_op_f`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 7, '9.500', '137.800', '950.000', '9.500', '95000.000', '8.000', '116.000', '800.000', '8.000', '80000.000', '9.000', '130.500', '900.000', '9.000', '90000.000', '10.000', '50.000', '8.000', '46.400', '4.000', '39.200', '7.000', '44.600', 'Publish', 1, 1, '2014-02-25 21:43:22', '2014-02-26 04:41:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_coating`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_coating` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `tbl_ref_coating`
+--
+
+INSERT INTO `tbl_ref_coating` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'GLASSFLAKE SES471 TABLE 1A', '1 Coat (glassflake Filled Polyester) New Construction', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(2, 'GLASSFLAKE SES471 TABLE 1C', '1 Coat (Glassflake Filled Polyester) Touch Up', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(3, 'EPOXY SES471 TABLE 2A', '4 Coat (epoxy And Polyurathane) New Construction', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(4, 'EPOXY SES471 TABLE 2B', '4 Coat (Epoxy and Polyurathane) Major Maint', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(5, 'EPOXY SES471 TABLE 2C', '4 Coat (Epoxy and Polyurathane) Touch Up', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(6, 'VINYL SES471 TABLE', 'Vinyl', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(7, 'GALVANISING SES471 TABLE 5', 'Hot Dip Galvanising', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(8, 'TOP COAT SES471 TABLE 5A2', 'Top Coat (Splash Zone) New Constr', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(9, 'RUBBER SES471 TABLE 1A', 'Offshore Risers Repair Of Rubber Lining', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(10, 'CHLORINATED RUBBER', 'Maintenance of Equipment (Alkyd)', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(11, 'BITUMINOUS', 'Vinyl', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(12, 'METAL SPRAY', 'Metal Spray', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(13, 'GALVANISING', 'Galvanizing', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(14, 'ANTIFOWLING', 'Antifouling', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(15, 'NO RECORD', 'No Record Found', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(16, 'NONE', 'None', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(17, 'SG.PRO.001.P', 'Sg.pro.001.p Code Ma Af Sys P01', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(18, 'ACRIL-POLYURETHANE', 'Acril-polyurethane', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(19, 'INORGANIC ZINC', 'Inorganic Zinc', 'Publish', 1, 1, '2014-02-26 04:22:35', '2010-05-16 00:00:00'),
+(20, 'COATING SPEC X', 'external coat', 'Publish', 1, 1, '2014-02-26 04:22:35', '2011-02-08 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_corrosion`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_corrosion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `tbl_ref_corrosion`
+--
+
+INSERT INTO `tbl_ref_corrosion` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'CHEMICAL INJECTION', 'Chemical Injection', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(2, 'GALVANISED', 'Galvanised', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(3, 'LINING CRA', 'Lining CRA', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(4, 'COATING', 'Coating', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(5, 'CP IMPRESSED', 'Impressed Cathodic Protection', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(6, 'NONE', 'None Assigned', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(7, 'NO RECORD', 'No Record Found', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(8, 'CP SACRIFICIAL', 'Sacrificial Cathodic Protection', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(9, 'INHIBITORS', 'Inhibitors', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(10, 'REDUCED CHLORIDES', 'Reduced Chlorides', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(11, 'NEUTRALISE ACIDS', 'Nutralise Acids', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(12, 'H2S SULFIDES SCAVENGERS', 'H2s Sulfides Scavengers', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00'),
+(13, 'OXYGEN SCAVENGERS', 'Oxygen Scavengers', 'Publish', 1, 1, '2014-02-26 04:33:44', '2010-05-16 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_criticality`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_criticality` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `tbl_ref_criticality`
+--
+
+INSERT INTO `tbl_ref_criticality` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'A1', 'Highly Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(2, 'A2', 'Highly Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(3, 'A3', 'Highly Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(4, 'B1', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(5, 'B2', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(6, 'B3', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(7, 'C1', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(8, 'C2', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(9, 'C3', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(10, 'D1', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(11, 'D2', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00'),
+(12, 'D3', 'Critical', 'Publish', 1, 1, '2014-02-26 04:27:29', '2010-05-16 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_deterioration`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_deterioration` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=40 ;
+
+--
+-- Dumping data for table `tbl_ref_deterioration`
+--
+
+INSERT INTO `tbl_ref_deterioration` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'EROSION', 'Erosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(2, 'PITTING', 'Pitting', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(3, 'SULPHIDE STRESS CRACKING(SSC)', 'Sulphide Stress Corrosion Cracking(SSC)', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(4, 'VIBRATION', 'Vibration', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(5, 'CORROSION', 'Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(6, 'ABRASION', 'Fusion Weld', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(7, 'MECHANICAL DAMAGE', 'Mechanical Damage', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(8, 'SCOUR', 'Scour', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(9, 'SPALLING', 'Spalling', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(10, 'CRACKING', 'Cracking', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(11, 'POLLUTION', 'Pollution', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(12, 'BACTERIAL', 'Bacterial', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(13, 'IMPACT', 'Impact', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(14, 'FRETTING', 'Fretting', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(15, 'CREVICE CORROSION', 'Crevice Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(16, 'HYDROGEN EMBRITTLEMENT', 'Hydrogen Embrittlement', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(17, 'NONE', 'None', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(18, 'NO RECORD', 'No Record Found', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(19, 'RASH RUSTING', 'Rash Rusting', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(20, 'BLISTERING', 'Blistering', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(21, 'COATING FAILURE', 'Coating Failure', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(22, 'COATING DELAMINATION', 'Coating Delamination', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(23, 'SCAB CORROSION', 'Scab Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(24, 'RUST STAINING', 'Rust Staining', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(25, 'FUNGICIDAL CONTAMINATION', 'Fungicidal Contamination', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(26, 'HYDROGEN SULFIDE', 'Hydrogen Sulfide', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(27, 'NAPTHENIC ACID', 'Napthenic Acid', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(28, 'HYDOGEN INDUCED CRACKING', 'Hydrogen Induced Cracking', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(29, 'SULFIDE STREES CORR. CRACKING', 'Sulfide Stress Corrosion Cracking (SSCC)', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(30, 'SOHIC', 'Sohic', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(31, 'AMMONIUM CHLORIDE CORROSION', 'Ammonium Chloride Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(32, 'HYDROCHLORIC ACID', 'Hydrochloric Acid', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(33, 'MICROORGANISM CORROSION (MIC)', 'Microorganism Corrosion (MIC)', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(34, 'HYDROGEN BLISTERING', 'Hydrogen Blistering', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(35, 'OXYGEN CORROSION', 'Oxygen Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(36, 'SAND EROSION', 'Sand Erosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(37, 'FLOW ENHANCED CORROSION', 'Flow Enhanced Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(38, 'MESA ATTACK', 'Mesa Attack', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00'),
+(39, 'CARBON DIOXIDE CORROSION', 'Carbon Dioxide Corrosion', 'Publish', 1, 1, '2014-02-26 04:30:51', '2010-05-16 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -581,6 +868,49 @@ INSERT INTO `tbl_ref_ex_type` (`id`, `title`, `desc_`, `publish`, `user_id`, `mo
 (16, 'MA', '', 'Publish', 1, 0, '2014-01-29 07:11:01', '2014-01-29 14:11:01'),
 (17, 'MB', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25'),
 (18, 'XX', '', 'Publish', 1, 0, '2014-01-29 07:11:25', '2014-01-29 14:11:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_ref_insulation`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_ref_insulation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) COLLATE latin1_general_ci NOT NULL,
+  `desc_` varchar(150) COLLATE latin1_general_ci NOT NULL,
+  `publish` enum('Not Publish','Publish') COLLATE latin1_general_ci NOT NULL DEFAULT 'Not Publish',
+  `user_id` int(11) NOT NULL COMMENT 'admin created',
+  `modify_user_id` int(11) NOT NULL,
+  `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=20 ;
+
+--
+-- Dumping data for table `tbl_ref_insulation`
+--
+
+INSERT INTO `tbl_ref_insulation` (`id`, `title`, `desc_`, `publish`, `user_id`, `modify_user_id`, `modify_date`, `create_date`) VALUES
+(1, 'NONE', 'None', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(2, 'NOT APPLICABLE', 'Not Applicable', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(3, 'DUAL SERVICE', 'Dual Service', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(4, 'ACOUSTIC', 'Acoustic', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(5, 'ACOUSTIC, ELECTRICALLY TRACED', 'Acoustic, Electrically Traced', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(6, 'ACOUSTIC COLD', 'Acoustic Cold', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(7, 'ACOUSTIC HOT', 'Acoustic Hot', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(8, 'ACOUSTIC, DUAL SERVICE', 'Acoustic, Dual Service', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(9, 'COLD', 'Cold', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(10, 'COLD BURN', 'Cold Burn', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(11, 'COLD. INSULATION FOR FIRE', 'Cold. Insulation For Fire', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(12, 'ELECTRICALLY TRACED', 'Electrically Traced', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(13, 'HEAT CONSERVATION', 'Heat Conservation', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(14, 'PASSIVE FIRE PROTECTION', 'Passive Fire Protection', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(15, 'PERSONNEL PROTECTION', 'Personnel Protection', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(16, 'WINTERISATION', 'Winterisation', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(17, 'NOT ACCESSIBLE', 'Not Accessible', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(18, 'NO RECORD', 'No Record Found', 'Publish', 1, 1, '2014-02-26 04:23:14', '2010-05-16 00:00:00'),
+(19, 'CALCIUM CYLICATE', 'Calcium Cylicate - high temp', 'Publish', 1, 1, '2014-02-26 04:23:14', '2011-02-08 00:00:00');
 
 -- --------------------------------------------------------
 

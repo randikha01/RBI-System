@@ -1,0 +1,198 @@
+<script>
+	 var config = {
+          '#ref1'           : {},
+          '#ref1-deselect'  : {allow_single_deselect:true},
+          '#ref1-no-single' : {disable_search_threshold:10},
+          '#ref1-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref1-width'     : {width:"40%"},
+          '#ref2'           : {},
+          '#ref2-deselect'  : {allow_single_deselect:true},
+          '#ref2-no-single' : {disable_search_threshold:10},
+          '#ref2-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref2-width'     : {width:"40%"},
+          '#ref3'           : {},
+          '#ref3-deselect'  : {allow_single_deselect:true},
+          '#ref3-no-single' : {disable_search_threshold:10},
+          '#ref3-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref3-width'     : {width:"40%"},
+          '#ref4'           : {},
+          '#ref4-deselect'  : {allow_single_deselect:true},
+          '#ref4-no-single' : {disable_search_threshold:10},
+          '#ref4-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref4-width'     : {width:"40%"},
+          '#ref5'           : {},
+          '#ref5-deselect'  : {allow_single_deselect:true},
+          '#ref5-no-single' : {disable_search_threshold:10},
+          '#ref5-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref5-width'     : {width:"40%"},
+          '#ref6'           : {},
+          '#ref6-deselect'  : {allow_single_deselect:true},
+          '#ref6-no-single' : {disable_search_threshold:10},
+          '#ref6-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref6-width'     : {width:"40%"},
+          '#ref7'           : {},
+          '#ref7-deselect'  : {allow_single_deselect:true},
+          '#ref7-no-single' : {disable_search_threshold:10},
+          '#ref7-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref7-width'     : {width:"40%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+        }
+
+        function mmtoin(value1){
+            var mminch = parseFloat(0.039370079);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * mminch);
+            var mm = var2.toFixed(3);
+            return mm;
+        }
+
+        function cmtoin(value1){
+            var cminch = parseFloat(0.39370);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * cminch);
+            var cm = var2.toFixed(3);
+            return cm;
+        }
+
+        function default_zero(selector){
+            if($(selector).val().length == 0){
+                $(selector).val(0);
+            }
+        }
+
+        function default_dec_zero(selector){
+            if($(selector).val().length == 0){
+                $(selector).val(0.000);
+            }
+        }
+
+        function updateData()
+        {
+            var btn_plus = "{btn_plus}";
+            if(btn_plus == ""){
+                parent.openModal('{admin_url}{title_link}');
+            }
+        }
+        updateData();
+
+</script>
+        <div class="row">
+          <div class="span14">
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+	    
+
+	    <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+                <table>
+                    <tr>
+                        <td class="no-border">
+                            <p>Insulation Type</p>
+                            {ref1}
+                        </td>
+                         <td class="no-border sidebar-right">
+                            <p>Insulation Thickness</p>
+                            <input type="input" name="ins_thick_mm" value="{ins_thick_mm}" class="pendek"/> mm
+                            <input type="input" name="ins_thick_in" value="{ins_thick_in}" class="pendek"/> in
+                         </td>
+                    </tr>
+                    <tr>
+                        <td class="no-border">
+                            <p>Internal Coating Type</p>
+                            {ref3}
+                        </td>
+                        <td class="no-border sidebar-right">
+                            <p>External Coating Type</p>
+                            {ref4}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="no-border">
+                            <p>Vessel Length</p>
+                            <input type="input" name="ves_length_m" value="{ves_length_m}" class="pendek"/> m
+                            <input type="input" name="ves_length_f" value="{ves_length_f}" class="pendek"/> ft
+                        </td>
+                         <td class="no-border sidebar-right">
+                            <input type="checkbox" name="trace_heating" value="1">Trace Heating<br/>
+                            <input type="checkbox" name="cath_protected" value="1">Cathodic Protected
+                         </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-border">
+                            <p>Approx. Surface Area</p>
+                            <input type="input" name="sur_area_cm" value="{sur_area_cm}" class="pendek"/> cm2
+                            <input type="input" name="sur_area_in" value="{sur_area_in}" class="pendek"/> in2
+                        </td>
+                        <td class="no-border sidebar-right">
+                            <p>Number of Nozzles</p>
+                            <input type="input" name="num_nozzle" value="{num_nozzle}" class="pendek"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-border">
+                            <p>Criticality Rating</p>
+                            {ref5}
+                        </td>
+                        <td class="no-border sidebar-right">
+                            <p>Drawing Reference</p>
+                            <input type="input" name="draw_ref" value="{draw_ref}"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-border">
+                            <p>Deterioration Mechanisms</p>
+                            {ref6}
+                        </td>
+                        <td class="no-border sidebar-right">
+                            <p>Corrosion Control</p>
+                            {ref7}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-border">
+                             <p>Publish</p>
+                             {ref2}
+                         </td>
+                        <td class="no-border sidebar-right">
+                            <p>Created Date</p>
+                            <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="no-border" colspan="2">
+                            <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}">
+                                <input type="button" class="btn info" value="add more" id="more_btn"/>
+                            </a>
+                            <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                            <a href="javascript:void(0);" onclick="parent.closeModalFacebox();">
+                                <input type="button" class="btn-reset" value="cancel"/>
+                            </a>
+                            <a href="{url_shell}">
+                            <!--a href="javascript:void(0);" onclick="parent.openModalFacebox('{url_press}');" title="Pressure/Temperature"-->
+                                <input type="button" class="btn info" value="Shell - Calculations"/>
+                            </a>
+
+                            <input type="hidden" name="id" value="{id}">
+                            <input type="hidden" name="id_item_object" value="{id_item_object}">
+                            <input type="hidden" name="id_plant" value="{id_plant}">
+                            <input type="hidden" name="id_plant_folder" value="{id_plant_folder}">
+                        </td>
+                    </tr>
+                    
+                </table>
+	    </form>
+            {/list}
+        </div>
+</div>

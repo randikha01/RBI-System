@@ -183,6 +183,13 @@ class pv_info extends MX_Controller  {
 		$v_obj = $this->pv_info->getitemobject($id_item_object);
 		$title_obj = $v_obj["obj_tag_no"];
 		$desc_obj = $v_obj["desc_"];
+		
+		$cekobjatpress = $this->pv_info->cekobjectpressure("tbl_pv_pressure",$id_item_object);
+		if($cekobjatpress == 0){
+			$url_press = base_url()."pv_pressure/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_press = base_url()."pv_pressure/edit/".$cekobjatpress."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
 
 		
 		if(is_numeric($id)){
@@ -372,6 +379,8 @@ class pv_info extends MX_Controller  {
 			#ref dropdown multi value
 			$ref3 = $this->getRefDropdownSystem($id_system,3);
 			#end ref dropdown multi value
+
+
 		
 			$data = array(
 					  'admin_url'=>base_url(),
@@ -381,6 +390,7 @@ class pv_info extends MX_Controller  {
 					  'ref1'=>$ref1,
 					  'ref2'=>$ref2,
 					  'ref3'=>$ref3,
+					  'url_press'=>$url_press,
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
 				 	  'title_link'=>$this->table
 					  );
