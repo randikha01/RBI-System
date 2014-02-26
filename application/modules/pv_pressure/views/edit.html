@@ -1,0 +1,357 @@
+<script>
+         $('#design_life').keyup(function() {
+            var design_life = $(this).val();
+
+            var dateMin = $('#comm_date').datepicker("getDate");
+            var rMax = new Date(dateMin.getFullYear() + parseInt(design_life), dateMin.getMonth(),dateMin.getDate() - 1); 
+            $('#retirement_date').val($.datepicker.formatDate('dd-mm-yy', new Date(rMax)));
+         
+        });
+
+        default_dec_zero('input[name="design_press_bar"]');
+        default_dec_zero('input[name="operating_press_bar"]');
+        default_dec_zero('input[name="test_press_bar"]');
+        default_dec_zero('input[name="design_temp_c"]');
+        default_dec_zero('input[name="normal_op_c"]');
+        default_dec_zero('input[name="min_op_c"]');
+        default_dec_zero('input[name="max_op_c"]');
+
+        $('input[name="design_press_bar"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="operating_press_bar"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="test_press_bar"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="design_temp_c"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="normal_op_c"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="min_op_c"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="max_op_c"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+
+       $('input[name="design_press_psi"]').attr('readonly', true);
+       $('input[name="design_press_kpa"]').attr('readonly', true);
+       $('input[name="design_press_kg"]').attr('readonly', true);
+       $('input[name="design_press_nm"]').attr('readonly', true);
+
+       $('input[name="operating_press_psi"]').attr('readonly', true);
+       $('input[name="operating_press_kpa"]').attr('readonly', true);
+       $('input[name="operating_press_kg"]').attr('readonly', true);
+       $('input[name="operating_press_nm"]').attr('readonly', true);
+
+       $('input[name="test_press_psi"]').attr('readonly', true);
+       $('input[name="test_press_kpa"]').attr('readonly', true);
+       $('input[name="test_press_kg"]').attr('readonly', true);
+       $('input[name="test_press_nm"]').attr('readonly', true);
+
+       $('input[name="design_temp_f"]').attr('readonly', true);
+       $('input[name="normal_op_f"]').attr('readonly', true);
+       $('input[name="min_op_f"]').attr('readonly', true);
+       $('input[name="max_op_f"]').attr('readonly', true);
+
+        $('input[name="design_press_bar"]').blur(function() {
+            var barpsi = bartopsi($(this).val());
+            var barkpa = bartokpa($(this).val());
+            var barkg = bartokg($(this).val());
+            var barnm = bartonm($(this).val());
+
+            $('input[name="design_press_psi"]').val(barpsi);
+            $('input[name="design_press_kpa"]').val(barkpa);
+            $('input[name="design_press_kg"]').val(barkg);
+            $('input[name="design_press_nm"]').val(barnm);
+        });
+
+       $('input[name="operating_press_bar"]').blur(function() {
+        var val_design_press = parseFloat($('input[name="design_press_bar"]').val());
+        var val_operating_press = parseFloat($(this).val());
+            if(val_operating_press <= val_design_press){
+                var barpsi = bartopsi($(this).val());
+                var barkpa = bartokpa($(this).val());
+                var barkg = bartokg($(this).val());
+                var barnm = bartonm($(this).val());
+                
+                $('input[name="operating_press_psi"]').val(barpsi);
+                $('input[name="operating_press_kpa"]').val(barkpa);
+                $('input[name="operating_press_kg"]').val(barkg);
+                $('input[name="operating_press_nm"]').val(barnm);
+            }else{
+                alert('Operating pressure cannot be more than Design Pressure!');
+            }
+        });
+
+        $('input[name="test_press_bar"]').blur(function() {
+            var barpsi = bartopsi($(this).val());
+            var barkpa = bartokpa($(this).val());
+            var barkg = bartokg($(this).val());
+            var barnm = bartonm($(this).val());
+            
+            $('input[name="test_press_psi"]').val(barpsi);
+            $('input[name="test_press_kpa"]').val(barkpa);
+            $('input[name="test_press_kg"]').val(barkg);
+            $('input[name="test_press_nm"]').val(barnm);
+        });
+
+        $('input[name="design_temp_c"]').blur(function() {
+            var cf = ctof($(this).val());
+            $('input[name="design_temp_f"]').val(cf);
+        });
+
+        $('input[name="normal_op_c"]').blur(function() {
+        var val_design_temp = parseFloat($('input[name="design_temp_c"]').val());
+        var val_normal_op = parseFloat($(this).val());
+            if(val_normal_op <= val_design_temp){
+                var cf = ctof($(this).val());
+                $('input[name="normal_op_f"]').val(cf);
+            }else{
+                alert('Normal operating temperature cannot be more than Design Temperature!');
+            }
+        });
+
+        $('input[name="min_op_c"]').blur(function() {
+        var val_normal_op = parseFloat($('input[name="normal_op_c"]').val());
+        var val_min_op = parseFloat($(this).val());
+            if(val_min_op <= val_normal_op){
+                var cf = ctof($(this).val());
+                $('input[name="min_op_f"]').val(cf);
+            }else{
+                alert('Minimum operating temperature cannot be more than Normal Operating Temperature!');
+            }
+        });
+
+
+        $('input[name="max_op_c"]').blur(function() {
+        var val_design_temp = parseFloat($('input[name="design_temp_c"]').val());
+        var val_min_op = parseFloat($('input[name="min_op_c"]').val());
+        var val_max_op = parseFloat($(this).val());
+            if(val_max_op <= val_design_temp){
+                if(val_max_op < val_min_op){
+                    alert('Maximum Operating Temperature cannot be less than Minimum Operating Temperature!');
+                }else{
+                    var cf = ctof($(this).val());
+                    $('input[name="max_op_f"]').val(cf);    
+                }
+                
+            }else{
+                alert('Maximum operating temperature cannot be more than Design Temperature!');
+            }
+        });
+
+        function bartopsi(value1){
+            var barpsi = parseFloat(14.5);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * barpsi);
+            var psi = var2.toFixed(1);
+            return psi;
+        }
+
+        function bartokpa(value1){
+            var barkpa = parseFloat(100.0);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * barkpa);
+            var kpa = var2.toFixed(1);
+            return kpa;
+        }
+
+        function bartokg(value1){
+            var barkg = parseFloat(1.0);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * barkg);
+            var kg = var2.toFixed(1);
+            return kg;
+        }
+
+        function bartonm(value1){
+            var barnm = parseFloat(10000.0);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * barnm);
+            var nm = var2.toFixed(1);
+            return nm;
+        }
+
+        function ctof(value1){
+            var cf = parseFloat(1.8);
+            var fah = parseFloat(32)
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat((var1*cf) + fah);
+            var f = var2.toFixed(1);
+            return f;
+        }
+
+        function default_zero(selector){
+            if($(selector).val().length == 0){
+                $(selector).val(0);
+            }
+        }
+
+        function default_dec_zero(selector){
+            if($(selector).val().length == 0){
+                $(selector).val(0.000);
+            }
+        }
+
+        function updateData()
+        {
+            var btn_plus = "{btn_plus}";
+            if(btn_plus == ""){
+                parent.openModal('{admin_url}{title_link}');
+            }
+        }
+        updateData();
+
+</script>
+        <div class="row">
+          <div class="span14">
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+            </div>
+            {/notif}
+        
+
+        <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+                <table>
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Design Pressure
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_press_bar" value="{design_press_bar}" class="pendek"/> bar
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_press_psi" value="{design_press_psi}" class="pendek"/> psi
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_press_kpa" value="{design_press_kpa}" class="pendek"/> kPa
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_press_kg" value="{design_press_kg}" class="pendek"/> kg/cm2
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_press_nm" value="{design_press_nm}" class="pendek"/> Pa:N/m2
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Operating Pressure
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="operating_press_bar" value="{operating_press_bar}" class="pendek"/> bar
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="operating_press_psi" value="{operating_press_psi}" class="pendek"/> psi
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="operating_press_kpa" value="{operating_press_kpa}" class="pendek"/> kPa
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="operating_press_kg" value="{operating_press_kg}" class="pendek"/> kg/cm2
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="operating_press_nm" value="{operating_press_nm}" class="pendek"/> Pa:N/m2
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Test Pressure
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="test_press_bar" value="{test_press_bar}" class="pendek"/> bar
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="test_press_psi" value="{test_press_psi}" class="pendek"/> psi
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="test_press_kpa" value="{test_press_kpa}" class="pendek"/> kPa
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="test_press_kg" value="{test_press_kg}" class="pendek"/> kg/cm2
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="test_press_nm" value="{test_press_nm}" class="pendek"/> Pa:N/m2
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Design Temperature
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="design_temp_c" value="{design_temp_c}" class="pendek"/> oC
+                        </td>
+                        <td class="sidebar-right no-border" colspan="4">
+                            <input type="input" name="design_temp_f" value="{design_temp_f}" class="pendek"/> oF
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Normal Operating Temperature
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="normal_op_c" value="{normal_op_c}" class="pendek"/> oC
+                        </td>
+                        <td class="sidebar-right no-border"  colspan="4">
+                            <input type="input" name="normal_op_f" value="{normal_op_f}" class="pendek"/> oF
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Minimum Operating Temperature
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="min_op_c" value="{min_op_c}" class="pendek"/> oC
+                        </td>
+                        <td class="sidebar-right no-border" colspan="4">
+                            <input type="input" name="min_op_f" value="{min_op_f}" class="pendek"/> oF
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="sidebar-right no-border">
+                            Maximum Operating Temperature
+                        </td>
+                        <td class="sidebar-right no-border">
+                            <input type="input" name="max_op_c" value="{max_op_c}" class="pendek"/> oC
+                        </td>
+                        <td class="sidebar-right no-border" colspan="4">
+                            <input type="input" name="max_op_f" value="{max_op_f}" class="pendek"/> oF
+                        </td>
+                    </tr>
+
+                    <!--tr>
+                        <td class="no-border" colspan="3">
+                             <p>Publish</p>
+                             {ref2}
+                         </td>
+                        <td class="no-border" colspan="3">
+                            <p>Created Date</p>
+                            <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                        </td>
+                    </tr-->
+
+                    <tr>
+                        <td class="no-border" colspan="6">
+                            <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}">
+                                <input type="button" class="btn info" value="add more" id="more_btn"/>
+                            </a>
+                            <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                            <a href="javascript:void(0);" onclick="parent.closeModalFacebox();">
+                                <input type="button" class="btn-reset" value="cancel"/>
+                            </a>
+                            <a href="{url_feat}">
+                                <input type="button" class="btn info" value="Features"/>
+                            </a>
+
+                            <input type="hidden" name="id" value="{id}">
+                            <input type="hidden" name="id_item_object" value="{id_item_object}">
+                            <input type="hidden" name="id_plant" value="{id_plant}">
+                            <input type="hidden" name="id_plant_folder" value="{id_plant_folder}">
+                        </td>
+                    </tr>
+                    
+                </table>
+        </form>
+            {/list}
+        </div>
+</div>
