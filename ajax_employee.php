@@ -13,8 +13,6 @@ if ( !defined('HRIS_CLASS_AJAXEMPLOYEE_DEFINED') ) {
 
 require_once(XOCP_DOC_ROOT."/class/xocpajaxlistener.php");
 require_once(XOCP_DOC_ROOT."/modules/hris/include/hris.php");
-require_once(XOCP_DOC_ROOT."/modules/hris/include/vocab.php");
-require_once(XOCP_DOC_ROOT."/modules/hris/modconsts.php");
 
 class _hris_class_EmployeeAjax extends AjaxListener {
    
@@ -40,803 +38,22 @@ class _hris_class_EmployeeAjax extends AjaxListener {
                             "app_editEducation","app_saveEducation","app_deleteEducation",
                             "app_newTraining","app_editTraining","app_saveTraining",
                             "app_deleteTraining","app_calcAge","app_substitute",
-                            "app_editFamily","app_saveBasicSalary","app_deleteFamily",
-                            "app_saveFamily","app_getPayrollComponentList","app_addPayrollComponent",
-                            "app_editPayrollComponent","app_savePayrollComponent","app_deletePayrollComponent",
-                            "app_payrollChangeMonth","app_generatePayroll","app_resetPayroll",
-                            "app_confirmFinishPayroll","app_finishPayroll","app_confirmEditPayroll",
-                            "app_checkPasswordEditPayroll","app_editWorkGroupAssign","app_deleteWorkGroupAssign",
-                            "app_saveWorkGroupAssign");
+                            "app_editFamily");
    }
    
-   function renderWorkGroupAssign($employee_id) {
+   function app_editFamily($args) {
       $db=&Database::getInstance();
+      $ctc_seq = $args[0];
       
-      $wg .= "<table class='xxlist' style='width:100%;' align='center'>"
-           . "<tbody id='tbwglist'>";
-      
-      $sql = "SELECT a.history_id,a.ts_group_id,b.ts_group_nm,a.start_dttm"
-           . " FROM ".XOCP_PREFIX."employee_workgroup_history a"
-           . " LEFT JOIN ".XOCP_PREFIX."ts_group b USING(ts_group_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.status_cd = 'normal'"
-           . " ORDER BY a.start_dttm DESC";
-      $result = $db->query($sql);
-      $old_start = "";
-      if($db->getRowsNum($result)>0) {
-         while(list($history_idx,$ts_group_idx,$ts_group_nm,$start_dttmx)=$db->fetchRow($result)) {
-            $wg .= "<tr><td id='dvwg_${history_idx}'>"
-                 . "<table style='width:100%;'><colgroup><col/><col width='200'/><col width='20'/><col width='200'/></colgroup><tbody><tr>"
-                 . "<td><span class='xlnk' onclick='assign_workgroup(\"$history_idx\",this,event);'>$ts_group_nm</span></td>"
-                 . "<td style='text-align:right;'>".sql2ind($start_dttmx)."</td>"
-                 . "<td style='text-align:center;'>-</td>"
-                 . "<td style='text-align:left;'>".($old_start==""?"now":sql2ind($old_start))."</td>"
-                 . "</tr></tbody></table>"
-                 . "</td></tr>";
-            $old_start = $start_dttmx;
-            
-         }
-         $wg .= "<tr style='display:none;' id='wgtrempty'><td>"._EMPTY."</td></tr>";
-      } else {
-         $wg .= "<tr id='wgtrempty'><td>"._EMPTY."</td></tr>";
-      }
-      
-      $wg .= "</tbody></table>";
-      return $wg;
    }
    
-   function app_saveWorkGroupAssign($args) {
+   function app_substitute($args) {
       $db=&Database::getInstance();
-      $history_id = $args[0];
-      $vars = _parseForm($args[1]);
-      $employee_id = $_SESSION["hris_employee_id"];
-      $user_id = getUserID();
+      $person_id = $args[0];
       
-      foreach($vars as $k=>$v) {
-         $$k = $v;
-      }
-      
-      if($history_id=="new") {
-         $user_id = getUserID();
-         $sql = "INSERT INTO ".XOCP_PREFIX."employee_workgroup_history (employee_id,ts_group_id,start_dttm,created_user_id)"
-              . " VALUES('$employee_id','$ts_group_id','$start_dttm','$user_id')";
-         $db->query($sql);
-         $history_id = $db->getInsertId();
-         _debuglog($sql);
-      }
-      
-      $sql = "UPDATE ".XOCP_PREFIX."employee_workgroup_history SET "
-           . "ts_group_id = '$ts_group_id',"
-           . "start_dttm = '$start_dttm'"
-           . " WHERE history_id = '$history_id'";
-      $db->query($sql);
-      _debuglog($sql);
-      
-      $sql = "SELECT ts_group_nm FROM ".XOCP_PREFIX."ts_group WHERE ts_group_id = '$ts_group_id'";
-      $result = $db->query($sql);
-      list($ts_group_nm)=$db->fetchRow($result);
-      
-      $sql = "SELECT start_dttm FROM ".XOCP_PREFIX."employee_workgroup_history WHERE employee_id = '$employee_id' AND start_dttm > '$start_dttm' LIMIT 1";
+      $sql = "SELECT user_id FROM ".XOCP_PREFIX."users WHERE person_id = '$person_id'";
       $result = $db->query($sql);
       if($db->getRowsNum($result)>0) {
-         list($old_start)=$db->fetchRow($result);
-      } else {
-         $old_start = "";
-      }
-      
-      $ret = "<table style='width:100%;'><colgroup><col/><col width='200'/><col width='20'/><col width='200'/></colgroup><tbody><tr>"
-           . "<td><span class='xlnk' onclick='assign_workgroup(\"$history_id\",this,event);'>$ts_group_nm</span></td>"
-           . "<td style='text-align:right;'>".sql2ind($start_dttm)."</td>"
-           . "<td style='text-align:center;'>-</td>"
-           . "<td style='text-align:left;'>".($old_start==""?"now":sql2ind($old_start))."</td>"
-           . "</tr></tbody></table>";
-      
-      return array("dvwg_${history_id}",$this->renderWorkGroupAssign($employee_id));
-   }
-   
-   function app_deleteWorkGroupAssign($args) {
-      $db=&Database::getInstance();
-      $history_id = $args[0];
-      $user_id = getUserID();
-      $sql = "UPDATE ".XOCP_PREFIX."employee_workgroup_history SET status_cd = 'nullified', nullified_dttm = now(), nullified_user_id = '$user_id'"
-           . " WHERE history_id = '$history_id'";
-      $db->query($sql);
-      
-   }
-   
-   function app_editWorkGroupAssign($args) {
-      $db=&Database::getInstance();
-      $history_id = $args[0];
-      if($history_id=="new") {
-         $start_dttm = getSQLDate();
-      } else {
-         $sql = "SELECT a.ts_group_id,a.start_dttm,b.ts_group_nm"
-              . " FROM ".XOCP_PREFIX."employee_workgroup_history a"
-              . " LEFT JOIN ".XOCP_PREFIX."ts_group b USING(ts_group_id)"
-              . " WHERE a.history_id = '$history_id'";
-         $result = $db->query($sql);
-         list($ts_group_id,$start_dttm,$ts_group_nm)=$db->fetchRow($result);
-         $ts_group_nm = htmlentities($ts_group_nm,ENT_QUOTES);
-      }
-      
-      $sql = "SELECT ts_group_nm,ts_group_id"
-           . " FROM ".XOCP_PREFIX."ts_group"
-           . " ORDER BY ts_group_id";
-      $result = $db->query($sql);
-      _debuglog($sql);
-      $opt = "";
-      if($db->getRowsNum($result)>0) {
-         while(list($ts_group_nmx,$ts_group_idx)=$db->fetchRow($result)) {
-            $opt .= "<option value='$ts_group_idx' ".($ts_group_idx==$ts_group_id?"selected='1'":"").">$ts_group_nmx</option>";
-         }
-      }
-      
-      $ret = "<div id='frmwg'><table style='width:100%;' class='xxfrm'><tbody>"
-           . "<tr><td>Work Group Name</td><td><select name='ts_group_id'>$opt</select></td></tr>"
-           . "<tr><td>Start Datetime</td><td><span class='xlnk' id='spstart' onclick='_changedatetime(\"spstart\",\"hstart_dttm\",\"datetime\",false,false)'>".sql2ind($start_dttm)."</span><input type='hidden' value='$start_dttm' name='start_dttm' id='hstart_dttm'/></td></tr>"
-           . "<tr><td colspan='2'><input onclick='save_workgroup_assign();' type='button' value='"._SAVE."'/>&nbsp;"
-           . "<input onclick='cancel_edit_workgroup_assign();' type='button' value='"._CANCEL."'/>&nbsp;&nbsp;"
-           . ($history_id!="new"?"<input onclick='delete_workgroup_assign();' type='button' value='"._DELETE."'/>":"")
-           . "</td></tr>"
-           . "</tbody></table></div>";
-      return $ret;
-   }
-   
-   
-   
-   function app_checkPasswordEditPayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $xid = $args[0];
-      $hpass = $args[1];
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-      
-      $sql = "SELECT pwd0 FROM ".XOCP_PREFIX."users WHERE user_id = '$user_id'";
-      $result = $db->query($sql);
-      list($pwd0)=$db->fetchRow($result);
-      $pwd1 = md5($xid."-".$pwd0);
-      if($hpass!=$pwd1) {
-         return "WRONGPASSWORD";
-      } else {
-         $sql = "UPDATE ".XOCP_PREFIX."payroll_posting SET status_cd = 'normal', finish_dttm = '0000-00-00 00:00:00', finish_user_id = '0'"
-              . " WHERE payroll_year = '$payroll_year'"
-              . " AND payroll_month = '$payroll_month'";
-         $result = $db->query($sql);
-      }
-      
-      $list = $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-      $btn = "<input type='button' class='xaction' id='btngeneratepayroll' value='Generate' onclick='generate_payroll(this,event);'/>&nbsp;"
-           . "<input type='button' value='Finish' onclick='finish_payroll(this,event);'/>";
-      
-      return array($list,$btn);
-   }
-   
-   function app_confirmEditPayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $ret = "<div style='font-size:1em;'>"
-           . "<div style='height:21px;padding-top:7px;text-align:center;background-color:#6d84b4;font-weight:bold;color:#eee;font-size:1.1em;'>Edit Payroll Confirmation</div>";
-      
-      $ret .= "<div style='padding:10px;text-align:center;'>";
-      
-      $ret .= "Are you sure you want to edit this employee&#39;s payroll?<br/><br/>"
-            . "Please enter your password for security protection:<br/><br/><input id='editpayrollpass' type='password' style='width:150px;text-align:center;' onkeydown='kd_payrollpass(this,event);'/>"
-            . "<br/>"
-            . "<div style='margin-top:10px;color:red;' id='ckpass_feedback'>&nbsp;</div>"
-            . "<br/>"
-            . "<input type='button' value='Yes (edit)' onclick='do_edit_payroll();'/>&nbsp;"
-            . "<input type='button' value='No (cancel)' onclick='editpayrollbox.fade();'/>";
-      
-      $ret .= "</div>";
-      
-      $ret .= "</div>";
-      
-      
-      return array($ret);
-   }
-   
-   function app_finishPayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-   
-      $sql = "UPDATE ".XOCP_PREFIX."payroll_posting SET status_cd = 'finish', finish_dttm = now(), finish_user_id = '$user_id'"
-           . " WHERE payroll_year = '$payroll_year'"
-           . " AND payroll_month = '$payroll_month'";
-      $result = $db->query($sql);
-      
-      $list = $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-      $btn = "<input type='button' value='Print Payslip' onclick='print_payroll(this,event);'/>&nbsp;"
-           . "<input type='button' value='Edit' onclick='edit_payroll(this,event);'/>";
-      
-      return array($list,$btn);
-   }
-   
-   function app_confirmFinishPayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $ret = "<div style='font-size:1em;'>"
-           . "<div style='height:21px;padding-top:7px;text-align:center;background-color:#6d84b4;font-weight:bold;color:#eee;font-size:1.1em;'>Finish Payroll Confirmation</div>";
-      
-      $ret .= "<div style='padding:10px;text-align:center;'>";
-      
-      $ret .= "Are you sure you want to finish this employee&#39;s payroll?<br/>Payroll will be protected from subsequent modifications.<br/><br/>"
-            . "<input type='button' value='Yes (finish)' onclick='do_finish_payroll();' class='xaction'/>&nbsp;"
-            . "<input type='button' value='No (cancel)' onclick='finalpayrollbox.fade();'/>";
-      
-      $ret .= "</div>";
-      
-      $ret .= "</div>";
-      
-      
-      return array($ret);
-   }
-   
-   function app_resetPayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-      
-      $sql = "SELECT payroll_posting_id FROM ".XOCP_PREFIX."payroll_posting"
-           . " WHERE payroll_year = '$payroll_year'"
-           . " AND payroll_month = '$payroll_month'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($payroll_posting_id)=$db->fetchRow($result);
-         $sql = "DELETE FROM ".XOCP_PREFIX."payroll_posting_employee_item WHERE employee_id = '$employee_id' AND payroll_posting_id = '$payroll_posting_id'";
-         $db->query($sql);
-      }
-      
-      return $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-   }
-   
-   function app_generatePayroll($args) {
-      $db=&Database::getInstance();
-      $user_id = getUserID();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $payroll_posting_id = $_SESSION["hris_payroll_posting_id"];
-      $payroll_year = $_SESSION["hris_payroll_year"];
-      $payroll_month = $_SESSION["hris_payroll_month"];
-      
-      list($JOB_ID,
-           $EMPLOYEE_ID,
-           $JOB_NM,
-           $EMPLOYEE_NM,
-           $NIP,
-           $GENDER,
-           $JOB_START_DTTM,
-           $ENTRANCE_DTTM,
-           $JOB_AGE_YEAR,
-           $JOB_SUMMARY,
-           $PERSON_ID,
-           $USER_ID,
-           $FIRST_ASSESSOR_JOB_ID,
-           $NEXT_ASSESSOR_JOB_ID)=_hris_getinfobyemployeeid($employee_id);
-      $sql = "SELECT b.location_cd FROM ".XOCP_PREFIX."employee_job a"
-           . " LEFT JOIN ".XOCP_PREFIX."location b USING(location_id)"
-           . " WHERE a.employee_id = '$EMPLOYEE_ID'"
-           . " AND a.job_id = '$JOB_ID'";
-      $result = $db->query($sql);
-      list($LOCATION)=$db->fetchRow($result);
-      
-      $PAYROLL_POSTING_ID = $payroll_posting_id;
-      $PAYROLL_YEAR = $payroll_year;
-      $PAYROLL_MONTH = $payroll_month;
-      
-      
-      $sql = "SELECT attendance_id,pbk FROM ".XOCP_PREFIX."employee WHERE employee_id = '$employee_id'";
-      $result = $db->query($sql);
-      list($attendance_id,$PBK)=$db->fetchRow($result);
-      
-      /*
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-      */
-      
-      $JOB_MONTH = $payroll_month-1;
-      if($JOB_MONTH==0) {
-         $JOB_MONTH = 12;
-         $JOB_YEAR = $payroll_year-1;
-      } else {
-         $JOB_YEAR = $payroll_year;
-      }
-               
-      $sql = "DELETE FROM ".XOCP_PREFIX."payroll_posting_employee_item WHERE employee_id = '$employee_id' AND payroll_posting_id = '$payroll_posting_id'";
-      $db->query($sql);
-      
-      $item_id = 0;
-      
-      $sql = "SELECT a.assignment_id,a.payrollobject_class_id,b.payrollobject_class_cd,b.payrollobject_class_nm,b.payrollobject_type,a.static_value,b.php_script,b.payrollobject_class_cd"
-           . " FROM ".XOCP_PREFIX."payrollobject_employee a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND b.payrollobject_type = 'income'"
-           . " AND a.status_cd = 'normal'"
-           . " ORDER BY b.order_no";
-      $res_income = $db->query($sql);
-      if($db->getRowsNum($res_income)>0) {
-         while(list($assignment_id,$payrollobject_class_id,$payrollobject_class_cd,$payrollobject_class_nm,$payrollobject_type,$static_value,$php_script,$payrollobject_class_cd)=$db->fetchRow($res_income)) {
-            $final_value = 0;
-            $item_id++;
-            
-            /// calculate here
-            if($static_value>0) {
-               $final_value = $static_value+0;
-            } else {
-               eval($php_script);
-            }
-            
-            $$payrollobject_class_cd = $final_value;
-            
-            $sql = "INSERT INTO ".XOCP_PREFIX."payroll_posting_employee_item (payroll_posting_id,employee_id,item_id,payrollobject_class_id,final_value,posting_dttm,posting_user_id,created_user_id)"
-                 . " VALUES ('$payroll_posting_id','$employee_id','$item_id','$payrollobject_class_id','$final_value',now(),'$user_id','$user_id')";
-            $db->query($sql);
-         }
-      }
-      
-      $sql = "SELECT a.assignment_id,a.payrollobject_class_id,b.payrollobject_class_cd,b.payrollobject_class_nm,b.payrollobject_type,a.static_value,b.php_script,b.payrollobject_class_cd"
-           . " FROM ".XOCP_PREFIX."payrollobject_employee a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND b.payrollobject_type = 'deduction'"
-           . " AND a.status_cd = 'normal'"
-           . " ORDER BY b.order_no";
-      $res_deduction = $db->query($sql);
-      if($db->getRowsNum($res_deduction)>0) {
-         while(list($assignment_id,$payrollobject_class_id,$payrollobject_class_cd,$payrollobject_class_nm,$payrollobject_type,$static_value,$php_script,$payrollobject_class_cd)=$db->fetchRow($res_deduction)) {
-            $final_value = 0;
-            $item_id++;
-            
-            /// calculate here
-            if($static_value>0) {
-               $final_value = $static_value+0;
-            } else {
-               eval($php_script);
-            }
-            $$payrollobject_class_cd = $final_value;
-            
-            $sql = "INSERT INTO ".XOCP_PREFIX."payroll_posting_employee_item (payroll_posting_id,employee_id,item_id,payrollobject_class_id,final_value,posting_dttm,posting_user_id,created_user_id)"
-                 . " VALUES ('$payroll_posting_id','$employee_id','$item_id','$payrollobject_class_id','$final_value',now(),'$user_id','$user_id')";
-            $db->query($sql);
-            _debuglog($sql);
-         }
-      }
-      
-      $sql = "SELECT a.assignment_id,a.payrollobject_class_id,b.payrollobject_class_cd,b.payrollobject_class_nm,b.payrollobject_type,a.static_value,b.php_script,b.payrollobject_class_cd"
-           . " FROM ".XOCP_PREFIX."payrollobject_employee a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND b.payrollobject_type = 'tax'"
-           . " AND a.status_cd = 'normal'"
-           . " ORDER BY b.order_no";
-      $res_tax = $db->query($sql);
-      if($db->getRowsNum($res_tax)>0) {
-         while(list($assignment_id,$payrollobject_class_id,$payrollobject_class_cd,$payrollobject_class_nm,$payrollobject_type,$static_value,$php_script,$payrollobject_class_cd)=$db->fetchRow($res_tax)) {
-            $final_value = 0;
-            $item_id++;
-            
-            /// calculate here
-            if($static_value>0) {
-               $final_value = $static_value+0;
-            } else {
-               eval($php_script);
-            }
-            $$payrollobject_class_cd = $final_value;
-            
-            $sql = "INSERT INTO ".XOCP_PREFIX."payroll_posting_employee_item (payroll_posting_id,employee_id,item_id,payrollobject_class_id,final_value,posting_dttm,posting_user_id,created_user_id)"
-                 . " VALUES ('$payroll_posting_id','$employee_id','$item_id','$payrollobject_class_id','$final_value',now(),'$user_id','$user_id')";
-            $db->query($sql);
-            _debuglog($sql);
-         }
-      }
-      
-      return $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-   }
-   
-   function getPayrollList($employee_id,$payroll_year,$payroll_month) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $sql = "SELECT payroll_posting_id,status_cd FROM ".XOCP_PREFIX."payroll_posting"
-           . " WHERE payroll_year = '$payroll_year'"
-           . " AND payroll_month = '$payroll_month'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($payroll_posting_id,$status_cd)=$db->fetchRow($result);
-      } else {
-         $payroll_posting_id = 0;
-      }
-      
-      if($status_cd=="finish") {
-         $ret = "<div style='-moz-border-radius:5px;border:1px solid #888;padding:5px;background-color:#eeeeff;'>";
-      } else {
-         $ret = "<div style='-moz-border-radius:5px;border:1px solid #888;padding:5px;'>";
-      }
-      
-      $cnt = 0;
-      
-      $ttl = 0;
-      $sql = "SELECT a.item_id,a.payrollobject_class_id,b.payrollobject_class_nm,b.payrollobject_type,a.final_value"
-           . " FROM ".XOCP_PREFIX."payroll_posting_employee_item a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.payroll_posting_id = '$payroll_posting_id'"
-           . " AND b.payrollobject_type = 'income'";
-      $result = $db->query($sql);
-      $ret .= "<div style='background-color:#eee;padding:5px;text-align:left;border:1px solid #bbb;margin-top:0px;font-weight:bold;'>Income</div>";
-      if($db->getRowsNum($result)>0) {
-         while(list($item_id,$payrollobject_class_id,$payrollobject_class_nm,$payrollobject_type,$final_value)=$db->fetchRow($result)) {
-            $ret .= "<div style='padding:3px;border-bottom:1px solid #bbb;padding-left:20px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>$payrollobject_class_nm</td><td style='text-align:right;'>".toMoney($final_value)."</td></tr></tbody></table>"
-                  . "</div>";
-            $ttl = _bctrim(bcadd($ttl,$final_value));
-            $cnt++;
-         }
-      }
-      
-      $sql = "SELECT a.item_id,a.payrollobject_class_id,b.payrollobject_class_nm,b.payrollobject_type,a.final_value"
-           . " FROM ".XOCP_PREFIX."payroll_posting_employee_item a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.payroll_posting_id = '$payroll_posting_id'"
-           . " AND b.payrollobject_type = 'deduction'";
-      $result = $db->query($sql);
-      $ret .= "<div style='background-color:#eee;padding:5px;text-align:left;border:1px solid #bbb;margin-top:5px;font-weight:bold;'>Deduction</div>";
-      if($db->getRowsNum($result)>0) {
-         while(list($item_id,$payrollobject_class_id,$payrollobject_class_nm,$payrollobject_type,$final_value)=$db->fetchRow($result)) {
-            $ret .= "<div style='padding:3px;border-bottom:1px solid #bbb;padding-left:20px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>$payrollobject_class_nm</td><td style='text-align:right;color:red;'>".toMoney($final_value)."</td></tr></tbody></table>"
-                  . "</div>";
-            $ttl = _bctrim(bcsub($ttl,$final_value));
-            $cnt++;
-         }
-      }
-      
-      $sql = "SELECT a.item_id,a.payrollobject_class_id,b.payrollobject_class_nm,b.payrollobject_type,a.final_value"
-           . " FROM ".XOCP_PREFIX."payroll_posting_employee_item a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.payroll_posting_id = '$payroll_posting_id'"
-           . " AND b.payrollobject_type = 'tax'";
-      $result = $db->query($sql);
-      $ret .= "<div style='background-color:#eee;padding:5px;text-align:left;border:1px solid #bbb;margin-top:5px;font-weight:bold;'>Tax</div>";
-      if($db->getRowsNum($result)>0) {
-         while(list($item_id,$payrollobject_class_id,$payrollobject_class_nm,$payrollobject_type,$final_value)=$db->fetchRow($result)) {
-            $ret .= "<div style='padding:3px;border-bottom:1px solid #bbb;padding-left:20px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>$payrollobject_class_nm</td><td style='text-align:right;color:#0000ff;'>".toMoney($final_value)."</td></tr></tbody></table>"
-                  . "</div>";
-            $ttl = _bctrim(bcsub($ttl,$final_value));
-            $cnt++;
-         }
-      }
-      
-      $ret .= "<div style='background-color:#ddd;color:black;font-weight:bold;padding:5px;text-align:left;border:1px solid #bbb;margin-top:5px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>Total</td><td style='text-align:right;'>".toMoney($ttl)."</td></tr></tbody></table>"
-            . "</div>";
-      
-      
-      $ret .= "</div>";
-      
-      return $ret;
-   }
-   
-   function app_payrollChangeMonth($args) {
-      $db=&Database::getInstance();
-      global $xocp_vars;
-      $interval = $args[0];
-      $current_payroll_dttm = $_SESSION["payroll_current_time"];
-      $sql = "SELECT YEAR(DATE_ADD('$current_payroll_dttm', INTERVAL $interval MONTH)),MONTH(DATE_ADD('$current_payroll_dttm', INTERVAL $interval MONTH))";
-      $result = $db->query($sql);
-      _debuglog($sql);
-      list($payroll_year,$payroll_month)=$db->fetchRow($result);
-      
-      $_SESSION["payroll_current_time"] = getSQLDate("$payroll_year-$payroll_month-05 00:00:00");
-      
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-      
-      $sql = "SELECT payroll_posting_id,status_cd FROM ".XOCP_PREFIX."payroll_posting"
-           . " WHERE payroll_year = '$payroll_year'"
-           . " AND payroll_month = '$payroll_month'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($payroll_posting_id,$payroll_posting_status)=$db->fetchRow($result);
-      } else {
-         $payroll_posting_status = "";
-      }
-      
-      $list = $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-      if($payroll_posting_status=="finish") {
-         $btn = "<input type='button' value='Print Payslip' onclick='print_payroll(this,event);'/>&nbsp;"
-              . "<input type='button' value='Edit' onclick='edit_payroll(this,event);'/>";
-      } else {
-         $btn = "<input type='button' class='xaction' id='btngeneratepayroll' value='Generate' onclick='generate_payroll(this,event);'/>&nbsp;"
-              . "<input type='button' value='Finish' onclick='finish_payroll(this,event);'/>";
-      }
-      
-      
-      return array("$payroll_year ".$xocp_vars['month_year'][$payroll_month],$list,$btn);
-      
-   }  
-   
-   function app_deletePayrollComponent($args) {
-      $db=&Database::getInstance();oup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>$payrollobject_class_nm</td><td style='text-align:right;color:red;'>".toMoney($final_value)."</td></tr></tbody></table>"
-                  . "</div>";
-            $ttl = _bctrim(bcsub($ttl,$final_value));
-            $cnt++;
-         }
-      }
-      
-      $sql = "SELECT a.item_id,a.payrollobject_class_id,b.payrollobject_class_nm,b.payrollobject_type,a.final_value"
-           . " FROM ".XOCP_PREFIX."payroll_posting_employee_item a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.payroll_posting_id = '$payroll_posting_id'"
-           . " AND b.payrollobject_type = 'tax'";
-      $result = $db->query($sql);
-      $ret .= "<div style='background-color:#eee;padding:5px;text-align:left;border:1px solid #bbb;margin-top:5px;font-weight:bold;'>Tax</div>";
-      if($db->getRowsNum($result)>0) {
-         while(list($item_id,$payrollobject_class_id,$payrollobject_class_nm,$payrollobject_type,$final_value)=$db->fetchRow($result)) {
-            $ret .= "<div style='padding:3px;border-bottom:1px solid #bbb;padding-left:20px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>$payrollobject_class_nm</td><td style='text-align:right;color:#0000ff;'>".toMoney($final_value)."</td></tr></tbody></table>"
-                  . "</div>";
-            $ttl = _bctrim(bcsub($ttl,$final_value));
-            $cnt++;
-         }
-      }
-      
-      $ret .= "<div style='background-color:#ddd;color:black;font-weight:bold;padding:5px;text-align:left;border:1px solid #bbb;margin-top:5px;'>"
-                  . "<table style='width:100%;'>"
-                  . "<colgroup><col/><col width='200'/></colgroup>"
-                  . "<tbody><tr><td>Total</td><td style='text-align:right;'>".toMoney($ttl)."</td></tr></tbody></table>"
-            . "</div>";
-      
-      
-      $ret .= "</div>";
-      
-      return $ret;
-   }
-   
-   function app_payrollChangeMonth($args) {
-      $db=&Database::getInstance();
-      global $xocp_vars;
-      $interval = $args[0];
-      $current_payroll_dttm = $_SESSION["payroll_current_time"];
-      $sql = "SELECT YEAR(DATE_ADD('$current_payroll_dttm', INTERVAL $interval MONTH)),MONTH(DATE_ADD('$current_payroll_dttm', INTERVAL $interval MONTH))";
-      $result = $db->query($sql);
-      _debuglog($sql);
-      list($payroll_year,$payroll_month)=$db->fetchRow($result);
-      
-      $_SESSION["payroll_current_time"] = getSQLDate("$payroll_year-$payroll_month-05 00:00:00");
-      
-      list($dt,$tm)=explode(" ",$_SESSION["payroll_current_time"]);
-      list($payroll_year,$payroll_month,$payroll_date)=explode("-",$dt);
-      $payroll_month += 0;
-      
-      $sql = "SELECT payroll_posting_id,status_cd FROM ".XOCP_PREFIX."payroll_posting"
-           . " WHERE payroll_year = '$payroll_year'"
-           . " AND payroll_month = '$payroll_month'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($payroll_posting_id,$payroll_posting_status)=$db->fetchRow($result);
-      } else {
-         $payroll_posting_status = "";
-      }
-      
-      $list = $this->getPayrollList($employee_id,$payroll_year,$payroll_month);
-      
-      if($payroll_posting_status=="finish") {
-         $btn = "<input type='button' value='Print Payslip' onclick='print_payroll(this,event);'/>&nbsp;"
-              . "<input type='button' value='Edit' onclick='edit_payroll(this,event);'/>";
-      } else {
-         $btn = "<input type='button' class='xaction' id='btngeneratepayroll' value='Generate' onclick='generate_payroll(this,event);'/>&nbsp;"
-              . "<input type='button' value='Finish' onclick='finish_payroll(this,event);'/>";
-      }
-      
-      
-      return array("$payroll_year ".$xocp_vars['month_year'][$payroll_month],$list,$btn);
-      
-   }  
-   
-   function app_deletePayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      $assignment_id = $args[0];
-      $sql = "UPDATE ".XOCP_PREFIX."payrollobject_employee SET status_cd = 'nullified', nullified_dttm = now()"
-           . " WHERE assignment_id = '$assignment_id'";
-      $db->query($sql);
-      _debuglog($sql);
-   }
-   
-   function app_savePayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $pc_assign_id = $args[0];
-      $vars = _parseForm($args[1]);
-      foreach($vars as $k=>$v) {
-         $$k=addslashes($v);
-      }
-      
-      $sql = "UPDATE hris_payrollobject_employee SET static_value = '$static_value' "
-           . " WHERE employee_id = '$employee_id'"
-           . " AND assignment_id = '$pc_assign_id'";
-      $db->query($sql);
-      
-   }
-   
-   function app_editPayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $pc_assign_id = $args[0];
-      
-      $sql = "SELECT a.assign_start_dttm,a.assign_stop_dttm,a.status_cd,a.php_script,a.static_value,b.payrollobject_class_nm,b.payrollobject_type"
-           . " FROM ".XOCP_PREFIX."payrollobject_employee a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.assignment_id = '$pc_assign_id'"
-           . " AND a.employee_id = '$employee_id'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($assign_start_dttm,$assign_stop_dttm,$status_cd,$php_script,$static_value,$payrollobject_class_nm,$payrollobject_type)=$db->fetchRow($result);
-      }
-      
-      $ret = "<div id='dvfrmeditpc'><table class='xxfrm' style='width:100%;'>"
-           . "<colgroup><col width='120'/><col/></colgroup>"
-           . "<tbody>"
-           . "<tr><td>Component Name</td><td>$payrollobject_class_nm</td></tr>"
-           . "<tr><td>Type</td><td>$payrollobject_type</td></tr>"
-           . "<tr><td>Amount</td><td><input type='text' value='$static_value' style='width:200px;' name='static_value'/></td></tr>"
-           . "<tr><td>Start</td><td><span class='xlnk' onclick='_changedatetime(\"spassign_start_dttm\",\"hassign_start_dttm\",\"datetime\",false,false);' id='spassign_start_dttm'>".sql2ind($assign_start_dttm)."</span><input type='hidden' value='$assign_start_dttm' name='assign_start_dttm' id='hassign_start_dttm'/></td></tr>"
-           . "<tr><td>Stop</td><td><span class='xlnk' onclick='_changedatetime(\"spassign_stop_dttm\",\"hassign_stop_dttm\",\"datetime\",false,false);' id='spassign_stop_dttm'>".sql2ind($assign_stop_dttm)."</span><input type='hidden' value='$assign_start_dttm' name='assign_start_dttm' id='hassign_start_dttm'/></td></tr>"
-           . "<tr><td colspan='2'><input onclick='save_pc();' type='button' value='"._SAVE."'/>&nbsp;"
-           . "<input onclick='cancel_edit_pc();' type='button' value='"._CANCEL."'/>&nbsp;&nbsp;"
-           . "<input onclick='delete_pc();' type='button' value='"._DELETE."'/>"
-           . "</td></tr>"
-           . "</tbody></table></div>";
-      return $ret;
-   }
-   
-   function app_addPayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      $user_id = getUserID();
-      $pc_class_id = $args[0];
-      $sql = "INSERT INTO ".XOCP_PREFIX."payrollobject_employee (employee_id,payrollobject_class_id,assign_start_dttm,created_user_id)"
-           . " VALUES ('$employee_id','$pc_class_id',now(),'$user_id')";
-      $db->query($sql);
-      $assign_id = $db->getInsertId();
-      $sql = "SELECT payrollobject_class_nm FROM ".XOCP_PREFIX."payrollobject_class WHERE payrollobject_class_id = '$pc_class_id'";
-      $result = $db->query($sql);
-      list($payrollobject_class_nm)=$db->fetchRow($result);
-      
-      $span = "<span class='xlnk' onclick='edit_pc(\"$assign_id\",this,event);'>$payrollobject_class_nm</span>";
-      
-      $ret = array($assign_id,$span);
-      
-      _dumpvar($ret);
-      
-      return $ret;
-      
-   }
-   
-   function app_getPayrollComponentList($
-      $employee_id = $_SESSION["hris_employee_id"];
-      $assignment_id = $args[0];
-      $sql = "UPDATE ".XOCP_PREFIX."payrollobject_employee SET status_cd = 'nullified', nullified_dttm = now()"
-           . " WHERE assignment_id = '$assignment_id'";
-      $db->query($sql);
-      _debuglog($sql);
-   }
-   
-   function app_savePayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $pc_assign_id = $args[0];
-      $vars = _parseForm($args[1]);
-      foreach($vars as $k=>$v) {
-         $$k=addslashes($v);
-      }
-      
-      $sql = "UPDATE hris_payrollobject_employee SET static_value = '$static_value' "
-           . " WHERE employee_id = '$employee_id'"
-           . " AND assignment_id = '$pc_assign_id'";
-      $db->query($sql);
-      
-   }
-   
-   function app_editPayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      
-      $pc_assign_id = $args[0];
-      
-      $sql = "SELECT a.assign_start_dttm,a.assign_stop_dttm,a.status_cd,a.php_script,a.static_value,b.payrollobject_class_nm,b.payrollobject_type"
-           . " FROM ".XOCP_PREFIX."payrollobject_employee a"
-           . " LEFT JOIN ".XOCP_PREFIX."payrollobject_class b USING(payrollobject_class_id)"
-           . " WHERE a.assignment_id = '$pc_assign_id'"
-           . " AND a.employee_id = '$employee_id'";
-      $result = $db->query($sql);
-      if($db->getRowsNum($result)>0) {
-         list($assign_start_dttm,$assign_stop_dttm,$status_cd,$php_script,$static_value,$payrollobject_class_nm,$payrollobject_type)=$db->fetchRow($result);
-      }
-      
-      $ret = "<div id='dvfrmeditpc'><table class='xxfrm' style='width:100%;'>"
-           . "<colgroup><col width='120'/><col/></colgroup>"
-           . "<tbody>"
-           . "<tr><td>Component Name</td><td>$payrollobject_class_nm</td></tr>"
-           . "<tr><td>Type</td><td>$payrollobject_type</td></tr>"
-           . "<tr><td>Amount</td><td><input type='text' value='$static_value' style='width:200px;' name='static_value'/></td></tr>"
-           . "<tr><td>Start</td><td><span class='xlnk' onclick='_changedatetime(\"spassign_start_dttm\",\"hassign_start_dttm\",\"datetime\",false,false);' id='spassign_start_dttm'>".sql2ind($assign_start_dttm)."</span><input type='hidden' value='$assign_start_dttm' name='assign_start_dttm' id='hassign_start_dttm'/></td></tr>"
-           . "<tr><td>Stop</td><td><span class='xlnk' onclick='_changedatetime(\"spassign_stop_dttm\",\"hassign_stop_dttm\",\"datetime\",false,false);' id='spassign_stop_dttm'>".sql2ind($assign_stop_dttm)."</span><input type='hidden' value='$assign_start_dttm' name='assign_start_dttm' id='hassign_start_dttm'/></td></tr>"
-           . "<tr><td colspan='2'><input onclick='save_pc();' type='button' value='"._SAVE."'/>&nbsp;"
-           . "<input onclick='cancel_edit_pc();' type='button' value='"._CANCEL."'/>&nbsp;&nbsp;"
-           . "<input onclick='delete_pc();' type='button' value='"._DELETE."'/>"
-           . "</td></tr>"
-           . "</tbody></table></div>";
-      return $ret;
-   }
-   
-   function app_addPayrollComponent($args) {
-      $db=&Database::getInstance();
-      $employee_id = $_SESSION["hris_employee_id"];
-      $user_id = getUserID();
-      $pc_class_id = $args[0];
-      $sql = "INSERT INTO ".XOCP_PREFIX."payrollobject_employee (employee_id,payrollobject_class_id,assign_start_dttm,created_user_id)"
-           . " VALUES ('$employee_id','$pc_class_id',now(),'$user_id')";
-      $db->query($sql);
-      $assign_id = $db->getInsertId();
-      $sql = "SELECT payrollobject_class_nm FROM ".XOCP_PREFIX."payrollobject_class WHERE payrollobject_class_id = '$pc_class_id'";
-      $result = $db->query($sql);
-      list($payrollobject_class_nm)=$db->fetchRow($result);
-      
-      $span = "<span class='xlnk' onclick='edit_pc(\"$assign_id\",this,event);'>$payrollobject_class_nm</span>";
-      
-      $ret = array($assign_id,$span);
-      
-      _dumpvar($ret);
-      
-      return $ret;
-      
-   }
-   
-   function app_getPayrollComponentList($  if($db->getRowsNum($result)>0) {
          list($user_id)=$db->fetchRow($result);
          $_SESSION["xocp_user"]->load($user_id);
       }
@@ -1132,10 +349,6 @@ class _hris_class_EmployeeAjax extends AjaxListener {
       $employee_id = $_SESSION["hris_employee_id"];
       $person_id = $_SESSION["hris_employee_person_id"];
       $arr = parseForm($args[0]);
-      
-      $sql = "UPDATE ".XOCP_PREFIX."employee SET pbk = '".trim(addslashes($arr["pbk"]))."'"
-           . " WHERE employee_id = '$employee_id'";
-      $db->query($sql);
       
       $sql = "UPDATE ".XOCP_PREFIX."persons SET "
            . "addr_txt = '".trim(addslashes($arr["addr_txt"]))."',"
@@ -1958,62 +1171,52 @@ class _hris_class_EmployeeAjax extends AjaxListener {
       $db->query($sql);
       
       ///// temporary hack
+      /*
       
       $hackdate = getSQLDate();
-      $asid = 0;
-      $sql = "SELECT asid FROM ".XOCP_PREFIX."assessment_session WHERE edit_employee = '1'";
-      $ra = $db->query($sql);
+      $asid = 8;
       
-      if($db->getRowsNum($ra)>0) {
-         list($asid)=$db->fetchRow($ra);
+      $sql = "delete from hris_assessor_360 where asid = '8' and employee_id = '$employee_id' and assessor_t = 'superior'";
+      $db->query($sql);
+      $sql = "insert into hris_assessor_360 values ('8','$employee_id','$assessor_employee_id','superior','active','$hackdate','1','0000-00-00 00:00:00','0')";
+      $db->query($sql);
+      
+      $sql = "REPLACE INTO ".XOCP_PREFIX."assessment_session_job (asid,employee_id,job_id,updated_user_id)"
+           . " VALUES ('$asid','$employee_id','$job_id','$user_id')";
+      $db->query($sql);
+      
+         list($emp_job_id,
+              $emp_employee_id,
+              $emp_job_nm,
+              $emp_nm,
+              $emp_nip,
+              $emp_gender,
+              $emp_jobstart,
+              $emp_entrance_dttm,
+              $emp_jobage,
+              $emp_job_summary,
+              $emp_person_id,
+              $emp_user_id,
+              $first_assessor_job_id,
+              $next_assessor_job_id)=_hris_getinfobyemployeeid($employee_id);
          
-         $sql = "delete from hris_assessor_360 where asid = '$asid' and employee_id = '$employee_id' and assessor_t = 'superior'";
-         $db->query($sql);
-         $sql = "insert into hris_assessor_360 values ('$asid','$employee_id','$assessor_employee_id','superior','active','$hackdate','1','0000-00-00 00:00:00','0')";
-         $db->query($sql);
+         list($ass_job_id,
+              $ass_employee_id,
+              $ass_job_nm,
+              $ass_nm,
+              $ass_nip,
+              $ass_gender,
+              $ass_jobstart,
+              $ass_entrance_dttm,
+              $ass_jobage,
+              $ass_job_summary,
+              $ass_person_id,
+              $ass_user_id,
+              $first_assessor_job_id,
+              $next_assessor_job_id)=_hris_getinfobyemployeeid($assessor_employee_id);
          
-         $sql = "update hris_assessor_360 set status_cd = 'inactive' where asid = '$asid' and assessor_id = '$employee_id' and assessor_t = 'subordinat'";
-         $db->query($sql);
-         $sql = "replace into hris_assessor_360 values ('$asid','$upper_employee_id','$employee_id','subordinat','active','$hackdate','1','0000-00-00 00:00:00','0')";
-         $db->query($sql);
-         
-         $sql = "REPLACE INTO ".XOCP_PREFIX."assessment_session_job (asid,employee_id,job_id,updated_user_id)"
-              . " VALUES ('$asid','$employee_id','$job_id','$user_id')";
-         $db->query($sql);
-         
-            list($emp_job_id,
-                 $emp_employee_id,
-                 $emp_job_nm,
-                 $emp_nm,
-                 $emp_nip,
-                 $emp_gender,
-                 $emp_jobstart,
-                 $emp_entrance_dttm,
-                 $emp_jobage,
-                 $emp_job_summary,
-                 $emp_person_id,
-                 $emp_user_id,
-                 $first_assessor_job_id,
-                 $next_assessor_job_id)=_hris_getinfobyemployeeid($employee_id);
-            
-            list($ass_job_id,
-                 $ass_employee_id,
-                 $ass_job_nm,
-                 $ass_nm,
-                 $ass_nip,
-                 $ass_gender,
-                 $ass_jobstart,
-                 $ass_entrance_dttm,
-                 $ass_jobage,
-                 $ass_job_summary,
-                 $ass_person_id,
-                 $ass_user_id,
-                 $first_assessor_job_id,
-                 $next_assessor_job_id)=_hris_getinfobyemployeeid($assessor_employee_id);
-            
-         _activitylog("PERSONEL_ADMINISTRATION",0,"Update superior assessor $ass_nm for employee $emp_nm");
-         
-      }
+      _activitylog("PERSONEL_ADMINISTRATION",0,"Update superior assessor $ass_nm for employee $emp_nm");
+      */
       /////
       
       return array($job_id,sql2ind($start,"date"),$gradeval,ucfirst($assignment_t));
@@ -2028,80 +1231,121 @@ class _hris_class_EmployeeAjax extends AjaxListener {
            . "<colgroup><col width='200'/><col/></colgroup>"
            . "<tbody>";
          
-      $sql = "SELECT b.job_nm,b.job_cd,a.location_id,"
-           . "c.job_class_nm,d.workarea_nm,e.org_nm,f.org_class_nm,"
-           . "a.gradeval,a.start_dttm,a.stop_dttm,a.assignment_t,"
-           . "a.upper_job_id,a.upper_employee_id,a.assessor_job_id,a.assessor_employee_id"
-           . " FROM ".XOCP_PREFIX."employee_job a"
-           . " LEFT JOIN ".XOCP_PREFIX."jobs b USING(job_id)"
-           . " LEFT JOIN ".XOCP_PREFIX."job_class c USING(job_class_id)"
-           . " LEFT JOIN ".XOCP_PREFIX."workarea d ON d.workarea_id = b.workarea_id"
-           . " LEFT JOIN ".XOCP_PREFIX."orgs e ON e.org_id = b.org_id"
-           . " LEFT JOIN ".XOCP_PREFIX."org_class f ON f.org_class_id = e.org_class_id"
-           . " WHERE a.employee_id = '$employee_id'"
-           . " AND a.job_id = '$job_id'";
+      $sql = "SELECT b.j{
+         while(list($job_id)=$db->fetchRow($result)) {
+            $jobs[$job_id] = $job_id;
+         }
+      }
+      $sql = "SELECT a.concept_id,a.concept_nm"
+           . " FROM ".XOCP_PREFIX."hris_con_class b"
+           . " LEFT JOIN ".XOCP_PREFIX."hris_concepts a USING(concept_id)"
+           . " WHERE b.con_class_id = 'ROLE'"
+           . " GROUP BY a.concept_id";
       $result = $db->query($sql);
       if($db->getRowsNum($result)>0) {
-         list($job_nm,$job_cd,$location_id,$job_class_nm,$workarea_nm,
-              $org_nm,$org_class_nm,$gradeval,$start_dttm,$stop_dttm,$assignment_t,
-              $upper_job_id,$upper_employee_id,$assessor_job_id,$assessor_employee_id)=$db->fetchRow($result);
-         if($start_dttm=="0000-00-00 00:00:00") {
-            $start_dttm = getSQLDate();
-         }
-         if($stop_dttm=="0000-00-00 00:00:00") {
-            $stop_dttm = getSQLDate();
-         }
-         $sql = "SELECT location_id,location_cd,location_nm FROM ".XOCP_PREFIX."location ORDER BY location_cd";
-         $result = $db->query($sql);
-         $opt = "";
-         if($db->getRowsNum($result)>0) {
-            while(list($location_idx,$location_cdx,$location_nmx)=$db->fetchRow($result)) {
-               if($location_id==$location_idx) {
-                  $sel = "selected='1'";
-               } else {
-                  $sel = "";
-               }
-               $opt .= "<option value='$location_idx' $sel>$location_cdx $location_nmx</option>";
+         $ret = array();
+         while(list($concept_id,$concept_nm)=$db->fetchRow($result)) {
+            if(!isset($jobs[$concept_id])) {
+               $ret[] = array($concept_nm,$concept_id);
             }
          }
-         $ckr_assignment["temporary"] = $ckr_assignment["permanent"] = "";
-         $ckr_assignment[$assignment_t] = "checked='1'";
+         return $ret;
+      } else {
+         return "EMPTY";
+      }
+   }
+   
+   function app_saveJob($args) {
+      $db=&Database::getInstance();
+      $user_id = getUserID();
+      $employee_id = $_SESSION["hris_employee_id"];
+      $job_id = $args[0];
+      
+      $arr = parseForm($args[1]);
+      
+      list($upper_employee_id,$upper_job_id)=explode("_",$arr["ssuperior"]);
+      list($assessor_employee_id,$assessor_job_id)=explode("_",$arr["sassessor"]);
+      
+      $location_id = $arr["slocation"];
+      $gradeval = $arr["gradeval"];
+      $start = $arr["hstartjob"];
+      $stop = $arr["hstopjob"];
+      $assignment_t = $arr["assignment_t"];
+      $sql = "UPDATE ".XOCP_PREFIX."employee_job SET "
+           . "location_id = '$location_id',"
+           . "gradeval = '$gradeval',"
+           . "start_dttm = '$start',"
+           . "assignment_t = '$assignment_t',"
+           . "upper_job_id = '$upper_job_id',"
+           . "upper_employee_id = '$upper_employee_id',"
+           . "assessor_job_id = '$assessor_job_id',"
+           . "assessor_employee_id = '$assessor_employee_id'"
+           . " WHERE employee_id = '$employee_id'"
+           . " AND job_id = '$job_id'";
+      $db->query($sql);
+      
+      ///// temporary hack
+      /*
+      
+      $hackdate = getSQLDate();
+      $asid = 8;
+      
+      $sql = "delete from hris_assessor_360 where asid = '8' and employee_id = '$employee_id' and assessor_t = 'superior'";
+      $db->query($sql);
+      $sql = "insert into hris_assessor_360 values ('8','$employee_id','$assessor_employee_id','superior','active','$hackdate','1','0000-00-00 00:00:00','0')";
+      $db->query($sql);
+      
+      $sql = "REPLACE INTO ".XOCP_PREFIX."assessment_session_job (asid,employee_id,job_id,updated_user_id)"
+           . " VALUES ('$asid','$employee_id','$job_id','$user_id')";
+      $db->query($sql);
+      
+         list($emp_job_id,
+              $emp_employee_id,
+              $emp_job_nm,
+              $emp_nm,
+              $emp_nip,
+              $emp_gender,
+              $emp_jobstart,
+              $emp_entrance_dttm,
+              $emp_jobage,
+              $emp_job_summary,
+              $emp_person_id,
+              $emp_user_id,
+              $first_assessor_job_id,
+              $next_assessor_job_id)=_hris_getinfobyemployeeid($employee_id);
          
-         $sql = "SELECT a.employee_id,a.job_id,c.person_nm,d.job_nm,d.job_abbr"
-              . " FROM ".XOCP_PREFIX."employee_job a"
-              . " LEFT JOIN ".XOCP_PREFIX."employee b USING(employee_id)"
-              . " LEFT JOIN ".XOCP_PREFIX."persons c USING(person_id)"
-              . " LEFT JOIN ".XOCP_PREFIX."jobs d ON d.job_id = a.job_id"
-              . " LEFT JOIN ".XOCP_PREFIX."job_class e USING(job_class_id)"
-              . " WHERE NOT (a.employee_id = '$employee_id' AND a.job_id = '$job_id')"
-              . " ORDER BY e.job_class_level,d.job_abbr";
-         $result = $db->query($sql);
-         $arr_superior = array();
-         $opt_upper = "";
-         $opt_assessor = "";
-         $job_arr = array();
-         $opt_assessor = "<option value='0'>-</option>";
-         if($db->getRowsNum($result)>0) {
-            while(list($x_employee_id,$x_job_id,$x_person_nm,$x_job_nm,$x_job_abbr)=$db->fetchRow($result)) {
-               $job_arr[$x_job_id] = "$x_job_abbr $x_job_nm";
-               $opt_upper .= "\n<option value='${x_employee_id}_${x_job_id}' ".($upper_job_id==$x_job_id&&$upper_employee_id==$x_employee_id?"selected='1'":"").">$x_job_abbr $x_job_nm - $x_person_nm</option>";
-               $opt_assessor .= "<option value='${x_employee_id}_${x_job_id}' ".($assessor_job_id==$x_job_id&&$assessor_employee_id==$x_employee_id?"selected='1'":"").">$x_job_abbr $x_job_nm - $x_person_nm</option>";
-            }
-         }
+         list($ass_job_id,
+              $ass_employee_id,
+              $ass_job_nm,
+              $ass_nm,
+              $ass_nip,
+              $ass_gender,
+              $ass_jobstart,
+              $ass_entrance_dttm,
+              $ass_jobage,
+              $ass_job_summary,
+              $ass_person_id,
+              $ass_user_id,
+              $first_assessor_job_id,
+              $next_assessor_job_id)=_hris_getinfobyemployeeid($assessor_employee_id);
          
-         $sql = "SELECT a.job_id,a.job_abbr,a.job_nm FROM ".XOCP_PREFIX."jobs a"
-              . " LEFT JOIN ".XOCP_PREFIX."job_class e USING(job_class_id)"
-              . " ORDER BY e.job_class_level,a.job_abbr";
-         $result = $db->query($sql);
-         $opt_upper = "<option value='0'>-</option>";
-         if($db->getRowsNum($result)>0) {
-            while(list($x_job_id,$x_job_abbr,$x_job_nm)=$db->fetchRow($result)) {
-               $opt_upper .= "\n<option value='0_${x_job_id}' ".($upper_job_id==$x_job_id&&$upper_employee_id==0?"selected='1'":"").">$x_job_abbr $x_job_nm</option>";
-            }
-         }
+      _activitylog("PERSONEL_ADMINISTRATION",0,"Update superior assessor $ass_nm for employee $emp_nm");
+      */
+      /////
+      
+      return array($job_id,sql2ind($start,"date"),$gradeval,ucfirst($assignment_t));
+   }
+   
+   function app_editJob($args) {
+      $db=&Database::getInstance();
+      $job_id = $args[0];
+      $employee_id = $_SESSION["hris_employee_id"];
+
+      $ret = "<div style='padding:4px;' id='dvjob_${job_id}'><form id='frmjob'><table style='width:100%;' class='xxfrm'>"
+           . "<colgroup><col width='200'/><col/></colgroup>"
+           . "<tbody>";
          
-         $ret .= "<tr><td>Job Title</td><td>$job_nm</td></tr>"
-               . "<tr><td>Job Code</td><td>$job_cd</td></tr>"
+      $sql = "SELECT b.j               . "<tr><td>Job Code</td><td>$job_cd</td></tr>"
                . "<tr><td>Position Level</td><td>$job_class_nm</td></tr>"
                . "<tr><td>Grade</td><td><input type='text' style='width:30px;' value='$gradeval' id='gradeval' name='gradeval'/></td></tr>"
                . "<tr><td>Work Area</td><td>$workarea_nm</td></tr>"
