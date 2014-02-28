@@ -184,7 +184,7 @@ class Model_pv_info extends CI_Model {
 		}
 	}
 
-	function cekobjectpressure($table,$id_item_object=NULL){
+	function cekobject($table,$id_item_object=NULL){
 		$this->db->where("id_item_object",$id_item_object);
 		$q = $this->db->get($table);
 		if($q->num_rows() > 0){
@@ -193,8 +193,6 @@ class Model_pv_info extends CI_Model {
 		}else{
 			return 0;
 		}
-	}
-	
-	
+	}	
 }
 ?>

@@ -181,11 +181,32 @@ class pv_feature extends MX_Controller  {
 		$id_plant = $this->uri->segment(5);
 		$id_plant_folder = $this->uri->segment(6);
 		
-		$cekobjatshell = $this->pv_feature->cekobjectshell("tbl_pv_pressure",$id_item_object);
+		/*$cekobjatshell = $this->pv_feature->cekobjectshell("tbl_pv_pressure",$id_item_object);
 		if($cekobjatshell == 0){
 			$url_shell = base_url()."pv_shell/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
 		}else{
 			$url_shell = base_url()."pv_shell/edit/".$cekobjatshell."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}*/
+
+		$cekobjatfeatures = $this->pv_feature->cekobject("tbl_pv_feature",$id_item_object);
+		if($cekobjatfeatures == 0){
+			$url_feat = base_url()."pv_feature/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_feat = base_url()."pv_feature/edit/".$cekobjatfeatures."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
+
+		$cekobjatpress = $this->pv_feature->cekobject("tbl_pv_pressure",$id_item_object);
+		if($cekobjatpress == 0){
+			$url_press = base_url()."pv_pressure/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_press = base_url()."pv_pressure/edit/".$cekobjatpress."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
+
+		$cekobjatinfo = $this->pv_feature->cekobject("tbl_pv_info",$id_item_object);
+		if($cekobjatinfo == 0){
+			$url_info = base_url()."pv_info/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_info = base_url()."pv_info/edit/".$cekobjatinfo."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
 		}
 
 		
@@ -360,7 +381,9 @@ class pv_feature extends MX_Controller  {
 					  'ref5'=>$ref5,
 					  'ref6'=>$ref6,
 					  'ref7'=>$ref7,
-					  'url_shell'=>$url_shell,
+					  'url_info'=>$url_info,
+					  'url_press'=>$url_press,
+					  'url_feat'=>$url_feat,
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
 				 	  'title_link'=>$this->table
 					  );
@@ -400,21 +423,7 @@ class pv_feature extends MX_Controller  {
 		$user_id = $this->session->userdata('adminID');
 
 		$this->load->library('form_validation');
-		/*"id_item_object"=>$id_item_object,
-					"id_ref_insulation"=>$id_ref_insulation,
-					"ins_thick_mm"=>$ins_thick_mm,
-					"ins_thick_in"=>$ins_thick_in,
-					"id_ref_coating_in"=>$id_ref_coating_in,
-					"id_ref_coating_ex"=>$id_ref_coating_ex,
-					"ves_length_m"=>$ves_length_m,
-					"ves_length_f"=>$ves_length_f,
-					"trace_heating"=>$trace_heating,
-					"cath_protected"=>$cath_protected,
-					"sur_area_cm"=>$sur_area_cm,
-					"sur_area_in"=>$sur_area_in,
-					"num_nozzle"=>$num_nozzle,
-					"id_ref_criticality"=>$id_ref_criticality,
-					"draw_ref"=>$draw_ref,*/
+		
 		
 		$this->form_validation->set_rules('ref1', 'Insulation Type', 'required');
 		$this->form_validation->set_rules('ins_thick_mm', 'Insulation Thickness (mm)', 'required');
@@ -615,13 +624,18 @@ class pv_feature extends MX_Controller  {
 	{
 		$q = $this->pv_feature->getDropdown("tbl_ref_deterioration");
 		$list = array();
-		foreach ($q->result() as $val) {
-			$selected = $val->id == $id ? $selected = "selected='selected'" : "";	
+		foreach ($q->result_array() as $val) {
+			$id_v = explode(',',$id);
+			$selected = "";
+			foreach ($id_v as $id_key=>$id_val) {
+				$selected .= ($val['id'] == $id_val) ? $selected = "selected='selected'" : "";		
+			}
 			$list[]= array(
-						'id' => $val->id,
-						'title'=>ucfirst($val->title),
-						"selected"=>$selected
-					 );
+							'id' => $val['id'],
+							'title'=>ucfirst($val['title']),
+							"selected"=>$selected
+						 );
+			
 		}
 		$data = array(
 				"list"=>$list,
@@ -634,11 +648,15 @@ class pv_feature extends MX_Controller  {
 	{
 		$q = $this->pv_feature->getDropdown("tbl_ref_corrosion");
 		$list = array();
-		foreach ($q->result() as $val) {
-			$selected = $val->id == $id ? $selected = "selected='selected'" : "";	
+		foreach ($q->result_array() as $val) {
+			$id_v = explode(',',$id);
+			$selected = "";
+			foreach ($id_v as $id_key=>$id_val) {
+				$selected .= ($val['id'] == $id_val) ? $selected = "selected='selected'" : "";		
+			}
 			$list[]= array(
-						'id' => $val->id,
-						'title'=>ucfirst($val->title),
+						'id' => $val['id'],
+						'title'=>ucfirst($val['title']),
 						"selected"=>$selected
 					 );
 		}

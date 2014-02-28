@@ -2102,3 +2102,12 @@ body {
     margin-left: 10px;
     margin-top: 20px;
 }
+
+.spec_menu > ul{
+    list-style-type: none;
+}
+
+.spec_menu > ul > li{
+    display: inline;
+    padding-right: 0 px;
+}
