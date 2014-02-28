@@ -147,6 +147,25 @@
 	    
 
 	    <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
+        <div class="spec_menu">
+            <ul>
+                <li>
+                    <a href="#">
+                        <input type="button" class="btn-reset" value="Info" disabled/>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url_press}">
+                        <input type="button" class="btn info" value="Pressure/Temperature"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="{url_feat}">
+                        <input type="button" class="btn info" value="Features"/>
+                    </a>
+                </li>
+            </ul>
+        </div>
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
                 <table>
@@ -303,10 +322,7 @@
                             <a href="javascript:void(0);" onclick="parent.closeModalFacebox();">
                                 <input type="button" class="btn-reset" value="cancel"/>
                             </a>
-                            <a href="{url_press}">
-                            <!--a href="javascript:void(0);" onclick="parent.openModalFacebox('{url_press}');" title="Pressure/Temperature"-->
-                                <input type="button" class="btn info" value="Pressure/Temperature"/>
-                            </a>
+                           
 
                             <input type="hidden" name="id" value="{id}">
                             <input type="hidden" name="id_item_object" value="{id_item_object}">

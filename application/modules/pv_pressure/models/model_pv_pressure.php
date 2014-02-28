@@ -180,7 +180,7 @@ class Model_pv_pressure extends CI_Model {
 		}
 	}
 
-	function cekobjectfeatures($table,$id_item_object=NULL){
+	function cekobject($table,$id_item_object=NULL){
 		$this->db->where("id_item_object",$id_item_object);
 		$q = $this->db->get($table);
 		if($q->num_rows() > 0){

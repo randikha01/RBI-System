@@ -154,7 +154,7 @@ class Model_pv_feature extends CI_Model {
 		}
 	}
 
-	function cekobjectshell($table,$id_item_object=NULL){
+	function cekobject($table,$id_item_object=NULL){
 		$this->db->where("id_item_object",$id_item_object);
 		$q = $this->db->get($table);
 		if($q->num_rows() > 0){

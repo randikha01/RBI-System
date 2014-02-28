@@ -184,11 +184,39 @@ class pv_info extends MX_Controller  {
 		$title_obj = $v_obj["obj_tag_no"];
 		$desc_obj = $v_obj["desc_"];
 		
-		$cekobjatpress = $this->pv_info->cekobjectpressure("tbl_pv_pressure",$id_item_object);
+		/*$cekobjatpress = $this->pv_info->cekobjectpressure("tbl_pv_pressure",$id_item_object);
 		if($cekobjatpress == 0){
 			$url_press = base_url()."pv_pressure/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
 		}else{
 			$url_press = base_url()."pv_pressure/edit/".$cekobjatpress."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
+
+		$cekobjatfeatures = $this->pv_info->cekobjectfeatures("tbl_pv_feature",$id_item_object);
+		if($cekobjatfeatures == 0){
+			$url_feat = base_url()."pv_feature/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_feat = base_url()."pv_feature/edit/".$cekobjatfeatures."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}*/
+
+		$cekobjatfeatures = $this->pv_info->cekobject("tbl_pv_feature",$id_item_object);
+		if($cekobjatfeatures == 0){
+			$url_feat = base_url()."pv_feature/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_feat = base_url()."pv_feature/edit/".$cekobjatfeatures."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
+
+		$cekobjatpress = $this->pv_info->cekobject("tbl_pv_pressure",$id_item_object);
+		if($cekobjatpress == 0){
+			$url_press = base_url()."pv_pressure/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_press = base_url()."pv_pressure/edit/".$cekobjatpress."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}
+
+		$cekobjatinfo = $this->pv_info->cekobject("tbl_pv_info",$id_item_object);
+		if($cekobjatinfo == 0){
+			$url_info = base_url()."pv_info/edit/0/".$id_item_object."/".$id_plant."/".$id_plant_folder;
+		}else{
+			$url_info = base_url()."pv_info/edit/".$cekobjatinfo."/".$id_item_object."/".$id_plant."/".$id_plant_folder;
 		}
 
 		
@@ -380,8 +408,6 @@ class pv_info extends MX_Controller  {
 			$ref3 = $this->getRefDropdownSystem($id_system,3);
 			#end ref dropdown multi value
 
-
-		
 			$data = array(
 					  'admin_url'=>base_url(),
 					  'notif'=>$notif,
@@ -391,6 +417,8 @@ class pv_info extends MX_Controller  {
 					  'ref2'=>$ref2,
 					  'ref3'=>$ref3,
 					  'url_press'=>$url_press,
+					  'url_feat'=>$url_feat,
+					  'url_info'=>$url_info,
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
 				 	  'title_link'=>$this->table
 					  );
