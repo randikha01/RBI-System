@@ -40,12 +40,43 @@
           $(selector).chosen(config[selector]);
         }
 
+        $('input[name="ins_thick_mm"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="ins_thick_in"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="ves_length_m"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="ves_length_f"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="sur_area_cm"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+        $('input[name="sur_area_in"]').maskMoney({thousands:'',decimal:'.', precision:1,});
+
+        $('input[name="ins_thick_in"]').attr('readonly', true);
+        $('input[name="ves_length_f"]').attr('readonly', true);
+        $('input[name="sur_area_in"]').attr('readonly', true);
+
+        $('input[name="ins_thick_mm"]').blur(function() {
+            var mmin = mmtoin($(this).val());
+
+            $('input[name="ins_thick_in"]').val(mmin);
+        });
+
+         $('input[name="ves_length_m"]').blur(function() {
+            var mft = mtoft($(this).val());
+
+            $('input[name="ves_length_f"]').val(mft);
+        });
+
         function mmtoin(value1){
             var mminch = parseFloat(0.039370079);
             var var1 = parseFloat(value1);
             var var2 = parseFloat(var1 * mminch);
             var mm = var2.toFixed(3);
             return mm;
+        }
+
+        function mtoft(value1){
+            var mft = parseFloat(3.2808);
+            var var1 = parseFloat(value1);
+            var var2 = parseFloat(var1 * mft);
+            var ft = var2.toFixed(3);
+            return ft;
         }
 
         function cmtoin(value1){
@@ -139,8 +170,8 @@
                             <input type="input" name="ves_length_f" value="{ves_length_f}" class="pendek"/> ft
                         </td>
                          <td class="no-border sidebar-right">
-                            <input type="checkbox" name="trace_heating" value="1">Trace Heating<br/>
-                            <input type="checkbox" name="cath_protected" value="1">Cathodic Protected
+                            <input type="checkbox" name="trace_heating" value="1" {trace_heating}>Trace Heating<br/>
+                            <input type="checkbox" name="cath_protected" value="1" {cath_protected}>Cathodic Protected
                          </td>
                     </tr>
 
@@ -153,6 +184,7 @@
                         <td class="no-border sidebar-right">
                             <p>Number of Nozzles</p>
                             <input type="input" name="num_nozzle" value="{num_nozzle}" class="pendek"/>
+                            <a href="{admin_url}nozzle/feature/{id_item_object}/{id_plant}/{id_plant_folder}">#</a>
                         </td>
                     </tr>
 
