@@ -18,17 +18,17 @@
         }
         for (var selector in config) {
           $(selector).chosen(config[selector]);
-    }
+		}
+		
+		function updateData()
+		{
+			var btn_plus = "{btn_plus}";
+			if(btn_plus == ""){
+				parent.openModal('{admin_url}{title_link}');
+			}
+		}
+		updateData();
 </script>
-        
-        <ul id="breadcrumb">
-            <li><a href="{admin_url}index/" title="Home"><span class="icon-home"></span></a></li>
-            <li><a href="{admin_url}plant/" title="Home"><span>Plant : {plant}</span></a></li>
-            <li><a href="{admin_url}plant_folder/grid/{id_plant}" title="Home"><span>{title_head}</span></a></li>
-            <li><span>{add_edit}</span></li>
-        </ul>
-        <div class="clear"></div>
-        
         
         <div class="row">
           <div class="span14">
@@ -40,11 +40,13 @@
             {/notif}
 	    
 
-	    <h2>{add_edit}</h2>
+	    <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
             {list}
             <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
-
-                 <p>Plant</p>
+			<table>
+				<tr>
+				 <td class="no-border">
+                 <p><b>Plant</b></p>
                  <label>{plant}</label>
                  <hr />
                  
@@ -55,6 +57,9 @@
               	 <p>Description</p>
                  <input type="input" name="desc_" value="{desc_}"/>
                  <hr />
+				 
+				 </td>
+				 <td class="sidebar-right no-border">
 
                  <p>Publish</p>
                  {ref3}
@@ -66,10 +71,14 @@
 				 
 				 <a href="{admin_url}{title_link}/edit/{id_plant}/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
                  <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
-                 <a href="{admin_url}{title_link}/grid/{id_plant}"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <!--a href="javascript:void(0);" onclick="parent.openModal('{admin_url}{title_link}/grid/{id_plant}');parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a-->
+                  <a href="javascript:void(0);" onclick="parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
                  <input type="hidden" name="id" value="{id}"/>
                  <input type="hidden" name="id_plant" value="{id_plant}"/>
                  <input type="hidden" name="id_parent" value="{id_parent}"/>
+				 </td>
+			</tr>
+		</table>
 	    </form>
             {/list}
         </div>

@@ -1,0 +1,86 @@
+<script>
+	
+
+	 var config = {
+          '#ref2'           : {},
+          '#ref2-deselect'  : {allow_single_deselect:true},
+          '#ref2-no-single' : {disable_search_threshold:10},
+          '#ref2-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref2-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+    }
+	
+
+		$('#dates').datepicker({
+			dateFormat: 'yy-mm-dd',
+			showOtherMonths: true,
+			changeMonth: true,
+			changeYear: true
+		});
+		
+	function updateData()
+		{
+			var btn_plus = "{btn_plus}";
+			if(btn_plus == ""){
+				parent.openModal('{admin_url}{title_link}');
+			}
+		}
+		updateData();
+</script>
+        
+        <div class="row">
+          <div class="span14">
+            {notif}
+            <div class="alert-message {notif_class}" data-alert="alert" >
+                <a class="close" data-dismiss="alert" href="#">&times;</a>
+                <p><strong>Notification</strong><br />{notif_title}</p>
+          	</div>
+            {/notif}
+	    
+
+	    <h2>{title_head} <i class="icon-chevron-right float-no"></i> {add_edit}</h2>
+            {list}
+            <form name="form_list" method="POST" action="{admin_url}{title_link}/submit" enctype="multipart/form-data" class="navbar-content">
+
+                 <p>Title</p>
+                 <input type="input" name="title" value="{title}"/>
+                 <hr />
+
+                 <p>Inch</p>
+                 <input type="input" name="in_" value="{in_}"/>
+                 <hr />
+
+                 <p>Ft</p>
+                 <input type="input" name="ft" value="{ft}"/>
+                 <hr />
+
+                 <p>mm</p>
+                 <input type="input" name="mm" value="{mm}"/>
+                 <hr />
+
+                 <p>cm</p>
+                 <input type="input" name="cm" value="{cm}"/>
+                 <hr />
+
+                 <p>m</p>
+                 <input type="input" name="m" value="{m}"/>
+                 <hr />
+
+				         <p>Publish</p>
+                 {ref2}
+                 <hr />
+
+                 <p>Created Date</p>
+                 <input type="input" name="create_date" disabled='disabled' value="{create_date}"/>
+                 <hr />
+				
+				 <a href="{admin_url}{title_link}/edit/0" style="{btn_plus}"><input type="button" class="btn info" value="add more" id="more_btn"/></a>
+                 <input type="button" class="btn info" value="save" id="save_btn" onclick="document.form_list.submit();"/>
+                 <a href="javascript:void(0);" onclick="parent.closeModalFacebox();"><input type="button" class="btn-reset" value="cancel"/></a>
+                 <input type="hidden" name="id" value="{id}"/>
+	    </form>
+            {/list}
+        </div>
+</div>

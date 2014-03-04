@@ -16,7 +16,7 @@ class Plant_folder extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class Plant_folder extends MX_Controller  {
 
 
 	function grid($id_plant=NULL)
-	{
-		$this->setheader();		
+	{	
 		$contents = $this->grid_content($id_plant);
 	
 		$data = array(
@@ -52,8 +51,6 @@ class Plant_folder extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 
 	function grid_content($id_plant=NULL)
@@ -173,7 +170,7 @@ class Plant_folder extends MX_Controller  {
 		$sch2 = empty($sch2) ? 'null' : $sch2;
 		//$sch3 = empty($sch3) ? 'null' : $sch3;
 		
-		redirect($this->table."/pages/".$id_plant."/".$sch1."/".$sch2."/".$per_page);
+		echo base_url().$this->table."/pages/".$id_plant."/".$sch1."/".$sch2."/".$per_page;
 	}
 	
 	
@@ -188,9 +185,8 @@ class Plant_folder extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
+
 	}
 	
 	
@@ -212,50 +208,50 @@ class Plant_folder extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-
+									
 					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->title;
 					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->desc_;
 					$id_plant = $this->session->flashdata("id_plant") ? $this->session->flashdata("id_plant") : $r->id_plant;
 					$id_parent = $this->session->flashdata("id_parent") ? $this->session->flashdata("id_parent") : $r->id_parent;
-								
-					#ref dropdown multi value				
-					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;				
+
+					#ref dropdown multi value
+					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;	
 					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 					#end ref dropdown multi value
-				
+
 					$id = $r->id;
 
 					$list[] = array(
-									"id"=>$r->id,
-									"id_plant"=>$id_plant,
-									"id_parent"=>$id_parent,
-									"title"=>$title,
-									"desc_"=>$desc_,
-									"create_date"=>$r->create_date,
-									"ref3"=>$ref3
-									);
+					"id"=>$r->id,
+					"id_plant"=>$id_plant,
+					"id_parent"=>$id_parent,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>$r->create_date,
+					"ref3"=>$ref3
+					);
 				}
-			}else{
-				
-				$id = "";
+				}else{
 
-				$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : null;
-				$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : null;
-				
-				#ref dropdown multi value
-				$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
-				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
-				#end ref dropdown multi value
-				
-				$list[] = array(
-									"id"=>0,
-									"id_plant"=>$id_plant,
-									"id_parent"=>$id_parent,
-									"title"=>$title,
-									"desc_"=>$desc_,
-									"create_date"=>"",
-									"ref3"=>$ref3
-									);
+					$id = "";
+
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : null;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : null;
+
+					#ref dropdown multi value
+					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
+					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
+					#end ref dropdown multi value
+
+					$list[] = array(
+					"id"=>0,
+					"id_plant"=>$id_plant,
+					"id_parent"=>$id_parent,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>"",
+					"ref3"=>$ref3
+					);
 			}
 			#end record
 
@@ -309,7 +305,7 @@ class Plant_folder extends MX_Controller  {
 		$id_parent = $this->input->post("id_parent");
 		$title = strip_tags($this->input->post("title"));
 		$desc_ = $this->input->post("desc_");
-		$ref3 = $this->input->post("ref3");
+		$is_publish = $this->input->post("ref3");
 		$user_id = $this->session->userdata('adminID');
 		$id = strip_tags($this->input->post("id"));
 		
@@ -328,12 +324,12 @@ class Plant_folder extends MX_Controller  {
 		}else{
 			if($id > 0)
 			{
-				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$ref3,$user_id);
+				$this->plant_folder->setUpdate($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
 				/*redirect($this->table."/edit/".$id_plant."/".$id);*/
 				redirect('plant');
 			}else{				
-				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$ref3,$user_id);
+				$id_term = $this->plant_folder->setInsert($this->table,$id,$id_plant,$id_parent,$title,$desc_,$is_publish,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
