@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 03, 2014 at 09:40 AM
+-- Generation Time: Mar 04, 2014 at 02:37 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `rbi`
 --
-
-
 -- --------------------------------------------------------
 
 --
@@ -168,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=134 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=135 ;
 
 --
 -- Dumping data for table `tbl_menu`
@@ -184,7 +182,7 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (19, 'Admins Level', 'adminusers_level', '', 'Publish', 10, 'No', 4, 1, 1, '2014-01-20 20:48:33', '2012-11-09 16:33:53'),
 (104, 'Library', '#', '', 'Publish', 23, '', 0, 1, 1, '2014-01-23 22:56:25', '2014-01-23 00:43:34'),
 (105, 'Pipe Type', 'ref_pipetype', '', 'Publish', 24, '', 106, 1, 1, '2014-01-23 22:57:13', '2014-01-23 16:24:44'),
-(106, 'Main Library', '#', '', 'Publish', 25, '', 104, 1, 0, '2014-01-23 22:57:01', '2014-01-23 16:57:01'),
+(106, 'Ref Library', 'main_library', '', 'Not Publish', 25, '', 104, 1, 1, '2014-03-04 04:01:36', '2014-01-23 16:57:01'),
 (107, 'Risk Analys', 'ref_risk_analys', '', 'Publish', 26, '', 104, 1, 0, '2014-01-23 22:58:01', '2014-01-23 16:58:01'),
 (108, 'Risk Scaling', 'ref_risk_scaling', '', 'Publish', 27, '', 104, 1, 0, '2014-01-23 22:58:33', '2014-01-23 16:58:33'),
 (109, 'Objects', 'ref_objects', '', 'Publish', 28, '', 106, 1, 1, '2014-02-03 03:49:10', '2014-01-24 08:21:21'),
@@ -211,7 +209,8 @@ INSERT INTO `tbl_menu` (`id`, `title`, `uri`, `icon`, `publish`, `ordered`, `div
 (130, 'Design', 'ref_design', '', 'Publish', 49, '', 106, 1, 0, '2014-03-03 07:59:00', '2014-03-03 08:59:00'),
 (131, 'Material', 'ref_material', '', 'Publish', 50, '', 106, 1, 0, '2014-03-03 08:08:16', '2014-03-03 09:08:16'),
 (132, 'Formula', 'ref_formula', '', 'Publish', 51, '', 106, 1, 0, '2014-03-03 08:26:03', '2014-03-03 09:26:03'),
-(133, 'Corrosion Loop', 'ref_corrosion_loop', '', 'Publish', 52, '', 106, 1, 0, '2014-03-03 08:38:31', '2014-03-03 09:38:31');
+(133, 'Corrosion Loop', 'ref_corrosion_loop', '', 'Publish', 52, '', 106, 1, 0, '2014-03-03 08:38:31', '2014-03-03 09:38:31'),
+(134, 'Main Library', 'main_library', '', 'Publish', 25, '', 104, 1, 1, '2014-03-04 04:00:46', '2014-03-04 03:39:30');
 
 -- --------------------------------------------------------
 
@@ -228,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `tbl_menu_auth` (
   `modify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=267 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=268 ;
 
 --
 -- Dumping data for table `tbl_menu_auth`
@@ -317,7 +316,8 @@ INSERT INTO `tbl_menu_auth` (`id`, `adminusers_level_id`, `menu_id`, `user_id`, 
 (263, 1, 130, 1, 0, '2014-03-03 07:59:21', '2014-03-03 08:59:21'),
 (264, 1, 131, 1, 0, '2014-03-03 08:08:36', '2014-03-03 09:08:36'),
 (265, 1, 132, 1, 0, '2014-03-03 08:26:15', '2014-03-03 09:26:15'),
-(266, 1, 133, 1, 0, '2014-03-03 08:38:43', '2014-03-03 09:38:43');
+(266, 1, 133, 1, 0, '2014-03-03 08:38:43', '2014-03-03 09:38:43'),
+(267, 1, 134, 1, 0, '2014-03-04 02:39:46', '2014-03-04 03:39:46');
 
 -- --------------------------------------------------------
 
