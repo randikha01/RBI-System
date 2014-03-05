@@ -1,0 +1,134 @@
+<script type="text/javascript">
+	
+	$(document).ready(function(){	
+		
+
+		// bind change event to select
+	      $('#ref1').bind('change', function () {
+	          var url = $(this).val(); // get selected value
+	          if (url) { // require a URL
+	              //window.location = url; // redirect
+	              openModal(url);
+	          }
+	          return false;
+	      });
+	
+	});
+  
+</script>
+<script type="text/javascript">
+function goto()
+{
+	parent.openModal('{admin_url}{title_link}/pages/{sch_path}/{per_page}/{pg}');
+}
+
+function set_search(){
+
+	$("#search").submit(function(e)
+	{
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		$.ajax(
+		{
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data)
+			{
+				var url = data;
+				parent.openModal(url);
+			}
+		});
+		e.preventDefault(); //STOP default action
+		e.unbind(); //unbind. to stop multiple form submit.
+	});
+	 
+	$("#search").submit(); 
+
+}
+
+function openclose_search()
+{
+		if($("#search_box").css("display") == "none"){
+			$("#close").html('<i class="icon-zoom-out"></i>');
+			$("#search_box").css("display","");
+			$.cookie('search_{title_link}',1,{ path: '/' });
+		}else{
+			$("#close").html('<i class="icon-zoom-in"></i>');
+			$("#search_box").css("display","none");;
+			$.cookie('search_{title_link}',null,{ path: '/' });
+		}
+}
+
+
+    var config = {
+		  '#ref1'           : {},
+          '#ref1-deselect'  : {allow_single_deselect:true},
+          '#ref1-no-single' : {disable_search_threshold:10},
+          '#ref1-no-results': {no_results_text:'Oops, nothing found!'},
+          '#ref1-width'     : {width:"95%"}
+        }
+        for (var selector in config) {
+          $(selector).chosen(config[selector]);
+    }
+
+	$("[rel=tooltip]").tooltip();
+
+</script>
+
+		 <ul id="breadcrumb">
+            <li><a href="javascript:void(0);" onclick="parent.openModal('{admin_url}dashboard/home');" title="Home"><span class="icon-home"></span></a></li>
+            <li><span>Main Library</span></li>
+        </ul>
+        <div class="row">
+          <div class="span_full">
+            <h2>Choose Library</h2>
+	    
+            <form id="search" name="search" method="POST" action="{admin_url}{title_link}/search" class="navbar-inner">
+            <button class="close" type="button" id="close" onclick="openclose_search();"><i class="icon-zoom-in"></i></button>
+                <h3>Search</h3>
+                <div id="search_box">
+                    <table border=0>
+                    <tr>
+                    	<td>Library</td><td>{ref1}</td>
+                    </tr>
+                   
+                    </table>
+                </div>
+            </form>
+	     
+            
+          </div>
+</div>
+
+<script type="text/javascript">
+
+function validateLimit(evt,val) {
+		var theEvent = evt || window.event;
+		var key = theEvent.keyCode || theEvent.which;
+		var keyA = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode( key );
+		var regex = /[0-9]/;
+		if( !regex.test(key) && keyA != 8 && keyA != 46 && keyA != 37 && keyA != 39 && keyA != 13) {
+				theEvent.returnValue = false;
+				theEvent.preventDefault();
+		}
+}
+	
+function sendLimit(val)
+{
+	parent.openModal("{admin_url}{title_link}/pages/{sch_path}/"+val);
+}
+
+
+function read_cookie_search(){
+	if($.cookie('search_{title_link}') == 1){
+		$("#close").html('<i class="icon-zoom-out"></i>');
+		$("#search_box").css("display","");
+	}else{
+		$("#close").html('<i class="icon-zoom-in"></i>');
+		$("#search_box").css("display","none");
+	}
+}
+read_cookie_search();
+</script>

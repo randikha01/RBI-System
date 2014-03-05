@@ -263,6 +263,9 @@ class pv_feature extends MX_Controller  {
 						$id_ref_corrosion .= $detr['id_ref_corrosion'].",";
 					}
 
+					$trace_heating = ($trace_heating == 1) ? "checked" : FALSE;
+					$cath_protected = ($cath_protected == 1) ? "checked" : FALSE; 
+
 					$list[] = array(
 					"id"=>$id,
 					"id_item_object"=>$id_item_object,
