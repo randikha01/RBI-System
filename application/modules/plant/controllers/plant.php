@@ -16,7 +16,7 @@ class Plant extends MX_Controller  {
 	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +43,7 @@ class Plant extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{	
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +51,6 @@ class Plant extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -233,16 +230,15 @@ class Plant extends MX_Controller  {
 						if($qobj0->num_rows() > 0){
 							foreach ($qobj0->result() as $b0) {
 								$btitle0 = ucwords($b0->obj_tag_no);
-								if($b0->id_ref_objects == 206){
-									$cekobj = $this->plant->cekobject("tbl_pv_info",$b0->id);
-									/*{bid0}/{id}/{fid_lv0}*/
-									$url_spec = base_url()."pv_info/edit/".$cekobj."/".$b0->id."/".$r->id."/".$f->id;
-									
-								}else{
-									$url_spec = "#";
-								}
-								$icon0 = ($b0->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
-								$list_obj0[] = array("bid0"=>$b0->id,"btitle0" =>$btitle0,"bicon0" =>$icon0,"url_spec"=>$url_spec);
+									if($b0->id_ref_objects == 206){
+										$cekobj = $this->plant->cekobject("tbl_pv_info",$b0->id);
+										/*{bid0}/{id}/{fid_lv0}*/
+										$url_spec = base_url()."pv_info/edit/".$cekobj."/".$b0->id."/".$r->id."/".$f->id;
+									}else{
+										$url_spec = "#";
+									}
+									$icon0 = ($b0->id_ref_item == 1) ? '<i class="icon-folder-close"></i>' : "";
+									$list_obj0[] = array("bid0"=>$b0->id,"btitle0" =>$btitle0,"bicon0" =>$icon0,"url_spec"=>$url_spec);
 							}
 						}
 
@@ -304,7 +300,7 @@ class Plant extends MX_Controller  {
 		$sch2 = empty($sch2) ? 'null' : $sch2;
 		$sch3 = empty($sch3) ? 'null' : $sch3;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$per_page);
+		echo base_url().$this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$per_page;
 	}
 	
 	
@@ -319,9 +315,8 @@ class Plant extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
+		$this->parser->parse('layout/contents_form.html', $data);
+
 	}
 	
 	
@@ -342,48 +337,47 @@ class Plant extends MX_Controller  {
 			$list = $list_term_option = array();
 			if($q->num_rows() > 0){
 				foreach($q->result() as $r){
-					
-					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->title;
-					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->desc_;
-					
+					$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : $r->desc_;
+					$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : $r->title;
+
 					#ref dropdown multi value
-					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;				
+					$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : $r->publish;	
 					$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);
 					#end ref dropdown multi value
-				
+
 					$id_ref_units = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : $r->id_ref_units;
 					$id = $r->id;
 
 					$list[] = array(
-									"id"=>$r->id,
-									"id_ref_units"=>$r->id_ref_units,
-									"title"=>$title,
-									"desc_"=>$desc_,
-									"create_date"=>$r->create_date,
-									"ref3"=>$ref3
-									);
+					"id"=>$r->id,
+					"id_ref_units"=>$r->id_ref_units,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>$r->create_date,
+					"ref3"=>$ref3
+					);
 				}
 			}else{
 				
 				$id = "";
 				$id_ref_units = $this->session->flashdata("ref1") ? $this->session->flashdata("ref1") : null;
-				
+
 				$desc_ = $this->session->flashdata("desc_") ? $this->session->flashdata("desc_") : "";
 				$title = $this->session->flashdata("title") ? $this->session->flashdata("title") : "";
-				
+
 				#ref dropdown multi value
 				$ref3_select_arr[0] = $this->session->flashdata("ref3") ? $this->session->flashdata("ref3") : null;
 				$ref3 = Modules::run('widget/getStaticDropdown',$ref3_arr,$ref3_select_arr,3);	
 				#end ref dropdown multi value
-				
+
 				$list[] = array(
-									"id"=>0,
-									"id_ref_units"=>$id_ref_units,
-									"title"=>$title,
-									"desc_"=>$desc_,
-									"create_date"=>"",
-									"ref3"=>$ref3
-									);
+					"id"=>0,
+					"id_ref_units"=>$id_ref_units,
+					"title"=>$title,
+					"desc_"=>$desc_,
+					"create_date"=>"",
+					"ref3"=>$ref3
+				);
 			}
 			#end record
 
@@ -443,12 +437,12 @@ class Plant extends MX_Controller  {
 		$this->form_validation->set_rules('desc_', 'Description', 'required');
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->session->set_flashdata("err",validation_errors());
-			$this->session->set_flashdata("desc_",$desc_);
-			$this->session->set_flashdata("title",$title);
-			$this->session->set_flashdata("ref1",$ref1);
-			$this->session->set_flashdata("ref2",$ref2);
-			$this->session->set_flashdata("ref3",$ref3);
+				$this->session->set_flashdata("err",validation_errors());
+				$this->session->set_flashdata("desc_",$desc_);
+				$this->session->set_flashdata("title",$title);
+				$this->session->set_flashdata("ref1",$ref1);
+				$this->session->set_flashdata("ref2",$ref2);
+				$this->session->set_flashdata("ref3",$ref3);
 			redirect($this->table."/edit/".$id);
 		}else{
 			if($id > 0)
@@ -501,7 +495,6 @@ class Plant extends MX_Controller  {
 		$q = $this->plant->getPlantcatList('tbl_ref_units');
 		$list = array();
 		foreach ($q->result() as $val) {
-
 			$selected = $val->id == $parent_id ? $selected = "selected='selected'" : "tidak";	
 			$list[]= array(
 						'id' => $val->id,

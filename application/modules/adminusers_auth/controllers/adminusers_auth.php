@@ -14,9 +14,10 @@ class adminusers_auth extends MX_Controller  {
 		$this->lang->load('elemen_layout', 'indonesia');
 	}
 	
+	
 	public function setheader()
 	{
-		return Modules::run('layout/setheader');
+		return Modules::run('layout/setheaderdetail');
 	}
 
 	public function setfooter()
@@ -43,8 +44,7 @@ class adminusers_auth extends MX_Controller  {
 
 
 	function grid()
-	{
-		$this->setheader();		
+	{		
 		$contents = $this->grid_content();
 	
 		$data = array(
@@ -52,8 +52,6 @@ class adminusers_auth extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -177,7 +175,7 @@ class adminusers_auth extends MX_Controller  {
 		$sch2 = empty($sch2) ? 'null' : $sch2;
 		$sch3 = empty($sch3) ? 'null' : $sch3;
 		
-		redirect($this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$per_page);
+		echo base_url().$this->table."/pages/".$sch1."/".$sch2."/".$sch3."/".$per_page;
 	}
 	
 	
@@ -192,9 +190,8 @@ class adminusers_auth extends MX_Controller  {
 				  'contents'=>$contents,
 				  'add_edit'=>$add_edit
 				  );
-		$this->parser->parse('layout/contents.html', $data);
+		$this->parser->parse('layout/contents_form.html', $data);
 		
-		$this->setfooter();
 	}
 	
 	
@@ -366,8 +363,7 @@ class adminusers_auth extends MX_Controller  {
 	
 	
 	function edit_account()
-	{
-		$this->setheader();		
+	{	
 		$id = $this->uri->segment(3);
 		$contents = $this->edit_account_content($id);
 	
@@ -376,8 +372,6 @@ class adminusers_auth extends MX_Controller  {
 				  'contents' => $contents,
 				  );
 		$this->parser->parse('layout/contents.html', $data);
-		
-		$this->setfooter();
 	}
 	
 	
@@ -423,10 +417,12 @@ class adminusers_auth extends MX_Controller  {
 			$err = $this->session->flashdata("err") ? $this->session->flashdata("err") : "";
 			$success = $this->session->flashdata("success") ? $this->session->flashdata("success") : "";
 			$notif = array();
+			$btn_plus = "display:none;";
 			if(!empty($success)){
+				$btn_plus = "";
 				$notif[] = array(
 									"notif_title"=>$success,
-									"notif_class"=>"warning fade in"
+									"notif_class"=>"success fade in"
 									);
 			}else if(!empty($err)){
 				$notif[] = array(
@@ -437,6 +433,7 @@ class adminusers_auth extends MX_Controller  {
 		
 			$data = array(
 					  'admin_url' => base_url(),
+					  'btn_plus'=>$btn_plus,
 					  'notif'=>$notif,
 					  'list'=>$list,
 					  'title_head'=>ucfirst(str_replace('_',' ',$this->table_alias)),
@@ -466,7 +463,7 @@ class adminusers_auth extends MX_Controller  {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->session->set_flashdata("err",validation_errors());
-			redirect($this->table."/edit_account/".$id);
+			echo base_url().$this->table."/edit_account/".$id;
 		}else{
 			
 			if(!empty($password)){
@@ -481,13 +478,13 @@ class adminusers_auth extends MX_Controller  {
 			{
 				$this->adminusers_auth->setUpdate($this->table,$id,$username,$password,$publish,$adminusers_level_id,$user_id);
 				$this->session->set_flashdata("success","Data saved successful");
-				redirect($this->table."/edit_account/".$id);
+				echo base_url().$this->table."/edit_account/".$id;
 			}else{
 				$this->adminusers_auth->setInsert($this->table,$id,$username,$password,$publish,$adminusers_level_id,$user_id);
 				$last_id = $this->db->insert_id();
 				
 				$this->session->set_flashdata("success","Data inserted successful");
-				redirect($this->table."/edit_account/".$last_id);
+				echo base_url().$this->table."/edit_account/".$last_id;
 			}
 		}
 	}

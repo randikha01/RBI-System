@@ -16,6 +16,7 @@ class dashboard extends MX_Controller  {
 		return Modules::run('layout/setheader');
 	}
 
+
 	public function setfooter()
 	{
 		return Modules::run('layout/setfooter');
@@ -53,6 +54,33 @@ class dashboard extends MX_Controller  {
 	}
 	
 	function grid_content($err=NULL)
+	{
+		$q = $this->configs->getDetail("configs",1);
+		$r = $q->row();
+		$site_name = $r->meta_title;
+		
+		
+		
+		$data = array(
+				  'base_url' => base_url(),
+				  'site_name'=>$site_name,
+				  );
+		return $this->parser->parse('dashboard.html', $data, TRUE);
+	}
+	
+	
+	function home($err=NULL)
+	{
+		$contents = $this->grid_content($err);
+	
+		$data = array(
+				  'base_url' => base_url(),
+				  'contents' => $contents,
+				  );
+		$this->parser->parse('layout/contents.html', $data);
+	}
+	
+	function home_content($err=NULL)
 	{
 		$q = $this->configs->getDetail("configs",1);
 		$r = $q->row();
